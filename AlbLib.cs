@@ -35,6 +35,16 @@ namespace AlbLib
 		public static PathInfo ItemList;
 		
 		/// <summary>
+		/// Absolute path to any XLDLIBS/SAMPLES{0}.XLD.
+		/// </summary>
+		public static PathInfo SamplesN;
+		
+		/// <summary>
+		/// Absolute path to MAIN.EXE.
+		/// </summary>
+		public static PathInfo Main;
+		
+		/// <summary>
 		/// Sets all paths.
 		/// </summary>
 		/// <param name="path">Absolute path to XLDLIBS folder.</param>
@@ -45,6 +55,7 @@ namespace AlbLib
 			ScriptsN = Path.Combine(path, "SCRIPT{0}.XLD");
 			ItemName =  Path.Combine(path, "ITEMNAME.DAT");
 			ItemList =  Path.Combine(path, "ITEMLIST.DAT");
+			SamplesN =  Path.Combine(path, "SAMPLES{0}.XLD");
 		}
 	}
 	
@@ -89,10 +100,15 @@ namespace AlbLib
 		{
 			int i = 0;
 			string path;
-			while(File.Exists(path = String.Format(Paths.PaletteN.FileName, i++)))
+			while(File.Exists(path = String.Format(this.FileName, i++)))
 			{
 				yield return path;
 			}
+		}
+		
+		public string Format(params object[] args)
+		{
+			return String.Format(this.FileName, args);
 		}
 		
 		/// <summary></summary>
@@ -102,7 +118,7 @@ namespace AlbLib
 		}
 		
 		/// <summary></summary>
-		public static implicit operator string(PathInfo info)
+		public static implicit operator String(PathInfo info)
 		{
 			return info.ToString();
 		}
@@ -112,5 +128,16 @@ namespace AlbLib
 		{
 			return FileName;
 		}
+	}
+	
+	/// <summary>
+	/// Contains various magic contants.
+	/// </summary>
+	public static class Constants
+	{
+		/// <summary>
+		/// 63×ColorConversion = 255
+		/// </summary>
+		public const double ColorConversion = 4.047619047619047619047619047619;
 	}
 }
