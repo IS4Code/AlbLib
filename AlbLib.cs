@@ -40,6 +40,26 @@ namespace AlbLib
 		public static PathInfo SamplesN;
 		
 		/// <summary>
+		/// Absolute path to any XLDLIBS/ICONGFX{0}.XLD.
+		/// </summary>
+		public static PathInfo IconGraphicsN;
+		
+		/// <summary>
+		/// Absolute path to any XLDLIBS/ICONDAT{0}.XLD.
+		/// </summary>
+		public static PathInfo IconDataN;
+		
+		/// <summary>
+		/// Absolute path to any XLDLIBS/MAPDATA{0}.XLD.
+		/// </summary>
+		public static PathInfo MapDataN;
+		
+		/// <summary>
+		/// Absolute path to any XLDLIBS/TRANSTB{0}.XLD.
+		/// </summary>
+		public static PathInfo TransparencyTablesN;
+		
+		/// <summary>
 		/// Absolute path to MAIN.EXE.
 		/// </summary>
 		public static PathInfo Main;
@@ -56,6 +76,10 @@ namespace AlbLib
 			ItemName =  Path.Combine(path, "ITEMNAME.DAT");
 			ItemList =  Path.Combine(path, "ITEMLIST.DAT");
 			SamplesN =  Path.Combine(path, "SAMPLES{0}.XLD");
+			IconGraphicsN =  Path.Combine(path, "ICONGFX{0}.XLD");
+			IconDataN =  Path.Combine(path, "ICONDAT{0}.XLD");
+			MapDataN =  Path.Combine(path, "MAPDATA{0}.XLD");
+			TransparencyTablesN =  Path.Combine(path, "TRANSTB{0}.XLD");
 		}
 	}
 	
@@ -106,9 +130,20 @@ namespace AlbLib
 			}
 		}
 		
+		/// <summary>
+		/// Formats variable path.
+		/// </summary>
 		public string Format(params object[] args)
 		{
 			return String.Format(this.FileName, args);
+		}
+		
+		/// <summary>
+		/// Formats variable path.
+		/// </summary>
+		public string Format(int arg1)
+		{
+			return String.Format(this.FileName, arg1);
 		}
 		
 		/// <summary></summary>

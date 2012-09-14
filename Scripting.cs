@@ -27,7 +27,7 @@ namespace AlbLib
 				int fileindex = index/100;
 				using(FileStream stream = new FileStream(String.Format(Paths.ScriptsN, fileindex), FileMode.Open))
 				{
-					byte[] content = XLDFile.ReadSubfile(stream, subindex);
+					byte[] content = XLDFile.ReadSubfile(stream, subindex).Data;
 					return Encoding.ASCII.GetString(content);
 				}
 			}

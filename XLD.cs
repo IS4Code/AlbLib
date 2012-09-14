@@ -11,7 +11,7 @@ namespace AlbLib
 		/// <summary>
 		/// This class holds all information about XLD file.
 		/// </summary>
-		public class XLDFile : IEnumerable<byte[]>
+		public class XLDFile : IEnumerable<XLDSubfile>
 		{
 			/// <summary>
 			/// XLD header signature as string.
@@ -45,15 +45,15 @@ namespace AlbLib
 			}
 			
 			/// <summary>
-			/// List of all subfiles stored as byte array.
+			/// List of all subfiles.
 			/// </summary>
-			public IList<byte[]> Subfiles{get;private set;}
+			public IList<XLDSubfile> Subfiles{get;private set;}
 			
 			/// <summary></summary>
 			/// <param name="subfiles">
 			/// List of subfiles.
 			/// </param>
-			public XLDFile(IList<byte[]> subfiles)
+			public XLDFile(IList<XLDSubfile> subfiles)
 			{
 				Subfiles = subfiles;
 			}
@@ -64,7 +64,7 @@ namespace AlbLib
 			/// <returns>
 			/// Subfile enumerator.
 			/// </returns>
-			public IEnumerator<byte[]> GetEnumerator()
+			public IEnumerator<XLDSubfile> GetEnumerator()
 			{
 				return Subfiles.GetEnumerator();
 			}
@@ -95,14 +95,14 @@ namespace AlbLib
 				writer.Write(SignatureBytes);
 				writer.Write((ushort)Count);
 				int written = 8;
-				foreach(byte[] subfile in Subfiles)
+				foreach(XLDSubfile subfile in Subfiles)
 				{
 					writer.Write(subfile.Length);
 					written += 4 + subfile.Length;
 				}
-				foreach(byte[] subfile in Subfiles)
+				foreach(XLDSubfile subfile in Subfiles)
 				{
-					writer.Write(subfile);
+					writer.Write(subfile.Data);
 				}
 				return written;
 			}
@@ -146,6 +146,7 @@ namespace AlbLib
 					throw new Exception("This is not valid XLD file.");
 				}
 				nentries = reader.ReadInt16();
+				if(index >= nentries)throw new ArgumentOutOfRangeException("index", "Argument is greater than subfiles count.");
 				entrylen = new int[nentries];
 				for(int i = 0; i < nentries; i++)
 				{
@@ -176,7 +177,7 @@ namespace AlbLib
 			/// <returns>
 			/// Byte array containing the content of subfile.
 			/// </returns>
-			public static byte[] ReadSubfile(Stream stream, int index)
+			public static XLDSubfile ReadSubfile(Stream stream, int index)
 			{
 				int lastEntry = -1;
 				BinaryReader reader = new BinaryReader(stream, Encoding.ASCII);
@@ -199,7 +200,7 @@ namespace AlbLib
 					lastEntry = i;
 					if(i == index)
 					{
-						return reader.ReadBytes(entrylen[i]);
+						return new XLDSubfile(stream, entrylen[i], (short)i);
 					}else{
 						reader.ReadBytes(entrylen[i]);
 					}
@@ -216,7 +217,7 @@ namespace AlbLib
 			/// <returns>
 			/// Enumerable object containing subfile contents.
 			/// </returns>
-			public static IEnumerable<byte[]> EnumerateSubfiles(Stream stream)
+			public static IEnumerable<XLDSubfile> EnumerateSubfiles(Stream stream)
 			{
 				int lastEntry = -1;
 				BinaryReader reader = new BinaryReader(stream, Encoding.ASCII);
@@ -237,7 +238,7 @@ namespace AlbLib
 				for(short i = 0; i < nentries; i++)
 				{
 					lastEntry = i;
-					yield return reader.ReadBytes(entrylen[i]);
+					yield return new XLDSubfile(stream, entrylen[i], i);
 				}
 			}
 			
@@ -301,11 +302,11 @@ namespace AlbLib
 				{
 					entrylen[i] = reader.ReadInt32();
 				}
-				byte[][] entries = new byte[nentries][];
+				XLDSubfile[] entries = new XLDSubfile[nentries];
 				for(int i = 0; i < nentries; i++)
 				{
 					lastEntry = i;
-					entries[i] = reader.ReadBytes(entrylen[i]);
+					entries[i] = new XLDSubfile(stream, entrylen[i]);
 				}
 				return new XLDFile(entries);
 			}
@@ -426,6 +427,34 @@ namespace AlbLib
 				}
 				offset = -1;
 				return null;
+			}
+		}
+		
+		public class XLDSubfile
+		{
+			public byte[] Data{get;set;}
+			public int Length{
+				get{
+					return Data.Length;
+				}
+			}
+			public short Index{get;private set;}
+			
+			public XLDSubfile(Stream stream, int length) : this(stream, length, -1)
+			{
+				
+			}
+			
+			public XLDSubfile(Stream stream, int length, short index)
+			{
+				Data = new byte[length];
+				stream.Read(Data, 0, length);
+				Index = index;
+			}
+			
+			public Stream GetInputStream()
+			{
+				return new MemoryStream(Data, false);
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace AlbLib
@@ -90,6 +91,22 @@ namespace AlbLib
 			English = 1,
 			/// <summary>French.</summary>
 			French = 2
+		}
+		
+		public enum FontStyle : byte
+		{
+			Normal = 0,
+			Bold = 1
+		}
+		
+		public class TextColor
+		{
+			byte[] colors;
+			
+			public TextColor(byte[] colors)
+			{
+				this.colors = colors;
+			}
 		}
 	}
 }

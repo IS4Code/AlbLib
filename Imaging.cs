@@ -14,141 +14,31 @@ namespace AlbLib
 {
 	namespace Imaging
 	{
+		public interface IRenderable
+		{
+			Image Render();
+		}
+		
+		public interface IPaletteRenderable
+		{
+			Image Render(ImagePalette palette);
+		}
+		
+		public interface IAnimatedRenderable
+		{
+			Image Render(byte index);
+		}
+		
+		public interface IAnimatedPaletteRenderable
+		{
+			Image Render(byte index, ImagePalette palette);
+		}
+		
 		/// <summary>
 		/// Main class which works with palettes and draws images.
 		/// </summary>
 		public static class Drawing
 		{
-			private static readonly ImagePalette[] Palettes = new ImagePalette[short.MaxValue];
-			private static ImagePalette GlobalPalette = null;
-			
-			/// <summary>
-			/// Default transparent color index. Default is -1.
-			/// </summary>
-			public static int TransparentIndex = -1;
-			
-			/// <summary>
-			/// Loads all palettes.
-			/// </summary>
-			public static void LoadPalettes()
-			{
-				int id = 0;
-				foreach(string path in Paths.PaletteN.EnumerateList())
-				{
-					using(FileStream stream = new FileStream(path, FileMode.Open))
-					{
-						foreach(byte[] palette in XLDFile.EnumerateSubfiles(stream))
-						{
-							Palettes[id++] = ReadPalette(palette);
-						}
-					}
-				}
-				using(FileStream stream = new FileStream(Paths.GlobalPalette, FileMode.Open))
-				{
-					GlobalPalette = ReadGlobalPalette((int)stream.Length, stream);
-				}
-			}
-			
-			private static void LoadGlobalPalette()
-			{
-				using(FileStream stream = new FileStream(Paths.GlobalPalette, FileMode.Open))
-				{
-					GlobalPalette = ReadGlobalPalette((int)stream.Length, stream);
-				}
-			}
-			
-			private static void LoadPalette(int index)
-			{
-				int subindex = index%100;
-				int fileindex = index/100;
-				using(FileStream stream = new FileStream(String.Format(Paths.PaletteN, fileindex), FileMode.Open))
-				{
-					int length = XLDFile.ReadToIndex(stream, subindex);
-					Palettes[index] = ReadPalette(stream, length);
-				}
-			}
-			
-			/// <summary>
-			/// Parses palette from stream.
-			/// </summary>
-			/// <param name="input">
-			/// Input stream containing palette data.
-			/// </param>
-			/// <param name="length">
-			/// Length of palette bytes. Usually triple of colors count.
-			/// </param>
-			/// <returns>
-			/// Palette as color array.
-			/// </returns>
-			public static ImagePalette ReadPalette(Stream input, int length)
-			{
-				if(length%3!=0)
-				{
-					throw new Exception("Palette has not appropriate length.");
-				}
-				return ImagePalette.Load(input, length/3, PaletteFormat.Binary);
-			}
-			
-			/// <summary>
-			/// Parses palette from byte array.
-			/// </summary>
-			/// <param name="palette">
-			/// Palette data as bytes. Usually multiple of three.
-			/// </param>
-			/// <returns>
-			/// Palette as color array.
-			/// </returns>
-			public static ImagePalette ReadPalette(byte[] palette)
-			{
-				if(palette.Length%3!=0)
-				{
-					throw new Exception("Palette has not appropriate length.");
-				}
-				return ImagePalette.Load(new MemoryStream(palette), palette.Length/3, PaletteFormat.Binary);
-			}
-			
-			private static ImagePalette ReadGlobalPalette(int length, Stream stream)
-			{
-				if(length != 192)
-				{
-					throw new Exception("Global palette has not appropriate length.");
-				}
-				return ImagePalette.Load(stream, length/3, PaletteFormat.Binary);
-			}
-			
-			/// <summary>
-			/// Returns the global palette which is used in combination with local palette.
-			/// </summary>
-			/// <returns>
-			/// The global palette.
-			/// </returns>
-			public static ImagePalette GetGlobalPalette()
-			{
-				if(GlobalPalette == null)
-				{
-					LoadGlobalPalette();
-				}
-				return GlobalPalette;
-			}
-			
-			/// <summary>
-			/// Gets local palette using specified <paramref name="index"/>.
-			/// </summary>
-			/// <param name="index">
-			/// Zero-based index.
-			/// </param>
-			/// <returns>
-			/// The local palette.
-			/// </returns>
-			public static ImagePalette GetPalette(int index)
-			{
-				if(Palettes[index] == null)
-				{
-					LoadPalette(index);
-				}
-				return Palettes[index];
-			}
-			
 			/// <summary>
 			/// Draws bitmap.
 			/// </summary>
@@ -167,9 +57,9 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn bitmap.
 			/// </returns>
-			public static Bitmap DrawBitmap(byte[] data, int width, int height, int palette)
+			public static Bitmap DrawBitmap(byte[] data, int width, int height, byte palette)
 			{
-				return DrawBitmap(data, width, height, GetPalette(palette)+GetGlobalPalette());
+				return DrawBitmap(data, width, height, ImagePalette.GetPalette(palette)+ImagePalette.GetGlobalPalette());
 			}
 			
 			/// <summary>
@@ -195,16 +85,21 @@ namespace AlbLib
 				Bitmap bmp = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
 				ColorPalette pal = bmp.Palette;
 				palette.CopyTo(pal.Entries, 0);
-				if(TransparentIndex >= 0)pal.Entries[TransparentIndex] = Color.Transparent;
+				if(ImagePalette.TransparentIndex >= 0)pal.Entries[ImagePalette.TransparentIndex] = Color.Transparent;
 				bmp.Palette = pal;
 				BitmapData bmpdata = bmp.LockBits(new Rectangle(0,0,width,height), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 				if(width%4 == 0)
 				{
-					Marshal.Copy(data, 0, bmpdata.Scan0, data.Length);
+					Marshal.Copy(data, 0, bmpdata.Scan0, Math.Min(bmpdata.Stride*bmpdata.Height, data.Length));
 				}else{
 					for(int y = 0; y < height; y++)
 					{
-						Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, width);
+						if(y == height-1)
+						{
+							Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, data.Length-width*y);
+						}else{
+							Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, width);
+						}
 					}
 				}
 				bmp.UnlockBits(bmpdata);
@@ -226,7 +121,7 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn bitmap.
 			/// </returns>
-			public static Bitmap DrawBitmap(byte[] data, int width, short palette)
+			public static Bitmap DrawBitmap(byte[] data, int width, byte palette)
 			{
 				int height = (data.Length+width-1)/width;
 				return DrawBitmap(data, width, height, palette);
@@ -236,8 +131,11 @@ namespace AlbLib
 		/// <summary>
 		/// Base image class.
 		/// </summary>
-		public abstract class ImageBase
+		public abstract class ImageBase : IPaletteRenderable
 		{
+			public abstract int GetWidth();
+			public abstract int GetHeight();
+			
 			/// <summary>
 			/// Byte array containing actual pixels of image.
 			/// </summary>
@@ -260,7 +158,21 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn image.
 			/// </returns>
-			public abstract Bitmap DrawToBitmap(short palette);
+			public virtual Image Render(byte palette)
+			{
+				return Render(ImagePalette.GetPalette(palette)+ImagePalette.GetGlobalPalette());
+			}
+			
+			/// <summary>
+			/// Draws the image to bitmap.
+			/// </summary>
+			/// <param name="palette">
+			/// Palette.
+			/// </param>
+			/// <returns>
+			/// Drawn image.
+			/// </returns>
+			public abstract Image Render(ImagePalette palette);
 		}
 		
 		/// <summary>
@@ -277,6 +189,15 @@ namespace AlbLib
 			/// Image height is not stored within image data.
 			/// </summary>
 			public int Height{get; set;}
+			
+			public override int GetWidth()
+			{
+				return Width;
+			}
+			public override int GetHeight()
+			{
+				return Height;
+			}
 			
 			/// <summary>
 			/// Converts entire image to format-influenced byte array.
@@ -298,7 +219,7 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn image.
 			/// </returns>
-			public override Bitmap DrawToBitmap(short palette)
+			public override Image Render(ImagePalette palette)
 			{
 				return Drawing.DrawBitmap(ImageData, Width, Height, palette);
 			}
@@ -323,7 +244,7 @@ namespace AlbLib
 			/// <summary>
 			/// Initializes new instance.
 			/// </summary>
-			public RawImage(Stream stream, short width, short height)
+			public RawImage(Stream stream, int width, int height)
 			{
 				ImageData = new BinaryReader(stream).ReadBytes(width*height);
 				Width = width;
@@ -333,7 +254,7 @@ namespace AlbLib
 			/// <summary>
 			/// Initializes new instance.
 			/// </summary>
-			public RawImage(short width, byte[] data)
+			public RawImage(byte[] data, int width)
 			{
 				Width = width;
 				Height = (data.Length+width-1)/width;
@@ -343,7 +264,7 @@ namespace AlbLib
 			/// <summary>
 			/// Initializes new instance.
 			/// </summary>
-			public RawImage(short width, short height, byte[] data)
+			public RawImage(byte[] data, int width, int height)
 			{
 				Width = width;
 				Height = height;
@@ -371,7 +292,7 @@ namespace AlbLib
 		/// <summary>
 		/// Image in ILBM format, containing many informations. Currently read-only.
 		/// </summary>
-		public sealed class ILBMImage : ImageBase
+		public sealed class ILBMImage : ImageBase, IRenderable
 		{
 			/// <summary>
 			/// Width of image.
@@ -452,6 +373,15 @@ namespace AlbLib
 			/// Thumbnail.
 			/// </summary>
 			public TinyImage Tiny{get;private set;}
+			
+			public override int GetWidth()
+			{
+				return Width;
+			}
+			public override int GetHeight()
+			{
+				return Height;
+			}
 			
 			/// <param name="rawdata">
 			/// Byte array containing ILBM image data.
@@ -555,11 +485,9 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn image.
 			/// </returns>
-			public override Bitmap DrawToBitmap(short palette)
+			public override Image Render(ImagePalette palette)
 			{
-				if(palette >= 0)
-					return Drawing.DrawBitmap(ImageData, Width, Height, palette);
-				else return DrawToBitmap();
+				return Drawing.DrawBitmap(ImageData, Width, Height, palette);
 			}
 			
 			/// <summary>
@@ -568,7 +496,7 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn image.
 			/// </returns>
-			public Bitmap DrawToBitmap()
+			public Image Render()
 			{
 				return Drawing.DrawBitmap(ImageData, Width, Height, ImagePalette.Create(Palette));
 			}
@@ -582,9 +510,9 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn image.
 			/// </returns>
-			public Bitmap DrawTiny(short palette)
+			public Image RenderTiny(ImagePalette palette)
 			{
-				return Tiny.DrawToBitmap(palette);
+				return Tiny.Render(palette);
 			}
 			
 			/// <summary>
@@ -593,7 +521,7 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn image.
 			/// </returns>
-			public Bitmap DrawTiny()
+			public Image RenderTiny()
 			{
 				return Drawing.DrawBitmap(Tiny.ImageData, Tiny.Width, Tiny.Height, ImagePalette.Create(Palette));
 			}
@@ -631,6 +559,15 @@ namespace AlbLib
 			/// </summary>
 			public short Height{get;private set;}
 			
+			public override int GetWidth()
+			{
+				return Width;
+			}
+			public override int GetHeight()
+			{
+				return Height;
+			}
+			
 			/// <summary>
 			/// Draws the image to bitmap.
 			/// </summary>
@@ -640,7 +577,7 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn image.
 			/// </returns>
-			public override Bitmap DrawToBitmap(short palette)
+			public override Image Render(ImagePalette palette)
 			{
 				return Drawing.DrawBitmap(ImageData, Width, Height, palette);
 			}
@@ -731,6 +668,15 @@ namespace AlbLib
 			/// </summary>
 			public byte FramesCount{get;private set;}
 			
+			public override int GetWidth()
+			{
+				return Width;
+			}
+			public override int GetHeight()
+			{
+				return Height;
+			}
+			
 			/// <summary>
 			/// Draws the image to bitmap.
 			/// </summary>
@@ -740,7 +686,7 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn image.
 			/// </returns>
-			public override Bitmap DrawToBitmap(short palette)
+			public override Image Render(ImagePalette palette)
 			{
 				return Drawing.DrawBitmap(ImageData, Width, Height, palette);
 			}
@@ -819,7 +765,7 @@ namespace AlbLib
 		/// <summary>
 		/// Image containing multiple images - frames.
 		/// </summary>
-		public sealed class AnimatedHeaderedImage : ImageBase
+		public sealed class AnimatedHeaderedImage : ImageBase, IAnimatedPaletteRenderable
 		{
 			/// <summary>
 			/// Count of frames.
@@ -830,6 +776,15 @@ namespace AlbLib
 			/// List of frames.
 			/// </summary>
 			public HeaderedImage[] Frames{get;private set;}
+			
+			public override int GetWidth()
+			{
+				return Frames[0].Width;
+			}
+			public override int GetHeight()
+			{
+				return Frames[0].Height;
+			}
 			
 			/// <summary>
 			/// Draws the animated image to bitmap.
@@ -843,7 +798,7 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn image.
 			/// </returns>
-			public Bitmap DrawToBitmap(byte index, short palette)
+			public Image Render(byte index, ImagePalette palette)
 			{
 				return Drawing.DrawBitmap(Frames[index].ImageData, Frames[index].Width, Frames[index].Height, palette);
 			}
@@ -857,9 +812,9 @@ namespace AlbLib
 			/// <returns>
 			/// Drawn image.
 			/// </returns>
-			public override Bitmap DrawToBitmap(short palette)
+			public override Image Render(ImagePalette palette)
 			{
-				return DrawToBitmap(0, palette);
+				return Render(0, palette);
 			}
 			
 			/// <summary>
@@ -1108,6 +1063,136 @@ namespace AlbLib
 				return arr;
 			}
 			
+			private static readonly ImagePalette[] Palettes = new ImagePalette[Byte.MaxValue];
+			private static ImagePalette GlobalPalette = null;
+			
+			/// <summary>
+			/// Default transparent color index. Default is -1.
+			/// </summary>
+			public static int TransparentIndex = -1;
+			
+			/// <summary>
+			/// Loads all palettes.
+			/// </summary>
+			public static void LoadPalettes()
+			{
+				int id = 0;
+				foreach(string path in Paths.PaletteN.EnumerateList())
+				{
+					using(FileStream stream = new FileStream(path, FileMode.Open))
+					{
+						foreach(XLDSubfile palette in XLDFile.EnumerateSubfiles(stream))
+						{
+							Palettes[id++] = ReadPalette(palette.Data);
+						}
+					}
+				}
+				using(FileStream stream = new FileStream(Paths.GlobalPalette, FileMode.Open))
+				{
+					GlobalPalette = ReadGlobalPalette((int)stream.Length, stream);
+				}
+			}
+			
+			private static void LoadGlobalPalette()
+			{
+				using(FileStream stream = new FileStream(Paths.GlobalPalette, FileMode.Open))
+				{
+					GlobalPalette = ReadGlobalPalette((int)stream.Length, stream);
+				}
+			}
+			
+			private static void LoadPalette(byte index)
+			{
+				int subindex = index%100;
+				int fileindex = index/100;
+				using(FileStream stream = new FileStream(String.Format(Paths.PaletteN, fileindex), FileMode.Open))
+				{
+					int length = XLDFile.ReadToIndex(stream, subindex);
+					Palettes[index] = ReadPalette(stream, length);
+				}
+			}
+			
+			/// <summary>
+			/// Parses palette from stream.
+			/// </summary>
+			/// <param name="input">
+			/// Input stream containing palette data.
+			/// </param>
+			/// <param name="length">
+			/// Length of palette bytes. Usually triple of colors count.
+			/// </param>
+			/// <returns>
+			/// Palette as color array.
+			/// </returns>
+			public static ImagePalette ReadPalette(Stream input, int length)
+			{
+				if(length%3!=0)
+				{
+					throw new Exception("Palette has not appropriate length.");
+				}
+				return ImagePalette.Load(input, length/3, PaletteFormat.Binary);
+			}
+			
+			/// <summary>
+			/// Parses palette from byte array.
+			/// </summary>
+			/// <param name="palette">
+			/// Palette data as bytes. Usually multiple of three.
+			/// </param>
+			/// <returns>
+			/// Palette as color array.
+			/// </returns>
+			public static ImagePalette ReadPalette(byte[] palette)
+			{
+				if(palette.Length%3!=0)
+				{
+					throw new Exception("Palette has not appropriate length.");
+				}
+				return ImagePalette.Load(new MemoryStream(palette), palette.Length/3, PaletteFormat.Binary);
+			}
+			
+			private static ImagePalette ReadGlobalPalette(int length, Stream stream)
+			{
+				if(length != 192)
+				{
+					throw new Exception("Global palette has not appropriate length.");
+				}
+				return ImagePalette.Load(stream, length/3, PaletteFormat.Binary);
+			}
+			
+			/// <summary>
+			/// Returns the global palette which is used in combination with local palette.
+			/// </summary>
+			/// <returns>
+			/// The global palette.
+			/// </returns>
+			public static ImagePalette GetGlobalPalette()
+			{
+				if(GlobalPalette == null)
+				{
+					LoadGlobalPalette();
+				}
+				return GlobalPalette;
+			}
+			
+			/// <summary>
+			/// Gets local palette using specified <paramref name="index"/>.
+			/// </summary>
+			/// <param name="index">
+			/// Zero-based index.
+			/// </param>
+			/// <returns>
+			/// The local palette.
+			/// </returns>
+			public static ImagePalette GetPalette(byte index)
+			{
+				if(Palettes[index] == null)
+				{
+					LoadPalette(index);
+				}
+				return Palettes[index];
+			}
+			
 			/// <summary>
 			/// Loads palette from a <paramref name="file"/>.
 			/// </summary>
@@ -1216,7 +1301,31 @@ namespace AlbLib
 				return new JoinPalette(a,b);
 			}
 			
-			private class JoinPalette : ImagePalette
+			/// <summary>
+			/// Grayscale palette from black to white.
+			/// </summary>
+			public static ImagePalette Grayscale{
+				get{
+					return new GrayscalePalette();
+				}
+			}
+			
+			private sealed class GrayscalePalette : ImagePalette
+			{
+				public override int Length{
+					get{
+						return 256;
+					}
+				}
+				
+				public override Color this[int index]{
+					get{
+						return Color.FromArgb(index,index,index);
+					}
+				}
+			}
+			
+			private sealed class JoinPalette : ImagePalette
 			{
 				private readonly ImagePalette left;
 				private readonly ImagePalette right;
@@ -1253,7 +1362,7 @@ namespace AlbLib
 				}
 			}
 			
-			private class ListPalette : ImagePalette
+			private sealed class ListPalette : ImagePalette
 			{
 				private readonly IList<Color> list;
 				public ListPalette(IList<Color> list)
@@ -1286,6 +1395,146 @@ namespace AlbLib
 		}
 		
 		/// <summary>
+		/// When getting color from this palette, values are multiplied by specified modifier.
+		/// </summary>
+		public class ModifierPalette : ImagePalette
+		{
+			/// <summary>
+			/// Source palette.
+			/// </summary>
+			public readonly ImagePalette Inner;
+			
+			/// <summary>
+			/// Modifiers to apply.
+			/// </summary>
+			public BlockModifier[] Modifiers{get;set;}
+			
+			/// <summary>
+			/// Creates new instance using source palette.
+			/// </summary>
+			/// <param name="inner">Souce palette.</param>
+			public ModifierPalette(ImagePalette inner)
+			{
+				Inner = inner;
+			}
+			
+			/// <summary>
+			/// Gets count of all colors.
+			/// </summary>
+			public override int Length{
+				get{
+					return Inner.Length;
+				}
+			}
+			
+			/// <summary>
+			/// Returns Color at index in palette.
+			/// </summary>
+			public override Color this[int index]{
+				get{
+					Color c = Inner[index];
+					if(Modifiers==null)return c;
+					foreach(BlockModifier mod in Modifiers)
+					{
+						if(mod==null)continue;
+						if(mod.LowerIndex <= index && index <= mod.UpperIndex)
+						{
+							c = Color.FromArgb((int)(c.A*mod.A), (int)(c.R*mod.R), (int)(c.G*mod.G), (int)(c.B*mod.B));
+						}
+					}
+					return c;
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Modifier can be used to multiply color values.
+		/// </summary>
+		public class BlockModifier
+		{
+			/// <summary>
+			/// R multiplier.
+			/// </summary>
+			public readonly double R;
+			
+			/// <summary>
+			/// G multiplier.
+			/// </summary>
+			public readonly double G;
+			
+			/// <summary>
+			/// B multiplier.
+			/// </summary>
+			public readonly double B;
+			
+			/// <summary>
+			/// Alpha multiplier.
+			/// </summary>
+			public readonly double A;
+			
+			/// <summary>
+			/// Modifier will be applied on values going from <see cref="LowerIndex"/> to <see cref="UpperIndex"/>, inclusive.
+			/// </summary>
+			public readonly int LowerIndex;
+			
+			/// <summary>
+			/// Modifier will be applied on values going from <see cref="LowerIndex"/> to <see cref="UpperIndex"/>, inclusive.
+			/// </summary>
+			public readonly int UpperIndex;
+			
+			public BlockModifier(double r, double g, double b, double a, int lower, int upper)
+			{
+				R = r;
+				G = g;
+				B = b;
+				A = a;
+				LowerIndex = lower;
+				UpperIndex = upper;
+			}
+			
+			public BlockModifier(double r, double g, double b, int lower, int upper)
+			{
+				R = r;
+				G = g;
+				B = b;
+				A = 1;
+				LowerIndex = lower;
+				UpperIndex = upper;
+			}
+			
+			public BlockModifier(double mod, int lower, int upper)
+			{
+				R = mod;
+				G = mod;
+				B = mod;
+				A = 1;
+				LowerIndex = lower;
+				UpperIndex = upper;
+			}
+			
+			public BlockModifier(double mod, double a, int lower, int upper)
+			{
+				R = mod;
+				G = mod;
+				B = mod;
+				A = a;
+				LowerIndex = lower;
+				UpperIndex = upper;
+			}
+			
+			/// <summary>
+			/// Creates night modifier. Applies only to local palette.
+			/// </summary>
+			/// <param name="mod">
+			/// 1 is day, 0.5 is midnight.
+			/// </param>
+			public static BlockModifier Night(double mod)
+			{
+				return new BlockModifier(mod, 0, 191);
+			}
+		}
+		
+		/// <summary>
 		/// Represents format of palette when loading.
 		/// </summary>
 		public enum PaletteFormat
@@ -1303,6 +1552,197 @@ namespace AlbLib
 			/// </summary>
 			TextDOS
 		}
+		
+		public class TransparencyTable
+		{
+			static TransparencyTable[] tables = new TransparencyTable[Byte.MaxValue];
+			
+			byte[] dark;
+			byte[] main;
+			byte[] light;
+			
+			public int Palette{
+				get;set;
+			}
+			
+			public TransparencyTable(byte[] source) : this(-1, source)
+			{
+				
+			}
+			
+			public TransparencyTable(int palette, byte[] source)
+			{
+				Palette = palette;
+				dark = new byte[65536];
+				main = new byte[65536];
+				light = new byte[65536];
+				Array.Copy(source, 0, dark, 0, 65536);
+				Array.Copy(source, 65536, dark, 0, 65536);
+				Array.Copy(source, 131072, dark, 0, 65536);
+			}
+			
+			public TransparencyTable(Stream input) : this(-1, input)
+			{
+				
+			}
+			
+			public TransparencyTable(int palette, Stream input)
+			{
+				Palette = palette;
+				dark = new byte[65536];
+				main = new byte[65536];
+				light = new byte[65536];
+				input.Read(dark, 0, 65536);
+				input.Read(main, 0, 65536);
+				input.Read(light, 0, 65536);
+			}
+			
+			public byte GetResultingColorIndex(byte overlaying, byte underlaying, TransparencyType type)
+			{
+				switch(type)
+				{
+					case TransparencyType.None:
+						return overlaying;
+					case TransparencyType.Dark:
+						return dark[underlaying*256+overlaying];
+					case TransparencyType.Main:
+						return main[underlaying*256+overlaying];
+					case TransparencyType.Light:
+						return light[underlaying*256+overlaying];
+					default:
+						throw new ArgumentException("Unknown type.", "type");
+				}
+			}
+			
+			public static TransparencyTable GetTransparencyTable(byte palette)
+			{
+				if(tables[palette] == null)
+				{
+					int fi = palette/100;
+					int si = palette%100;
+					using(FileStream stream = new FileStream(Paths.TransparencyTablesN.Format(fi), FileMode.Open))
+					{
+						if(XLDFile.ReadToIndex(stream, si) != 196608)return null;
+						tables[palette] = new TransparencyTable(palette, stream);
+					}
+				}
+				return tables[palette];
+			}
+		}
+		
+		public enum TransparencyType
+		{
+			None = 0,
+			Dark = 1,
+			Main = 2,
+			Light = 3
+		}
+		
+		public class GraphicObject
+		{
+			public Point Location{
+				get;set;
+			}
+			
+			public GraphicObject(ImageBase image, Point location)
+			{
+				this.image = image;
+				Location = location;
+			}
+			
+			private ImageBase image;
+			
+			public ImageBase Image{
+				get{
+					return image;
+				}
+				set{
+					if(value == null)throw new ArgumentNullException("value");
+					image = value;
+				}
+			}
+			
+			public TransparencyType Transparency{
+				get;set;
+			}
+			
+			public int TransparentIndex{
+				get;set;
+			}
+		}
+		
+		public class GraphicPlane : IRenderable, IPaletteRenderable
+		{
+			public ImageBase Background{
+				get;set;
+			}
+			
+			public ICollection<GraphicObject> Objects{
+				get;set;
+			}
+			
+			public byte Palette{
+				get;set;
+			}
+			
+			public Image Render()
+			{
+				return Render(Palette);
+			}
+			
+			public Image Render(byte palette)
+			{
+				return Render(ImagePalette.GetPalette(palette)+ImagePalette.GetGlobalPalette());
+			}
+			
+			public Image Render(ImagePalette palette)
+			{
+				byte[] baked = GetBaked();
+				return Drawing.DrawBitmap(baked, Background.GetWidth(), Background.GetHeight(), palette);
+			}
+			
+			public void Bake()
+			{
+				ApplyBake(Background.ImageData);
+				Objects.Clear();
+			}
+			
+			private byte[] GetBaked()
+			{
+				byte[] baked = new byte[Background.ImageData.Length];
+				Background.ImageData.CopyTo(baked, 0);
+				ApplyBake(baked);
+				return baked;
+			}
+			
+			private void ApplyBake(byte[] tobake)
+			{
+				int width = Background.GetWidth();
+				int height = Background.GetHeight();
+				TransparencyTable trans = TransparencyTable.GetTransparencyTable(Palette);
+				foreach(GraphicObject obj in Objects)
+				{
+					for(int y = 0; y < obj.Image.GetHeight(); y++)
+					for(int x = 0; x < obj.Image.GetWidth(); x++)
+					{
+						if(x+obj.Location.X >= 0 && y+obj.Location.Y >= 0 && x+obj.Location.X < width && y+obj.Location.Y < height)
+						{
+							byte color = obj.Image.ImageData[obj.Image.GetWidth()*y+x];
+							if(color == obj.TransparentIndex)continue;
+							int index = width*(y+obj.Location.Y)+obj.Location.X+x;
+							if(trans == null || obj.Transparency == TransparencyType.None)
+							{
+								tobake[index] = color;
+							}else{
+								tobake[index] = trans.GetResultingColorIndex(color, tobake[index], obj.Transparency);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
 		
 		/// <summary>
 		/// Contains all interface images located in the main game executable.
@@ -1429,13 +1869,13 @@ namespace AlbLib
 				new ImageLocationInfo(1052474,30,29),//compassEN
 				new ImageLocationInfo(1053344,30,29),//compassFR
 				new ImageLocationInfo(1054214,6,6),//compassAnim
-				new ImageLocationInfo(1054214,6,6),//compassAnim
-				new ImageLocationInfo(1054214,6,6),//compassAnim
-				new ImageLocationInfo(1054214,6,6),//compassAnim
-				new ImageLocationInfo(1054214,6,6),//compassAnim
-				new ImageLocationInfo(1054214,6,6),//compassAnim
-				new ImageLocationInfo(1054214,6,6),//compassAnim
-				new ImageLocationInfo(1054214,6,6),//compassAnim
+				new ImageLocationInfo(1054250,6,6),//compassAnim
+				new ImageLocationInfo(1054286,6,6),//compassAnim
+				new ImageLocationInfo(1054322,6,6),//compassAnim
+				new ImageLocationInfo(1054358,6,6),//compassAnim
+				new ImageLocationInfo(1054394,6,6),//compassAnim
+				new ImageLocationInfo(1054430,6,6),//compassAnim
+				new ImageLocationInfo(1054466,6,6),//compassAnim
 				new ImageLocationInfo(1054502,18,18),//tileselect
 				new ImageLocationInfo(1054826,22,22),//doorlock
 				new ImageLocationInfo(1055309,34,48),//herzler
