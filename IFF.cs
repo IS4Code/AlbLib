@@ -140,6 +140,8 @@ namespace AlbLib
 			Stream input;
 			BinaryReader reader;
 			int rest;
+			int filelength;
+			int fileread;
 			
 			/// <summary>
 			/// Initializes new instance using stream.
@@ -153,17 +155,6 @@ namespace AlbLib
 			}
 			
 			/// <summary>
-			/// Initializes new instance using binary <paramref name="reader"/>.
-			/// </summary>
-			/// <param name="reader">
-			/// Input reader.
-			/// </param>
-			public IFFReader(BinaryReader reader)
-			{
-				this.reader = reader;
-			}
-			
-			/// <summary>
 			/// Reads file header on beginning of data.
 			/// </summary>
 			/// <returns>
@@ -172,12 +163,13 @@ namespace AlbLib
 			public IFFFile ReadFileHeader()
 			{
 				string typeid = new String(reader.ReadChars(4));
-				int length = ToLittleEndian(reader.ReadInt32());
+				filelength = ToLittleEndian(reader.ReadInt32());
 				if(typeid != "FORM")
 				{
 					throw new NotSupportedException("This is not IFF file.");
 				}
-				return new IFFFile(typeid, new String(reader.ReadChars(4)), length);
+				fileread += 4;
+				return new IFFFile(typeid, new String(reader.ReadChars(4)), filelength);
 			}
 			
 			/// <summary>
@@ -188,6 +180,7 @@ namespace AlbLib
 			/// </returns>
 			public IFFChunk ReadChunkHeader()
 			{
+				fileread += 8;
 				return new IFFChunk(new String(reader.ReadChars(4)), rest = ToLittleEndian(reader.ReadInt32()));
 			}
 			
@@ -200,6 +193,7 @@ namespace AlbLib
 			public byte ReadByte()
 			{
 				rest -= 1;
+				fileread += 1;
 				return reader.ReadByte();
 			}
 			
@@ -212,6 +206,7 @@ namespace AlbLib
 			public short ReadInt16()
 			{
 				rest -= 2;
+				fileread += 2;
 				return ToLittleEndian(reader.ReadInt16());
 			}
 			
@@ -225,6 +220,7 @@ namespace AlbLib
 			public int ReadInt32()
 			{
 				rest -= 4;
+				fileread += 4;
 				return ToLittleEndian(reader.ReadInt32());
 			}
 			
@@ -238,6 +234,7 @@ namespace AlbLib
 			public ushort ReadUInt16()
 			{
 				rest -= 2;
+				fileread += 2;
 				return ToLittleEndian(reader.ReadUInt16());
 			}
 			
@@ -251,6 +248,7 @@ namespace AlbLib
 			public uint ReadUInt32()
 			{
 				rest -= 4;
+				fileread += 4;
 				return ToLittleEndian(reader.ReadUInt32());
 			}
 			
@@ -259,9 +257,15 @@ namespace AlbLib
 			/// </summary>
 			public void ReadRest()
 			{
+				fileread += rest;
 				reader.ReadBytes(rest);
 				rest = 0;
 			}
+			
+			/*public void Advance(int count)
+			{
+				rest -= count;
+			}*/
 			
 			/// <summary>
 			/// Reads bytes with specified <paramref name="count"/>.
@@ -274,20 +278,29 @@ namespace AlbLib
 			/// </returns>
 			public byte[] ReadBytes(int count)
 			{
+				fileread += count;
 				rest -= count;
 				return reader.ReadBytes(count);
 			}
 			
+			public byte[] ReadUnpack(int size)
+			{
+				int read;
+				byte[] bytes = Unpack(input, size, out read);
+				fileread += read;
+				rest -= read;
+				return bytes;
+			}
+			
 			/// <summary>
-			/// Enumerates through all chunk in file.
+			/// Enumerates through all chunks in file.
 			/// </summary>
 			/// <returns></returns>
 			public IEnumerable<IFFChunk> ReadAll()
 			{
-				while(input.Position != input.Length)
+				while(fileread < filelength)
 				{
 					IFFChunk chunk = ReadChunkHeader();
-					long pos = input.Position;
 					yield return chunk;
 					if(rest>0)ReadRest();
 				}
@@ -357,70 +370,44 @@ namespace AlbLib
 				return value;
 			}
 			
-			/// <summary>
-			/// TODO better solution
-			/// </summary>
-			public static byte[] Decompress(byte[] src, int size)
+			public static byte[] Unpack(Stream input, int size, out int read)
 			{
-				byte[] decompressed = new byte[size];
-				int pos = 0;
-				for(int i = 0; i < src.Length; i++)
+				using(MemoryStream stream = new MemoryStream())
 				{
-					int n = src[i];
-					if (n >= 128)
-						n -= 256;
-					
-					if(n < 0)
-					{
-						if(n == -128)continue;
-						n = -n + 1;
-						for(int b = 0; b < n; b++)
-						{
-							decompressed[pos++] = src[i+1];
-						}
-						i+=1;
-					}else{
-						for(int b = 0; b < n+1; b++)
-						{
-							if(i+b+1 >= src.Length)break;
-							decompressed[pos++] = src[i+b+1];
-						}
-						i += n+1;
-					}
+					read = Unpack(input, stream, size);
+					return stream.ToArray();
 				}
-				return decompressed;
 			}
-			/// <summary>
-			/// TODO better solution
-			/// </summary>
-			public static byte[] Decompress(byte[] src)
+			
+			public static int Unpack(Stream input, Stream output, int size)
 			{
-				List<byte> decompressed = new List<byte>();
-				for(int i = 0; i < src.Length; i++)
+				int read = 0;
+				while(read < size)
 				{
-					int n = src[i];
-					if (n >= 128)
-						n -= 256;
-					
-					if(n < 0)
+					int n = input.ReadByte();
+					read += 1;
+					if(0 <= n && n <= 127)
 					{
-						if(n == -128)continue;
-						n = -n + 1;
-						for(int b = 0; b < n; b++)
+						byte[] seq = new byte[n+1];
+						read += input.Read(seq, 0, n+1);
+						output.Write(seq, 0, n+1);
+					}else if(129 <= n && n <= 255)
+					{
+						int b = input.ReadByte();
+						if(b == -1)return read;
+						read += 1;
+						for(int i = 0; i < 257-n; i++)
 						{
-							decompressed.Add(src[i+1]);
+							output.WriteByte((byte)b);
 						}
-						i+=1;
-					}else{
-						for(int b = 0; b < n+1; b++)
-						{
-							if(i+b+1 >= src.Length)break;
-							decompressed.Add(src[i+b+1]);
-						}
-						i += n+1;
 					}
 				}
-				return decompressed.ToArray();
+				if(size%2!=0)
+				{
+					input.ReadByte();
+					read += 1;
+				}
+				return read;
 			}
 		}
 		
