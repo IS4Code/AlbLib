@@ -14,23 +14,47 @@ namespace AlbLib
 {
 	namespace Imaging
 	{
+		/// <summary>
+		/// Represents an object which can be rendered.
+		/// </summary>
 		public interface IRenderable
 		{
+			/// <summary>
+			/// Renders object.
+			/// </summary>
 			Image Render();
 		}
 		
+		/// <summary>
+		/// Represents an object which can be rendered using palette.
+		/// </summary>
 		public interface IPaletteRenderable
 		{
+			/// <summary>
+			/// Renders object.
+			/// </summary>
 			Image Render(ImagePalette palette);
 		}
 		
+		/// <summary>
+		/// Represents an object list which can be rendered and needs index.
+		/// </summary>
 		public interface IAnimatedRenderable
 		{
+			/// <summary>
+			/// Renders object.
+			/// </summary>
 			Image Render(byte index);
 		}
 		
+		/// <summary>
+		/// Represents an object list which can be rendered using palette and needs index.
+		/// </summary>
 		public interface IAnimatedPaletteRenderable
 		{
+			/// <summary>
+			/// Renders object.
+			/// </summary>
 			Image Render(byte index, ImagePalette palette);
 		}
 		
@@ -59,7 +83,7 @@ namespace AlbLib
 			/// </returns>
 			public static Bitmap DrawBitmap(byte[] data, int width, int height, byte palette)
 			{
-				return DrawBitmap(data, width, height, ImagePalette.GetPalette(palette)+ImagePalette.GetGlobalPalette());
+				return DrawBitmap(data, width, height, ImagePalette.GetFullPalette(palette));
 			}
 			
 			/// <summary>
@@ -126,6 +150,24 @@ namespace AlbLib
 				int height = (data.Length+width-1)/width;
 				return DrawBitmap(data, width, height, palette);
 			}
+			
+			/// <summary>
+			/// Converts bitmap to byte array using external palette.
+			/// </summary>
+			public static byte[] LoadBitmap(Bitmap bmp, ImagePalette palette)
+			{
+				byte[] result = new byte[bmp.Width*bmp.Height];
+				BitmapData data = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+				for(int y = 0; y < bmp.Height; y++)
+				for(int x = 0; x < bmp.Width; x++)
+				{
+					byte r = Marshal.ReadByte(data.Scan0, y*data.Stride+x*3);
+					byte g = Marshal.ReadByte(data.Scan0, y*data.Stride+x*3+1);
+					byte b = Marshal.ReadByte(data.Scan0, y*data.Stride+x*3+2);
+					result[y*bmp.Width+x] = (byte)palette.GetNearestColorIndex(Color.FromArgb(r,g,b));
+				}
+				return result;
+			}
 		}
 		
 		/// <summary>
@@ -133,7 +175,9 @@ namespace AlbLib
 		/// </summary>
 		public abstract class ImageBase : IPaletteRenderable
 		{
+			/// <returns>Width</returns>
 			public abstract int GetWidth();
+			/// <returns>Height</returns>
 			public abstract int GetHeight();
 			
 			/// <summary>
@@ -160,7 +204,7 @@ namespace AlbLib
 			/// </returns>
 			public virtual Image Render(byte palette)
 			{
-				return Render(ImagePalette.GetPalette(palette)+ImagePalette.GetGlobalPalette());
+				return Render(ImagePalette.GetFullPalette(palette));
 			}
 			
 			/// <summary>
@@ -190,10 +234,12 @@ namespace AlbLib
 			/// </summary>
 			public int Height{get; set;}
 			
+			/// <returns>Width</returns>
 			public override int GetWidth()
 			{
 				return Width;
 			}
+			/// <returns>Height</returns>
 			public override int GetHeight()
 			{
 				return Height;
@@ -287,6 +333,14 @@ namespace AlbLib
 			{
 				return new RawImage(stream, length);
 			}
+			
+			/// <summary>
+			/// Creates new instance.
+			/// </summary>
+			public static RawImage FromBitmap(Bitmap bmp, ImagePalette palette)
+			{
+				return new RawImage(Drawing.LoadBitmap(bmp, palette), bmp.Width, bmp.Height);
+			}
 		}
 		
 		/// <summary>
@@ -374,10 +428,17 @@ namespace AlbLib
 			/// </summary>
 			public TinyImage Tiny{get;private set;}
 			
+			/// <summary>
+			/// Color ranges.
+			/// </summary>
+			public IList<ColorRange> ColorRanges{get;private set;}
+			
+			/// <returns>Width</returns>
 			public override int GetWidth()
 			{
 				return Width;
 			}
+			/// <returns>Height</returns>
 			public override int GetHeight()
 			{
 				return Height;
@@ -443,23 +504,29 @@ namespace AlbLib
 							HotspotX = reader.ReadInt16();
 							HotspotY = reader.ReadInt16();
 							break;
+						case "CRNG":
+							if(ColorRanges == null)ColorRanges = new List<ColorRange>();
+							ColorRanges.Add(new ColorRange(reader));
+							break;
 						case "TINY":
 							short width = reader.ReadInt16();
 							short height = reader.ReadInt16();
-							byte[] tiny = reader.ReadBytes(chunk.Length-4);
+							byte[] tiny;
 							if(Compression == 1)
 							{
-								tiny = IFFReader.Decompress(tiny, width*height);
+								tiny = reader.ReadUnpack(chunk.Length-4);
+							}else{
+								tiny = reader.ReadBytes(chunk.Length-4);
 							}
 							Tiny = new TinyImage(width, height, tiny);
 							break;
 						case "BODY":
-							byte[] data = reader.ReadBytes(chunk.Length);
 							if(Compression == 1)
 							{
-								data = IFFReader.Decompress(data, Width*Height);
+								ImageData = reader.ReadUnpack(chunk.Length);
+							}else{
+								ImageData = reader.ReadBytes(chunk.Length);
 							}
-							ImageData = data;
 							break;
 					}
 				}
@@ -542,6 +609,80 @@ namespace AlbLib
 			{
 				return new ILBMImage(stream);
 			}
+			
+			/// <summary>
+			/// Maybe useful for palette swapping?
+			/// </summary>
+			public struct ColorRange
+			{
+				private readonly short pad1;
+				
+				/// <summary>
+				/// Animation rate.
+				/// </summary>
+				public short Rate{get;set;}
+				
+				/// <summary>
+				/// Range flags.
+				/// </summary>
+				public ColorRangeFlags Flags{get;set;}
+				
+				/// <summary>
+				/// Low color index.
+				/// </summary>
+				public byte Low{get;set;}
+				
+				/// <summary>
+				/// High color index.
+				/// </summary>
+				public byte High{get;set;}
+				
+				/// <summary>
+				/// Reads range from IFF stream.
+				/// </summary>
+				public ColorRange(IFFReader reader) : this()
+				{
+					pad1 = reader.ReadInt16();
+					Rate = reader.ReadInt16();
+					Flags = (ColorRangeFlags)reader.ReadInt16();
+					Low = reader.ReadByte();
+					High = reader.ReadByte();
+				}
+				
+				/// <summary>
+				/// Reads range from normal stream.
+				/// </summary>
+				public ColorRange(Stream stream) : this()
+				{
+					BinaryReader reader = new BinaryReader(stream);
+					pad1 = reader.ReadInt16();
+					Rate = reader.ReadInt16();
+					Flags = (ColorRangeFlags)reader.ReadInt16();
+					Low = reader.ReadByte();
+					High = reader.ReadByte();
+				}
+			}
+			
+			/// <summary>
+			/// Range flags.
+			/// </summary>
+			public enum ColorRangeFlags : short
+			{
+				/// <summary>
+				/// None.
+				/// </summary>
+				None = 0,
+				
+				/// <summary>
+				/// Animation is active.
+				/// </summary>
+				Active = 1,
+				
+				/// <summary>
+				/// Animation is reversed.
+				/// </summary>
+				Reversed = 2
+			}
 		}
 		
 		/// <summary>
@@ -559,10 +700,12 @@ namespace AlbLib
 			/// </summary>
 			public short Height{get;private set;}
 			
+			/// <returns>Width</returns>
 			public override int GetWidth()
 			{
 				return Width;
 			}
+			/// <returns>Height</returns>
 			public override int GetHeight()
 			{
 				return Height;
@@ -668,10 +811,12 @@ namespace AlbLib
 			/// </summary>
 			public byte FramesCount{get;private set;}
 			
+			/// <returns>Width</returns>
 			public override int GetWidth()
 			{
 				return Width;
 			}
+			/// <returns>Height</returns>
 			public override int GetHeight()
 			{
 				return Height;
@@ -777,10 +922,12 @@ namespace AlbLib
 			/// </summary>
 			public HeaderedImage[] Frames{get;private set;}
 			
+			/// <returns>Width</returns>
 			public override int GetWidth()
 			{
 				return Frames[0].Width;
 			}
+			/// <returns>Height</returns>
 			public override int GetHeight()
 			{
 				return Frames[0].Height;
@@ -1101,7 +1248,7 @@ namespace AlbLib
 				}
 			}
 			
-			private static void LoadPalette(byte index)
+			private static void LoadPalette(int index)
 			{
 				int subindex = index%100;
 				int fileindex = index/100;
@@ -1184,13 +1331,28 @@ namespace AlbLib
 			/// <returns>
 			/// The local palette.
 			/// </returns>
-			public static ImagePalette GetPalette(byte index)
+			public static ImagePalette GetPalette(int index)
 			{
+				index -= 1;
 				if(Palettes[index] == null)
 				{
 					LoadPalette(index);
 				}
 				return Palettes[index];
+			}
+			
+			/// <summary>
+			/// Joins local and global palettes.
+			/// </summary>
+			/// <param name="index">
+			/// Zero-based local palette index.
+			/// </param>
+			/// <returns>
+			/// The joined palette.
+			/// </returns>
+			public static ImagePalette GetFullPalette(int index)
+			{
+				return GetPalette(index)+GetGlobalPalette();
 			}
 			
 			/// <summary>
@@ -1482,6 +1644,12 @@ namespace AlbLib
 			/// </summary>
 			public readonly int UpperIndex;
 			
+			/// <param name="r">R modifier.</param>
+			/// <param name="g">G modifier.</param>
+			/// <param name="b">B modifier.</param>
+			/// <param name="a">Alpha modifier.</param>
+			/// <param name="lower">Lower color index.</param>
+			/// <param name="upper">Upper color index.</param>
 			public BlockModifier(double r, double g, double b, double a, int lower, int upper)
 			{
 				R = r;
@@ -1492,6 +1660,11 @@ namespace AlbLib
 				UpperIndex = upper;
 			}
 			
+			/// <param name="r">R modifier.</param>
+			/// <param name="g">G modifier.</param>
+			/// <param name="b">B modifier.</param>
+			/// <param name="lower">Lower color index.</param>
+			/// <param name="upper">Upper color index.</param>
 			public BlockModifier(double r, double g, double b, int lower, int upper)
 			{
 				R = r;
@@ -1502,6 +1675,9 @@ namespace AlbLib
 				UpperIndex = upper;
 			}
 			
+			/// <param name="mod">All but alpha modifiers.</param>
+			/// <param name="lower">Lower color index.</param>
+			/// <param name="upper">Upper color index.</param>
 			public BlockModifier(double mod, int lower, int upper)
 			{
 				R = mod;
@@ -1512,6 +1688,10 @@ namespace AlbLib
 				UpperIndex = upper;
 			}
 			
+			/// <param name="mod">All but alpha modifiers.</param>
+			/// <param name="a">Alpha modifier.</param>
+			/// <param name="lower">Lower color index.</param>
+			/// <param name="upper">Upper color index.</param>
 			public BlockModifier(double mod, double a, int lower, int upper)
 			{
 				R = mod;
@@ -1553,6 +1733,9 @@ namespace AlbLib
 			TextDOS
 		}
 		
+		/// <summary>
+		/// Transparency tables define color blending.
+		/// </summary>
 		public class TransparencyTable
 		{
 			static TransparencyTable[] tables = new TransparencyTable[Byte.MaxValue];
@@ -1561,15 +1744,27 @@ namespace AlbLib
 			byte[] main;
 			byte[] light;
 			
+			/// <summary>
+			/// Palette which this table applies to.
+			/// </summary>
 			public int Palette{
 				get;set;
 			}
 			
+			/// <param name="source">
+			/// Byte array containing the table.
+			/// </param>
 			public TransparencyTable(byte[] source) : this(-1, source)
 			{
 				
 			}
 			
+			/// <param name="palette">
+			/// Palette which this table applies to.
+			/// </param>
+			/// <param name="source">
+			/// Byte array containing the table.
+			/// </param>
 			public TransparencyTable(int palette, byte[] source)
 			{
 				Palette = palette;
@@ -1581,11 +1776,20 @@ namespace AlbLib
 				Array.Copy(source, 131072, dark, 0, 65536);
 			}
 			
+			/// <param name="input">
+			/// Stream containing the table.
+			/// </param>
 			public TransparencyTable(Stream input) : this(-1, input)
 			{
 				
 			}
 			
+			/// <param name="palette">
+			/// Palette which this table applies to.
+			/// </param>
+			/// <param name="input">
+			/// Stream containing the table.
+			/// </param>
 			public TransparencyTable(int palette, Stream input)
 			{
 				Palette = palette;
@@ -1597,6 +1801,19 @@ namespace AlbLib
 				input.Read(light, 0, 65536);
 			}
 			
+			/// <summary>
+			/// Gets resulting color when blending two others.
+			/// </summary>
+			/// <param name="overlaying">
+			/// Foreground color.
+			/// </param>
+			/// <param name="underlaying">
+			/// Background color.
+			/// </param>
+			/// <param name="type">
+			/// Type of blending.
+			/// </param>
+			/// <returns>Blended color index.</returns>
 			public byte GetResultingColorIndex(byte overlaying, byte underlaying, TransparencyType type)
 			{
 				switch(type)
@@ -1614,8 +1831,18 @@ namespace AlbLib
 				}
 			}
 			
-			public static TransparencyTable GetTransparencyTable(byte palette)
+			/// <summary>
+			/// Loads transparency table for palette.
+			/// </summary>
+			/// <param name="palette">
+			/// Zero-based palette index.
+			/// </param>
+			/// <returns>
+			/// Assigned transparency table.
+			/// </returns>
+			public static TransparencyTable GetTransparencyTable(int palette)
 			{
+				palette -= 1;
 				if(tables[palette] == null)
 				{
 					int fi = palette/100;
@@ -1630,20 +1857,47 @@ namespace AlbLib
 			}
 		}
 		
+		/// <summary>
+		/// Type of transparency.
+		/// </summary>
 		public enum TransparencyType
 		{
+			/// <summary>
+			/// No transparency.
+			/// </summary>
 			None = 0,
+			/// <summary>
+			/// Classic blending.
+			/// </summary>
 			Dark = 1,
+			/// <summary>
+			/// No blending, only major color.
+			/// </summary>
 			Main = 2,
+			/// <summary>
+			/// Glowing blending.
+			/// </summary>
 			Light = 3
 		}
 		
+		/// <summary>
+		/// Object lieing on graphic plane.
+		/// </summary>
 		public class GraphicObject
 		{
+			/// <summary>
+			/// Location of object.
+			/// </summary>
 			public Point Location{
 				get;set;
 			}
 			
+			/// <param name="image">
+			/// Source image.
+			/// </param>
+			/// <param name="location">
+			/// Location of object.
+			/// </param>
 			public GraphicObject(ImageBase image, Point location)
 			{
 				this.image = image;
@@ -1652,6 +1906,9 @@ namespace AlbLib
 			
 			private ImageBase image;
 			
+			/// <summary>
+			/// Source image.
+			/// </summary>
 			public ImageBase Image{
 				get{
 					return image;
@@ -1662,45 +1919,96 @@ namespace AlbLib
 				}
 			}
 			
+			/// <summary>
+			/// Type of transparency.
+			/// </summary>
 			public TransparencyType Transparency{
 				get;set;
 			}
 			
+			/// <summary>
+			/// Transparent color index.
+			/// </summary>
 			public int TransparentIndex{
 				get;set;
 			}
 		}
 		
+		/// <summary>
+		/// Plane containing more graphic objects.
+		/// </summary>
 		public class GraphicPlane : IRenderable, IPaletteRenderable
 		{
+			/// <summary>
+			/// Main background image.
+			/// </summary>
 			public ImageBase Background{
 				get;set;
 			}
 			
+			/// <summary>
+			/// Collection of all objects.
+			/// </summary>
 			public ICollection<GraphicObject> Objects{
 				get;set;
 			}
 			
-			public byte Palette{
+			/// <summary>
+			/// Main palette.
+			/// </summary>
+			public ImagePalette Palette{
 				get;set;
 			}
 			
+			public TransparencyTable TransparencyTable{
+				get;set;
+			}
+			
+			public int PaletteID{
+				set{
+					Palette = ImagePalette.GetFullPalette(value);
+					TransparencyTable = TransparencyTable.GetTransparencyTable(value);
+				}
+			}
+			
+			public GraphicPlane()
+			{
+				Objects = new Collection<GraphicObject>();
+			}
+			
+			public GraphicPlane(int width, int height) : this()
+			{
+				Background = new RawImage(new byte[width*height], width, height);
+			}
+			
+			/// <summary>
+			/// Draws plane to bitmap.
+			/// </summary>
 			public Image Render()
 			{
 				return Render(Palette);
 			}
 			
+			/// <summary>
+			/// Draws plane to bitmap using other palette.
+			/// </summary>
 			public Image Render(byte palette)
 			{
-				return Render(ImagePalette.GetPalette(palette)+ImagePalette.GetGlobalPalette());
+				return Render(ImagePalette.GetFullPalette(palette));
 			}
 			
+			/// <summary>
+			/// Draws plane to bitmap using other palette.
+			/// </summary>
 			public Image Render(ImagePalette palette)
 			{
 				byte[] baked = GetBaked();
 				return Drawing.DrawBitmap(baked, Background.GetWidth(), Background.GetHeight(), palette);
 			}
 			
+			/// <summary>
+			/// Inserts all objects into background.
+			/// </summary>
 			public void Bake()
 			{
 				ApplyBake(Background.ImageData);
@@ -1719,9 +2027,10 @@ namespace AlbLib
 			{
 				int width = Background.GetWidth();
 				int height = Background.GetHeight();
-				TransparencyTable trans = TransparencyTable.GetTransparencyTable(Palette);
+				TransparencyTable trans = TransparencyTable;
 				foreach(GraphicObject obj in Objects)
 				{
+					if(obj == null || obj.Image == null)continue;
 					for(int y = 0; y < obj.Image.GetHeight(); y++)
 					for(int x = 0; x < obj.Image.GetWidth(); x++)
 					{

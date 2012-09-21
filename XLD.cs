@@ -430,21 +430,50 @@ namespace AlbLib
 			}
 		}
 		
+		/// <summary>
+		/// This class represent single subfile in a XLD.
+		/// </summary>
 		public class XLDSubfile
 		{
+			/// <summary>
+			/// Subfile contents.
+			/// </summary>
 			public byte[] Data{get;set;}
+			
+			/// <summary>
+			/// Contents length.
+			/// </summary>
 			public int Length{
 				get{
 					return Data.Length;
 				}
 			}
+			
+			/// <summary>
+			/// Assigned index.
+			/// </summary>
 			public short Index{get;private set;}
 			
+			/// <param name="stream">
+			/// Source stream.
+			/// </param>
+			/// <param name="length">
+			/// Contents length.
+			/// </param>
 			public XLDSubfile(Stream stream, int length) : this(stream, length, -1)
 			{
 				
 			}
 			
+			/// <param name="stream">
+			/// Source stream.
+			/// </param>
+			/// <param name="length">
+			/// Contents length.
+			/// </param>
+			/// <param name="index">
+			/// Assigned index.
+			/// </param>
 			public XLDSubfile(Stream stream, int length, short index)
 			{
 				Data = new byte[length];
@@ -452,7 +481,10 @@ namespace AlbLib
 				Index = index;
 			}
 			
-			public Stream GetInputStream()
+			/// <summary>
+			/// Returns memory stream containg subfile contents.
+			/// </summary>
+			public MemoryStream GetInputStream()
 			{
 				return new MemoryStream(Data, false);
 			}

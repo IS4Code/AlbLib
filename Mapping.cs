@@ -8,6 +8,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using AlbLib.Imaging;
 using AlbLib.XLD;
@@ -99,11 +100,26 @@ namespace AlbLib
 				}
 			}
 			
+			/// <summary>
+			/// Loads map from stream.
+			/// </summary>
+			/// <param name="stream">
+			/// Source stream.
+			/// </param>
 			public Map(Stream stream) : this(-1, stream)
 			{
 				
 			}
 			
+			/// <summary>
+			/// Loads map from stream and assigns an id.
+			/// </summary>
+			/// <param name="id">
+			/// Id of map.
+			/// </param>
+			/// <param name="stream">
+			/// Source stream.
+			/// </param>
 			public Map(int id, Stream stream)
 			{
 				Id = id;
@@ -149,6 +165,21 @@ namespace AlbLib
 					return new Map(id, stream);
 				}
 			}
+			
+			public GraphicPlane Combine()
+			{
+				GraphicPlane plane = new GraphicPlane(this.Width*16, this.Height*16);
+				plane.Palette = ImagePalette.GetFullPalette(this.Palette);
+				foreach(Tile t in this.Data)
+				{
+					RawImage ul = IconGraphics.GetTileUnderlay(this.Tileset, t);
+					RawImage ol = IconGraphics.GetTileOverlay(this.Tileset, t);
+					Point loc = new Point(t.X*16, t.Y*16);
+					plane.Objects.Add(new GraphicObject(ul, loc));
+					plane.Objects.Add(new GraphicObject(ol, loc));
+				}
+				return plane;
+			}
 		}
 		
 		/// <summary>
@@ -174,6 +205,9 @@ namespace AlbLib
 				}
 			}
 			
+			/// <param name="stream">
+			/// Source stream.
+			/// </param>
 			public Block2D(Stream stream)
 			{
 				byte width = (byte)stream.ReadByte();
@@ -188,6 +222,9 @@ namespace AlbLib
 			
 			private Tile[,] data;
 			
+			/// <summary>
+			/// Block of tiles.
+			/// </summary>
 			public Tile[,] Data{
 				get{
 					return data;
@@ -210,10 +247,15 @@ namespace AlbLib
 			/// <summary>
 			/// Loads tileset as an array of RawImages.
 			/// </summary>
-			/// <param name="index">Zero-based tileset index.</param>
-			/// <returns>Array representing the tileset.</returns>
+			/// <param name="index">
+			/// Zero-based tileset index.
+			/// </param>
+			/// <returns>
+			/// Array representing the tileset.
+			/// </returns>
 			public static RawImage[] GetTileset(int index)
 			{
+				index -= 1;
 				if(tilesetssorted[index] == null)
 				{
 					if(tilesets[index] == null)
@@ -243,28 +285,68 @@ namespace AlbLib
 			/// <summary>
 			/// Gets tile graphics using tile index.
 			/// </summary>
-			/// <param name="tileset">Zero-based tileset index.</param>
-			/// <param name="index">Overlay or underlay.</param>
+			/// <param name="tileset">
+			/// Zero-based tileset index.
+			/// </param>
+			/// <param name="index">
+			/// Overlay or underlay.
+			/// </param>
 			public static RawImage GetTile(int tileset, int index)
 			{
+				if(index <= 1)return null;
 				return GetTileset(tileset)[index-2];
 			}
 			
+			/// <summary>
+			/// Returns image representing underlay portion of tile.
+			/// </summary>
+			/// <param name="tileset">
+			/// Zero-based tileset index.
+			/// </param>
+			/// <param name="tile">
+			/// Tile.
+			/// </param>
+			/// <returns>
+			/// Underlay image.
+			/// </returns>
 			public static RawImage GetTileUnderlay(int tileset, Tile tile)
 			{
+				if(tile.Underlay <= 1)return null;
 				return GetTileset(tileset)[tile.Underlay-2];
 			}
 			
+			/// <summary>
+			/// Returns image representing overlay portion of tile.
+			/// </summary>
+			/// <param name="tileset">
+			/// Zero-based tileset index.
+			/// </param>
+			/// <param name="tile">
+			/// Tile.
+			/// </param>
+			/// <returns>
+			/// Overlay image.
+			/// </returns>
 			public static RawImage GetTileOverlay(int tileset, Tile tile)
 			{
+				if(tile.Overlay <= 1)return null;
 				return GetTileset(tileset)[tile.Overlay-2];
 			}
 		}
 		
+		/// <summary>
+		/// This class represents static tile data.
+		/// </summary>
 		public static class IconData
 		{
 			private static readonly TileData[][] tilesets = new TileData[4096][];
 			
+			/// <summary>
+			/// Returns data array for tileset.
+			/// </summary>
+			/// <param name="index">
+			/// Zero-based tileset index
+			/// </param>
 			public static TileData[] GetTileset(int index)
 			{
 				if(tilesets[index] == null)
@@ -285,23 +367,59 @@ namespace AlbLib
 				return tilesets[index];
 			}
 			
+			/// <summary>
+			/// Returns tile data from tileset.
+			/// </summary>
+			/// <param name="tileset">
+			/// Zero-based tileset index
+			/// </param>
+			/// <param name="index">
+			/// Tile index.
+			/// </param>
 			public static TileData GetTile(int tileset, int index)
 			{
 				return GetTileset(tileset)[index];
 			}
 		}
 		
+		/// <summary>
+		/// Data about map tile.
+		/// </summary>
 		public struct TileData
 		{
+			/// <summary>
+			/// Assigned id.
+			/// </summary>
 			public readonly int Id;
 			
+			/// <summary>
+			/// TODO.
+			/// </summary>
 			public readonly byte Type;
+			/// <summary>
+			/// TODO.
+			/// </summary>
 			public readonly byte Collision;
+			/// <summary>
+			/// TODO.
+			/// </summary>
 			public readonly short Info;
+			/// <summary>
+			/// TODO.
+			/// </summary>
 			public readonly short GrID;
+			/// <summary>
+			/// TODO.
+			/// </summary>
 			public readonly byte FramesCount;
 			readonly byte unknown1;
 		
+			/// <param name="id">
+			/// Id to assign.
+			/// </param>
+			/// <param name="stream">
+			/// Source stream.
+			/// </param>
 			public TileData(int id, Stream stream)
 			{
 				Id = id;
@@ -321,7 +439,14 @@ namespace AlbLib
 		/// </summary>
 		public struct Tile
 		{
+			/// <summary>
+			/// Tile X position.
+			/// </summary>
 			public readonly byte X;
+			
+			/// <summary>
+			/// Tile Y position.
+			/// </summary>
 			public readonly byte Y;
 			
 			/// <summary>
@@ -338,17 +463,26 @@ namespace AlbLib
 				get;set;
 			}
 			
+			/// <summary>
+			/// Reads a map tile.
+			/// </summary>
 			public Tile(byte data1, byte data2, byte data3) : this()
 			{
 				Overlay = (short)((data1<<4)|((data2&0xF0)>>4));
 				Underlay = (short)(data3|((data2&0x0F)<<8));
 			}
 			
+			/// <summary>
+			/// Reads a map tile.
+			/// </summary>
 			public Tile(Stream source) : this((byte)source.ReadByte(), (byte)source.ReadByte(), (byte)source.ReadByte())
 			{
 				
 			}
 			
+			/// <summary>
+			/// Reads a map tile.
+			/// </summary>
 			public Tile(byte x, byte y, byte data1, byte data2, byte data3) : this()
 			{
 				X = x;
@@ -357,6 +491,9 @@ namespace AlbLib
 				Underlay = (short)(data3|((data2&0x0F)<<8));
 			}
 			
+			/// <summary>
+			/// Reads a map tile.
+			/// </summary>
 			public Tile(byte x, byte y, Stream source) : this(x, y, (byte)source.ReadByte(), (byte)source.ReadByte(), (byte)source.ReadByte())
 			{
 				
