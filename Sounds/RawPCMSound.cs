@@ -11,16 +11,16 @@ namespace AlbLib.Sounds
 		/// <summary>
 		/// Frequency of PCM sound.
 		/// </summary>
-		public int Frequency{get; set;}
+		public int Rate{get; set;}
 		
 		/// <summary>
 		/// Raw sound data.
 		/// </summary>
-		public byte[] SoundData{get;private set;}
+		public byte[] SoundData{get; private set;}
 		
 		private RawPCMSound()
 		{
-			Frequency = 11025;
+			Rate = 11025;
 		}
 		
 		/// <summary>
@@ -58,23 +58,22 @@ namespace AlbLib.Sounds
 		public byte[] ToWAVE()
 		{
 			byte[] wave = new byte[44+SoundData.Length];
-			GetWAVEHeader(Frequency, SoundData.Length).CopyTo(wave, 0);
+			GetWAVEHeader(Rate, SoundData.Length).CopyTo(wave, 0);
 			SoundData.CopyTo(wave, 44);
 			return wave;
 		}
 		
 		public int WriteWAVEToStream(Stream output)
 		{
-			WriteWAVEHeader(output, Frequency, SoundData.Length);
+			WriteWAVEHeader(output, Rate, SoundData.Length);
 			output.Write(SoundData, 0, SoundData.Length);
+			output.Flush();
 			return 44+SoundData.Length;
 		}
 		
 		public MemoryStream ToWAVEStream()
 		{
-			MemoryStream stream = new MemoryStream();
-			WriteWAVEToStream(stream);
-			return stream;
+			return new MemoryStream(ToWAVE());
 		}
 	}
 }
