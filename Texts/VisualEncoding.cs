@@ -33,9 +33,9 @@ namespace AlbLib.Texts
 				char ch = elem.Attribute("char").Value[0];
 				byte b = Byte.Parse(elem.Attribute("code").Value);
 				if(elem.Attribute("nochar")==null)
-					c2b.Add(ch,b);
+					c2b[ch] = b;
 				if(elem.Attribute("nocode")==null)
-					b2c.Add(b,ch);
+					b2c[b] = ch;
 			}
 		}
 		
@@ -58,13 +58,17 @@ namespace AlbLib.Texts
 		
 		public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
 		{
+			Console.WriteLine(String.Join("", chars));
+			Console.WriteLine(charIndex);
+			Console.WriteLine(charCount);
+			Console.WriteLine(byteIndex);
 			for(int i = 0; i < charCount; i++)
 			{
 				char ch = chars[i+charIndex];
 				byte code;
 				if(!c2b.TryGetValue(ch, out code))
 				{
-					code = (byte)ch;
+					continue;
 				}
 				bytes[i+byteIndex] = code;
 			}
@@ -90,7 +94,7 @@ namespace AlbLib.Texts
 				char ch;
 				if(!b2c.TryGetValue(b, out ch))
 				{
-					ch = (char)b;
+					continue;
 				}
 				chars[i+charIndex] = ch;
 			}

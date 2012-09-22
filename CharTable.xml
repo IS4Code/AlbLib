@@ -2,6 +2,7 @@
 <!-- Set build action to EmbeddedResource -->
 <chartable>
 	<default>
+		<pair char="&#9;" code="32" nochar="" />
 		<pair char=" " code="32" />
 		<pair char="!" code="33" />
 		<pair char="&quot;" code="34" />
@@ -129,4 +130,41 @@
 		<pair char="î" code="215" />
 		<pair char="ï" code="216" />-->
 	</default>
+	<czech>
+		<pair char="á" code="131" />
+		<pair char="é" code="144" />
+		<pair char="í" code="160" />
+		<pair char="ó" code="147" />
+		<pair char="ú" code="149" />
+		<pair char="ů" code="150" />
+		<pair char="ý" code="151" />
+		<pair char="č" code="135" />
+		<pair char="ď" code="133" />
+		<pair char="ě" code="136" />
+		<pair char="ň" code="137" />
+		<pair char="ř" code="138" />
+		<pair char="š" code="139" />
+		<pair char="ť" code="140" />
+		<pair char="ž" code="141" />
+	</czech>
+	<slovak>
+		<pair char="é" code="144" />
+		<pair char="á" code="131" />
+		<pair char="ď" code="133" />
+		<pair char="č" code="135" />
+		<pair char="ŕ" code="136" />
+		<pair char="ň" code="137" />
+		<pair char="ř" code="138" />
+		<pair char="š" code="139" />
+		<pair char="ť" code="140" />
+		<pair char="ž" code="141" />
+		<pair char="ó" code="147" />
+		<pair char="ú" code="149" />
+		<pair char="ĺ" code="150" />
+		<pair char="ý" code="151" />
+		<pair char="í" code="160" />
+		<pair char="ä" code="132" />
+		<pair char="ô" code="162" />
+		<pair char="ľ" code="129" />
+	</slovak>
 </chartable>
