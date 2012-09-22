@@ -2,7 +2,7 @@
 <!-- Set build action to EmbeddedResource -->
 <chartable>
 	<default>
-		<pair char="&#9;" code="32" nochar="" />
+		<pair char="&#9;" code="32" nocode="" />
 		<pair char=" " code="32" />
 		<pair char="!" code="33" />
 		<pair char="&quot;" code="34" />
