@@ -58,19 +58,16 @@ namespace AlbLib.Texts
 		
 		public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
 		{
-			Console.WriteLine(String.Join("", chars));
-			Console.WriteLine(charIndex);
-			Console.WriteLine(charCount);
-			Console.WriteLine(byteIndex);
-			for(int i = 0; i < charCount; i++)
+			for(int i = 0, ib = 0; i < charCount; i++, ib++)
 			{
 				char ch = chars[i+charIndex];
 				byte code;
 				if(!c2b.TryGetValue(ch, out code))
 				{
+					ib -= 1;
 					continue;
 				}
-				bytes[i+byteIndex] = code;
+				bytes[ib+byteIndex] = code;
 			}
 			return charCount;
 		}
@@ -88,15 +85,16 @@ namespace AlbLib.Texts
 		
 		public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
 		{
-			for(int i = 0; i < byteCount; i++)
+			for(int i = 0, ich = 0; i < byteCount; i++, ich++)
 			{
 				byte b = bytes[i+byteIndex];
 				char ch;
 				if(!b2c.TryGetValue(b, out ch))
 				{
+					ich -= 1;
 					continue;
 				}
-				chars[i+charIndex] = ch;
+				chars[ich+charIndex] = ch;
 			}
 			return byteCount;
 		}

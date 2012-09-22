@@ -146,6 +146,22 @@
 		<pair char="š" code="139" />
 		<pair char="ť" code="140" />
 		<pair char="ž" code="141" />
+	
+		<pair char="Á" code="131" nocode="" />
+		<pair char="É" code="144" nocode="" />
+		<pair char="Í" code="160" nocode="" />
+		<pair char="Ó" code="147" nocode="" />
+		<pair char="Ú" code="149" nocode="" />
+		<pair char="Ů" code="150" nocode="" />
+		<pair char="Ý" code="151" nocode="" />
+		<pair char="Č" code="135" nocode="" />
+		<pair char="Ď" code="133" nocode="" />
+		<pair char="Ě" code="136" nocode="" />
+		<pair char="Ň" code="137" nocode="" />
+		<pair char="Ř" code="138" nocode="" />
+		<pair char="Š" code="139" nocode="" />
+		<pair char="Ť" code="140" nocode="" />
+		<pair char="Ž" code="141" nocode="" />
 	</czech>
 	<slovak>
 		<pair char="é" code="144" />
@@ -166,5 +182,24 @@
 		<pair char="ä" code="132" />
 		<pair char="ô" code="162" />
 		<pair char="ľ" code="129" />
+	
+		<pair char="É" code="144" nocode="" />
+		<pair char="Á" code="131" nocode="" />
+		<pair char="Ď" code="133" nocode="" />
+		<pair char="Č" code="135" nocode="" />
+		<pair char="Ŕ" code="136" nocode="" />
+		<pair char="Ň" code="137" nocode="" />
+		<pair char="Ř" code="138" nocode="" />
+		<pair char="Š" code="139" nocode="" />
+		<pair char="Ť" code="140" nocode="" />
+		<pair char="Ž" code="141" nocode="" />
+		<pair char="Ó" code="147" nocode="" />
+		<pair char="Ú" code="149" nocode="" />
+		<pair char="Ĺ" code="150" nocode="" />
+		<pair char="Ý" code="151" nocode="" />
+		<pair char="Í" code="160" nocode="" />
+		<pair char="Ä" code="132" nocode="" />
+		<pair char="Ô" code="162" nocode="" />
+		<pair char="Ľ" code="129" nocode="" />
 	</slovak>
 </chartable>
