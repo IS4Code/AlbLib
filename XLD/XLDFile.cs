@@ -95,12 +95,20 @@ namespace AlbLib.XLD
 			int written = 8;
 			foreach(XLDSubfile subfile in Subfiles)
 			{
-				writer.Write(subfile.Length);
-				written += 4 + subfile.Length;
+				if(subfile == null)
+				{
+					writer.Write(0);
+					written += 4;
+				}else{
+					writer.Write(subfile.Length);
+					written += 4 + subfile.Length;
+				}
 			}
 			foreach(XLDSubfile subfile in Subfiles)
 			{
-				writer.Write(subfile.Data);
+				if(subfile == null)continue;
+				if(subfile.Data != null)
+					writer.Write(subfile.Data);
 			}
 			return written;
 		}

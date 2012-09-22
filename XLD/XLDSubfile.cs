@@ -16,6 +16,7 @@ namespace AlbLib.XLD
 		/// </summary>
 		public int Length{
 			get{
+				if(Data == null)return 0;
 				return Data.Length;
 			}
 		}
@@ -24,6 +25,17 @@ namespace AlbLib.XLD
 		/// Assigned index.
 		/// </summary>
 		public short Index{get;private set;}
+		
+		public XLDSubfile(byte[] data, short index)
+		{
+			Data = data;
+			Index = index;
+		}
+		
+		public XLDSubfile(short index)
+		{
+			Index = index;
+		}
 		
 		/// <param name="stream">
 		/// Source stream.
