@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Set build action to EmbeddedResource -->
+<!-- Content:
+   - 0  = Unknown
+   - 1  = Maps
+   - 2  = Icon data
+   - 3  = Raw image
+   - 4  = Headered image
+   - 5  = ILBM image
+   - 6  = Palette
+   - 7  = Lab data
+   - 8  = Font
+   - 9  = Block
+   - 10 = Event
+   - 11 = Text
+   - 12 = 
+   - 13 = 
+   - 14 = 
+   - 15 = 
+   - 16 = 
+   - 17 = 
+   - 18 = 
+   - 19 = 
+   -  = 
+   -->
+<!-- Type:
+   - 0  = Map data
+   - 1  = Icon data
+   - 2  = Icon graphics
+   - 3  = Palette
+   - 4  = Global palette
+   - 5  = Slab
+   - 6  = Big party graphics
+   - 7  = Small party graphics
+   - 8  = Lab data
+   - 9  = 3D wall
+   - 10 = 3D object
+   - 11 = 3D overlay
+   - 12 = 3D floor
+   - 13 = Big NPC graphics
+   - 14 = Background graphics
+   - 15 = Font
+   - 16 = Block list
+   - 17 = Party character data
+   - 18 = Small portrait
+   - 19 = System texts
+   - 20 = Event set
+   - 21 = Event texts
+   - 22 = Map texts
+   - 23 = Item list
+   - 24 = Item names
+   - 25 = Item graphics
+   - 26 = Full-body picture
+   - 27 = Automap
+   - 28 = Automap graphics
+   - 29 = Song
+   - 30 = Sample
+   - 31 = Wave library
+   - 33 = Chest data
+   - 34 = Merchant data
+   - 35 = NPC character data
+   - 36 = Monster group
+   - 37 = Monster character data
+   - 38 = Monster graphics
+   - 39 = Combat background
+   - 40 = Combat graphics
+   - 41 = Tactical icon
+   - 42 = Spell data
+   - 43 = Small NPC graphics
+   - 44 = Flic
+   - 45 = Dictionary
+   - 46 = Script
+   - 47 = Picture
+   - 48 = Transparency tables
+   -->
+<files>
+	<file name="MAPDATA*.XLD" type="0" />
+	<file name="ICONDAT*.XLD" type="1" />
+	<file name="ICONGFX*.XLD" type="2" />
+	<file name="PALETTE*.XLD" type="3" />
+	<file name="PALETTE.000" type="4" />
+	<file name="SLAB" type="5" />
+	<file name="PARTGR*.XLD" type="6" />
+	<file name="PARTKL*.XLD" type="7" />
+	<file name="LABDATA*.XLD" type="8" />
+	<file name="3DWALLS*.XLD" type="9" />
+	<file name="3DOBJEC*.XLD" type="10" />
+	<file name="3DOVERL*.XLD" type="11" />
+	<file name="3DFLOOR*.XLD" type="12" />
+	<file name="NPCGR*.XLD" type="13" />
+	<file name="3DBCKGR*.XLD" type="14" />
+	<file name="FONTS*.XLD" type="15" />
+	<file name="BLKLIST*.XLD" type="16" />
+	<file name="PRTCHAR*.XLD" type="17" />
+	<file name="SMLPORT*.XLD" type="18" />
+	<file name="SYSTEXTS" type="19" />
+	<file name="EVNTSET*.XLD" type="20" />
+	<file name="EVNTTXT*.XLD" type="21" />
+	<file name="MAPTEXT*.XLD" type="22" />
+	<file name="ITEMLIST.DAT" type="23" />
+	<file name="ITEMNAME.DAT" type="24" />
+	<file name="ITEMGFX" type="25" />
+	<file name="FBODPIX*.XLD" type="26" />
+	<file name="AUTOMAP*.XLD" type="27" />
+	<file name="AUTOGFX*.XLD" type="28" />
+	<file name="SONGS*.XLD" type="29" />
+	<file name="SAMPLES*.XLD" type="30" />
+	<file name="WAVELIB*.XLD" type="31" />
+	<file name="CHESTDT*.XLD" type="33" />
+	<file name="MERCHDT*.XLD" type="34" />
+	<file name="NPCCHAR*.XLD" type="35" />
+	<file name="MONGRP*.XLD" type="36" />
+	<file name="MONCHAR*.XLD" type="37" />
+	<file name="MONGFX*.XLD" type="38" />
+	<file name="COMBACK*.XLD" type="39" />
+	<file name="COMGFX*.XLD" type="40" />
+	<file name="TACTICO*.XLD" type="41" />
+	<file name="SPELLDAT.DAT" type="42" />
+	<file name="NPCKL*.XLD" type="43" />
+	<file name="FLICS*.XLD" type="44" />
+	<file name="WORDLIS*.XLD" type="45" />
+	<file name="SCRIPTS*.XLD" type="46" />
+	<file name="PICTURE*.XLD" type="47" />
+	<file name="TRANSTB*.XLD" type="48" />
+</files>

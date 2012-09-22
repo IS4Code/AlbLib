@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Set build action to EmbeddedResource -->
+<functions>
+	<function name="party_jump" parameters="2" />
+	<function name="party_move" parameters="2" />
+	<function name="npc_jump" parameters="3" />
+	<function name="npc_move" parameters="3" />
+	<function name="show_map" parameters="0" />
+	<function name="do_event_chain,1" />
+	<function name="show_pic" parameters="3" />
+	<function name="sound_fx_off" parameters="1" />
+	<function name="song" parameters="1" />
+	<function name="ambient" parameters="1" />
+	<function name="set_quest_bit" />
+	<function name="clear_quest_bit" parameters="1" />
+	<function name="npc_on" parameters="1" />
+	<function name="npc_off" parameters="1" />
+	<function name="npc_lock" parameters="1" />
+	<function name="npc_unlock" parameters="1" />
+	<function name="change_icon" />
+	<function name="wipe" />
+	<function name="play_anim" parameters="5" />
+	<function name="text" parameters="1" />
+	<function name="party_member_text" parameters="2" />
+	<function name="npc_text" parameters="2" />
+	<function name="active_member_text,1" />
+	<function name="pause" parameters="1" />
+	<function name="fill_screen" parameters="1" />
+	<function name="start_anim" parameters="4" />
+	<function name="play" parameters="1" />
+	<function name="stop_anim" parameters="0" />
+	<function name="load_pal" parameters="1" />
+	<function name="party_turn" parameters="1" />
+	<function name="npc_turn" parameters="2" />
+	<function name="camera_lock" parameters="0" />
+	<function name="camera_unlock" parameters="0" />
+	<function name="camera_jump" parameters="2" />
+	<function name="camera_move" parameters="2" />
+	<function name="update" parameters="1" />
+	<function name="fade_to_black" parameters="0" />
+	<function name="fade_to_white" parameters="0" />
+	<function name="fade_from_black" parameters="0" />
+	<function name="fade_from_white" parameters="0" />
+	<function name="party_on" parameters="0" />
+	<function name="party_off" parameters="0" />
+	<function name="party_awaken" />
+	<function name="party_activate" />
+	<function name="sound" parameters="5" />
+</functions>
