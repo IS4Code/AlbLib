@@ -70,6 +70,24 @@ namespace AlbLib
 					return data;
 				}
 			}
+			
+			private static XDocument chartable;
+			
+			/// <summary>
+			/// chartable
+			/// |- [treename]:
+			///      char = Unicode character.
+			///      code = Byte code.
+			/// </summary>
+			public static XDocument CharTable{
+				get{
+					if(chartable == null)
+					{
+						chartable = GetResource("CharTable.xml");
+					}
+					return chartable;
+				}
+			}
 		}
 	}
 }
