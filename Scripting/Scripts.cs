@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using AlbLib.Localization;
+using AlbLib.Texts;
 using AlbLib.XLD;
 
 namespace AlbLib.Scripting
@@ -31,7 +31,7 @@ namespace AlbLib.Scripting
 					XLDSubfile subfile = XLDFile.ReadSubfile(stream, subindex);
 					if(subfile == null)return String.Empty;
 					byte[] content = subfile.Data;
-					return Texts.DefaultEncoding.GetString(content);
+					return TextCore.DefaultEncoding.GetString(content);
 				}
 			}else{
 				return String.Empty;

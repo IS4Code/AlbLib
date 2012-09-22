@@ -1,6 +1,6 @@
 ﻿using System;
 using AlbLib.Items;
-using AlbLib.Localization;
+using AlbLib.Texts;
 
 namespace AlbLib.SaveGame
 {
@@ -38,7 +38,7 @@ namespace AlbLib.SaveGame
 		/// Returns localized item name.
 		/// </summary>
 		public string TypeName{
-			get{return Texts.GetItemName(Type);}
+			get{return TextCore.GetItemName(Type);}
 		}
 		
 		/// <summary>

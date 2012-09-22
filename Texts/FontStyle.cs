@@ -1,4 +1,4 @@
-﻿namespace AlbLib.Localization
+﻿namespace AlbLib.Texts
 {
 	/// <summary>
 	/// Style of font.

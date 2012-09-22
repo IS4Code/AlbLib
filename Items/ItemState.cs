@@ -1,5 +1,6 @@
 ﻿using System.IO;
-using AlbLib.Localization;
+using AlbLib.Texts;
+using Texts = AlbLib.Texts;
 
 namespace AlbLib.Items
 {
@@ -272,7 +273,7 @@ namespace AlbLib.Items
 		/// </summary>
 		public string TypeName{
 			get{
-				return Texts.GetItemName(Type);
+				return TextCore.GetItemName(Type);
 			}
 		}
 	}

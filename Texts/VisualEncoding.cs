@@ -1,19 +1,10 @@
-﻿/*
- * Created by SharpDevelop.
- * User: Illidan
- * Date: 21.9.2012
- * Time: 22:37
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using AlbLib.Internal;
 
-namespace AlbLib.Localization
+namespace AlbLib.Texts
 {
 	public class VisualEncoding : Encoding
 	{

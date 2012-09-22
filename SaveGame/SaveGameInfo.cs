@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using AlbLib.Localization;
+using AlbLib.Texts;
 
 namespace AlbLib.SaveGame
 {
@@ -65,7 +65,7 @@ namespace AlbLib.SaveGame
 		{
 			using(FileStream stream = new FileStream(path, FileMode.Open))
 			{
-				BinaryReader reader = new BinaryReader(stream, Texts.DefaultEncoding);
+				BinaryReader reader = new BinaryReader(stream, TextCore.DefaultEncoding);
 				short length = reader.ReadInt16();
 				unknown1 = reader.ReadInt16();
 				Name = new String(reader.ReadChars(length));
@@ -90,7 +90,7 @@ namespace AlbLib.SaveGame
 		/// </param>
 		public SaveGameInfo(Stream stream)
 		{
-			BinaryReader reader = new BinaryReader(stream, Texts.DefaultEncoding);
+			BinaryReader reader = new BinaryReader(stream, TextCore.DefaultEncoding);
 			short length = reader.ReadInt16();
 			unknown1 = reader.ReadInt16();
 			Name = new String(reader.ReadChars(length));
@@ -114,7 +114,7 @@ namespace AlbLib.SaveGame
 		/// </param>
 		public void Write(Stream output)
 		{
-			BinaryWriter writer = new BinaryWriter(output, Texts.DefaultEncoding);
+			BinaryWriter writer = new BinaryWriter(output, TextCore.DefaultEncoding);
 			writer.Write((short)Name.Length);
 			writer.Write(unknown1);
 			writer.Write(Name.ToCharArray());

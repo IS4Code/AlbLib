@@ -1,4 +1,4 @@
-﻿namespace AlbLib.Localization
+﻿namespace AlbLib.Texts
 {
 	/// <summary>
 	/// Used game languages.

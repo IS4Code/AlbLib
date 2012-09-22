@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using AlbLib.Localization;
+using AlbLib.Texts;
 
 namespace AlbLib.SaveGame
 {
@@ -319,7 +319,7 @@ namespace AlbLib.SaveGame
 			BitConverter.GetBytes(ClassSpells[5]).CopyTo(source, 262);
 			BitConverter.GetBytes(ClassSpells[6]).CopyTo(source, 266);
 			
-			byte[] name = Texts.DefaultEncoding.GetBytes(Name.ToCharArray());
+			byte[] name = TextCore.DefaultEncoding.GetBytes(Name.ToCharArray());
 			for(int i = 0; i < name.Length; i++)
 			{
 				source[274+i] = name[i];

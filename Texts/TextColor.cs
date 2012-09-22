@@ -1,4 +1,4 @@
-﻿namespace AlbLib.Localization
+﻿namespace AlbLib.Texts
 {
 	/// <summary>
 	/// Color index palette for texts.
