@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using AlbLib.XLD;
 
 namespace AlbLib
 {
@@ -122,11 +123,67 @@ namespace AlbLib
 		/// </summary>
 		public IEnumerable<string> EnumerateList()
 		{
-			int i = 0;
+			return EnumerateList(0);
+		}
+		
+		/// <summary>
+		/// Enumerates through all file sequences.
+		/// </summary>
+		public IEnumerable<string> EnumerateList(int start)
+		{
+			int i = start;
 			string path;
-			while(File.Exists(path = String.Format(this.FileName, i++)))
+			while(File.Exists(path = String.Format(this.FileName, i)))
 			{
 				yield return path;
+				i += 1;
+			}
+		}
+		
+		/// <summary>
+		/// Enumerates through all file sequences.
+		/// </summary>
+		public IEnumerable<KeyValuePair<int,string>> EnumeratePairList()
+		{
+			return EnumeratePairList(0);
+		}
+		
+		/// <summary>
+		/// Enumerates through all file sequences.
+		/// </summary>
+		public IEnumerable<KeyValuePair<int,string>> EnumeratePairList(int start)
+		{
+			int i = start;
+			string path;
+			while(File.Exists(path = String.Format(this.FileName, i)))
+			{
+				yield return new KeyValuePair<int,string>(i, path);
+				i += 1;
+			}
+		}
+		
+		/// <summary>
+		/// Enumerates through all file and subfile sequences.
+		/// </summary>
+		public IEnumerable<KeyValuePair<int,XLDSubfile>> EnumerateAllSubfiles()
+		{
+			return EnumerateAllSubfiles(0);
+		}
+		
+		/// <summary>
+		/// Enumerates through all file and subfile sequences.
+		/// </summary>
+		public IEnumerable<KeyValuePair<int,XLDSubfile>> EnumerateAllSubfiles(int start)
+		{
+			int i = start;
+			string path;
+			while(File.Exists(path = String.Format(this.FileName, i)))
+			{
+				foreach(XLDSubfile sub in XLDFile.EnumerateSubfiles(path))
+				{
+					yield return new KeyValuePair<int,XLDSubfile>(i*100+sub.Index, sub);
+				}
+				i += 1;
 			}
 		}
 		
