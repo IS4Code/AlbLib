@@ -1,4 +1,6 @@
-﻿Paths.SetXLDLIBS(Environment.CurrentDirectory);
+﻿//Do not compile this file
+
+Paths.SetXLDLIBS(Environment.CurrentDirectory);
 Paths.Main = "MAIN.EXE";
 Drawing.TransparentIndex = 0;
 GameInterfaceImageCache.Load();

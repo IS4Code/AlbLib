@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectGuid>{228610BB-6825-4C86-9866-37DB0E73B657}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <RootNamespace>AlbLib</RootNamespace>
+    <AssemblyName>AlbLib</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <OutputType>Library</OutputType>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <BaseAddress>4194304</BaseAddress>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <StartAction>Project</StartAction>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AlbLib.cs" />
+    <None Include="Examples.cs" />
+    <Compile Include="IFF\IFFChunk.cs" />
+    <Compile Include="IFF\IFFContentNode.cs" />
+    <Compile Include="IFF\IFFFile.cs" />
+    <Compile Include="IFF\IFFFileNode.cs" />
+    <Compile Include="IFF\IFFNode.cs" />
+    <Compile Include="IFF\IFFReader.cs" />
+    <Compile Include="Imaging\AnimatedHeaderedImage.cs" />
+    <Compile Include="Imaging\AutoGFX.cs" />
+    <Compile Include="Imaging\BlockModifier.cs" />
+    <Compile Include="Imaging\Drawing.cs" />
+    <Compile Include="Imaging\GraphicObject.cs" />
+    <Compile Include="Imaging\GraphicPlane.cs" />
+    <Compile Include="Imaging\HeaderedImage.cs" />
+    <Compile Include="Imaging\IAnimatedPaletteRenderable.cs" />
+    <Compile Include="Imaging\IAnimatedRenderable.cs" />
+    <Compile Include="Imaging\ILBMImage.cs" />
+    <Compile Include="Imaging\ImageBase.cs" />
+    <Compile Include="Imaging\ImagePalette.cs" />
+    <Compile Include="Imaging\IPaletteRenderable.cs" />
+    <Compile Include="Imaging\IRenderable.cs" />
+    <Compile Include="Imaging\MainExecutableImages.cs" />
+    <Compile Include="Imaging\MinimapPalette.cs" />
+    <Compile Include="Imaging\ModifierPalette.cs" />
+    <Compile Include="Imaging\PaletteFormat.cs" />
+    <Compile Include="Imaging\RawImage.cs" />
+    <Compile Include="Imaging\RenderOptions.cs" />
+    <Compile Include="Imaging\TinyImage.cs" />
+    <Compile Include="Imaging\TransparencyTable.cs" />
+    <Compile Include="Imaging\TransparencyType.cs" />
+    <Compile Include="Items\AttributeType.cs" />
+    <Compile Include="Items\Class.cs" />
+    <Compile Include="Items\Gender.cs" />
+    <Compile Include="Items\ItemActivates.cs" />
+    <Compile Include="Items\ItemClass.cs" />
+    <Compile Include="Items\ItemSlot.cs" />
+    <Compile Include="Items\ItemSpellType.cs" />
+    <Compile Include="Items\ItemState.cs" />
+    <Compile Include="Items\Race.cs" />
+    <Compile Include="Items\SkillType.cs" />
+    <Compile Include="IWritable.cs" />
+    <Compile Include="LimitedInputStream.cs" />
+    <Compile Include="Mapping\Block.cs" />
+    <Compile Include="Mapping\Block2D.cs" />
+    <Compile Include="Mapping\Event.cs" />
+    <Compile Include="Mapping\EventHeader.cs" />
+    <Compile Include="Mapping\FloorData.cs" />
+    <Compile Include="Mapping\GotoPoint.cs" />
+    <Compile Include="Mapping\ICollidable.cs" />
+    <Compile Include="Mapping\IconData.cs" />
+    <Compile Include="Mapping\IconGraphics.cs" />
+    <Compile Include="Mapping\IMapSquare.cs" />
+    <Compile Include="Mapping\IMinimapVisible.cs" />
+    <Compile Include="Mapping\ITextured.cs" />
+    <Compile Include="Mapping\LabData.cs" />
+    <Compile Include="Mapping\LabGraphics.cs" />
+    <Compile Include="Mapping\Map.cs" />
+    <Compile Include="Mapping\MapSquareType.cs" />
+    <Compile Include="Mapping\MapType.cs" />
+    <Compile Include="Mapping\MinimapType.cs" />
+    <Compile Include="Mapping\NPC.cs" />
+    <Compile Include="Mapping\ObjectData.cs" />
+    <Compile Include="Mapping\ObjectInfo.cs" />
+    <Compile Include="Mapping\Position.cs" />
+    <Compile Include="Mapping\Tile.cs" />
+    <Compile Include="Mapping\TileData.cs" />
+    <Compile Include="Mapping\WallForm.cs" />
+    <Compile Include="Mapping\WallData.cs" />
+    <Compile Include="Resources\Resources.cs" />
+    <Compile Include="SaveGame\Backpack.cs" />
+    <Compile Include="SaveGame\Character.cs" />
+    <Compile Include="SaveGame\CharacterAttribute.cs" />
+    <Compile Include="SaveGame\CharacterClass.cs" />
+    <Compile Include="SaveGame\CharacterConditions.cs" />
+    <Compile Include="SaveGame\CharacterGender.cs" />
+    <Compile Include="SaveGame\CharacterLanguage.cs" />
+    <Compile Include="SaveGame\CharacterMagic.cs" />
+    <Compile Include="SaveGame\CharacterPerson.cs" />
+    <Compile Include="SaveGame\CharacterRace.cs" />
+    <Compile Include="SaveGame\Equipment.cs" />
+    <Compile Include="SaveGame\Inventory.cs" />
+    <Compile Include="SaveGame\ItemFlags.cs" />
+    <Compile Include="SaveGame\ItemStack.cs" />
+    <Compile Include="SaveGame\SaveGameInfo.cs" />
+    <Compile Include="Scripting\DebugExecutor.cs" />
+    <Compile Include="Scripting\ExecuteHandler.cs" />
+    <Compile Include="Scripting\IScriptExecutor.cs" />
+    <Compile Include="Scripting\ScriptExecutionException.cs" />
+    <Compile Include="Scripting\ScriptExecutionMachine.cs" />
+    <Compile Include="Scripting\Scripts.cs" />
+    <Compile Include="Sounds\HeaderedPCMSound.cs" />
+    <Compile Include="Sounds\RawPCMSound.cs" />
+    <Compile Include="Sounds\Sample.cs" />
+    <Compile Include="Sounds\SoundBase.cs" />
+    <Compile Include="Sounds\XMidiMusic.cs" />
+    <Compile Include="Texts\FontStyle.cs" />
+    <Compile Include="Texts\Language.cs" />
+    <Compile Include="Texts\TextColor.cs" />
+    <Compile Include="Texts\TextCore.cs" />
+    <Compile Include="Texts\VisualEncoding.cs" />
+    <Compile Include="XLD\XLDFile.cs" />
+    <Compile Include="XLD\XLDNavigator.cs" />
+    <Compile Include="XLD\XLDSubfile.cs" />
+    <EmbeddedResource Include="CharTable.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LogicalName>CharTable.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LogicalName>Data.xml</LogicalName>
+    </EmbeddedResource>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Functions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LogicalName>Functions.xml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IFF" />
+    <Folder Include="Imaging" />
+    <Folder Include="Items" />
+    <Folder Include="Mapping" />
+    <Folder Include="Texts" />
+    <Folder Include="Sounds" />
+    <Folder Include="XLD" />
+    <Folder Include="Scripting" />
+    <Folder Include="SaveGame" />
+    <Folder Include="Resources" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
