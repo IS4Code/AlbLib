@@ -41,20 +41,6 @@ namespace AlbLib.Imaging
 		}
 		
 		/// <summary>
-		/// Draws the image to bitmap.
-		/// </summary>
-		/// <param name="palette">
-		/// Palette ID.
-		/// </param>
-		/// <returns>
-		/// Drawn image.
-		/// </returns>
-		public override Image Render(ImagePalette palette)
-		{
-			return Drawing.DrawBitmap(ImageData, Width, Height, palette);
-		}
-		
-		/// <summary>
 		/// Initializes new instance.
 		/// </summary>
 		public RawImage(byte[] rawdata)
@@ -68,7 +54,8 @@ namespace AlbLib.Imaging
 		/// </summary>
 		public RawImage(Stream stream, int length)
 		{
-			ImageData = new BinaryReader(stream).ReadBytes(length);
+			ImageData = new byte[length];
+			stream.Read(ImageData, 0, length);
 		}
 		
 		/// <summary>
@@ -76,7 +63,8 @@ namespace AlbLib.Imaging
 		/// </summary>
 		public RawImage(Stream stream, int width, int height)
 		{
-			ImageData = new BinaryReader(stream).ReadBytes(width*height);
+			ImageData = new byte[width*height];
+			stream.Read(ImageData, 0, width*height);
 			Width = width;
 			Height = height;
 		}

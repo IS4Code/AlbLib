@@ -77,6 +77,11 @@ namespace AlbLib.Imaging
 			return Render(Palette);
 		}
 		
+		public Image Render(RenderOptions options)
+		{
+			return Render(Palette, options);
+		}
+		
 		/// <summary>
 		/// Draws plane to bitmap using other palette.
 		/// </summary>
@@ -85,13 +90,24 @@ namespace AlbLib.Imaging
 			return Render(ImagePalette.GetFullPalette(palette));
 		}
 		
-		/// <summary>
-		/// Draws plane to bitmap using other palette.
-		/// </summary>
+		public Image Render(byte palette, RenderOptions options)
+		{
+			return Render(ImagePalette.GetFullPalette(palette), options);
+		}
+		
 		public Image Render(ImagePalette palette)
 		{
 			byte[] baked = GetBaked();
-			return Drawing.DrawBitmap(baked, Background.GetWidth(), Background.GetHeight(), palette);
+			return Drawing.DrawBitmap(baked, Background.GetWidth(), Background.GetHeight(), palette, null);
+		}
+		
+		/// <summary>
+		/// Draws plane to bitmap using other palette.
+		/// </summary>
+		public Image Render(ImagePalette palette, RenderOptions options)
+		{
+			byte[] baked = GetBaked();
+			return Drawing.DrawBitmap(baked, Background.GetWidth(), Background.GetHeight(), palette, options);
 		}
 		
 		/// <summary>

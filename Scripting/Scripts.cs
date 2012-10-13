@@ -21,8 +21,8 @@ namespace AlbLib.Scripting
 		/// </returns>
 		public static string GetScript(int index)
 		{
-			int subindex = index%100;
-			int fileindex = index/100;
+			int subindex, fileindex;
+			if(!Common.E(index, out fileindex, out subindex))return null;
 			string file = String.Format(Paths.ScriptsN, fileindex);
 			if(File.Exists(file))
 			{

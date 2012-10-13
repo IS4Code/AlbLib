@@ -190,21 +190,11 @@ namespace AlbLib.Imaging
 		/// </summary>
 		public static void LoadPalettes()
 		{
-			int id = 0;
-			foreach(string path in Paths.PaletteN.EnumerateList())
+			foreach(var pair in Paths.PaletteN.EnumerateAllSubfiles())
 			{
-				using(FileStream stream = new FileStream(path, FileMode.Open))
-				{
-					foreach(XLDSubfile palette in XLDFile.EnumerateSubfiles(stream))
-					{
-						Palettes[id++] = ReadPalette(palette.Data);
-					}
-				}
+				Palettes[pair.Key] = ReadPalette(pair.Value.Data);
 			}
-			using(FileStream stream = new FileStream(Paths.GlobalPalette, FileMode.Open))
-			{
-				GlobalPalette = ReadGlobalPalette((int)stream.Length, stream);
-			}
+			LoadGlobalPalette();
 		}
 		
 		private static void LoadGlobalPalette()
@@ -217,12 +207,12 @@ namespace AlbLib.Imaging
 		
 		private static void LoadPalette(int index)
 		{
-			int subindex = index%100;
-			int fileindex = index/100;
+			int subindex, fileindex;
+			if(!Common.E(index, out fileindex, out subindex))return;
 			using(FileStream stream = new FileStream(String.Format(Paths.PaletteN, fileindex), FileMode.Open))
 			{
-				int length = XLDFile.ReadToIndex(stream, subindex);
-				Palettes[index] = ReadPalette(stream, length);
+				XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)subindex);
+				Palettes[index] = ReadPalette(nav, nav.SubfileLength);
 			}
 		}
 		
@@ -300,7 +290,6 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public static ImagePalette GetPalette(int index)
 		{
-			index -= 1;
 			if(Palettes[index] == null)
 			{
 				LoadPalette(index);
@@ -365,7 +354,7 @@ namespace AlbLib.Imaging
 						if(format == PaletteFormat.Text)
 							colors[i] = Color.FromArgb(Byte.Parse(split[0]), Byte.Parse(split[1]), Byte.Parse(split[2]));
 						else
-							colors[i] = Color.FromArgb(Convert.ToByte(Byte.Parse(split[0])*Constants.ColorConversion), Convert.ToByte(Byte.Parse(split[1])*Constants.ColorConversion), Convert.ToByte(Byte.Parse(split[2])*Constants.ColorConversion));
+							colors[i] = Color.FromArgb(Convert.ToByte(Byte.Parse(split[0])*Common.ColorConversion), Convert.ToByte(Byte.Parse(split[1])*Common.ColorConversion), Convert.ToByte(Byte.Parse(split[2])*Common.ColorConversion));
 					}
 					break;
 				default:

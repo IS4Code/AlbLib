@@ -30,7 +30,7 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public static Bitmap DrawBitmap(byte[] data, int width, int height, byte palette)
 		{
-			return DrawBitmap(data, width, height, ImagePalette.GetFullPalette(palette));
+			return DrawBitmap(data, width, height, ImagePalette.GetFullPalette(palette), null);
 		}
 		
 		/// <summary>
@@ -51,15 +51,17 @@ namespace AlbLib.Imaging
 		/// <returns>
 		/// Drawn bitmap.
 		/// </returns>
-		public static Bitmap DrawBitmap(byte[] data, int width, int height, ImagePalette palette)
+		public static Bitmap DrawBitmap(byte[] data, int width, int height, ImagePalette palette, RenderOptions options)
 		{
+			options = options??RenderOptions.Empty;
 			Bitmap bmp = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
 			ColorPalette pal = bmp.Palette;
 			palette.CopyTo(pal.Entries, 0);
-			if(ImagePalette.TransparentIndex >= 0)pal.Entries[ImagePalette.TransparentIndex] = Color.Transparent;
+			if(options.TransparentIndex >= 0)pal.Entries[options.TransparentIndex] = Color.Transparent;
 			bmp.Palette = pal;
 			BitmapData bmpdata = bmp.LockBits(new Rectangle(0,0,width,height), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-			if(width%4 == 0)
+			if(data.Length == 0){}
+			else if(width%4 == 0)
 			{
 				Marshal.Copy(data, 0, bmpdata.Scan0, Math.Min(bmpdata.Stride*bmpdata.Height, data.Length));
 			}else{

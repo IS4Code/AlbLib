@@ -106,22 +106,22 @@ namespace AlbLib.Imaging
 		/// Loads transparency table for palette.
 		/// </summary>
 		/// <param name="palette">
-		/// Zero-based palette index.
+		/// One-based palette index.
 		/// </param>
 		/// <returns>
 		/// Assigned transparency table.
 		/// </returns>
 		public static TransparencyTable GetTransparencyTable(int palette)
 		{
-			palette -= 1;
 			if(tables[palette] == null)
 			{
-				int fi = palette/100;
-				int si = palette%100;
+				int fi, si;
+				if(!Common.E(palette, out fi, out si))return null;
 				using(FileStream stream = new FileStream(Paths.TransparencyTablesN.Format(fi), FileMode.Open))
 				{
-					if(XLDFile.ReadToIndex(stream, si) != 196608)return null;
-					tables[palette] = new TransparencyTable(palette, stream);
+					XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)si);
+					if(nav.SubfileLength != 196608)return null;
+					tables[palette] = new TransparencyTable(palette, nav);
 				}
 			}
 			return tables[palette];

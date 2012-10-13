@@ -32,20 +32,6 @@ namespace AlbLib.Imaging
 		}
 		
 		/// <summary>
-		/// Draws the image to bitmap.
-		/// </summary>
-		/// <param name="palette">
-		/// Palette ID.
-		/// </param>
-		/// <returns>
-		/// Drawn image.
-		/// </returns>
-		public override Image Render(ImagePalette palette)
-		{
-			return Drawing.DrawBitmap(ImageData, Width, Height, palette);
-		}
-		
-		/// <summary>
 		/// Converts entire image to format-influenced byte array.
 		/// </summary>
 		/// <returns>

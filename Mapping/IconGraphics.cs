@@ -23,20 +23,20 @@ namespace AlbLib.Mapping
 		/// </returns>
 		public static RawImage[] GetTileset(int index)
 		{
-			index -= 1;
 			if(tilesetssorted[index] == null)
 			{
 				if(tilesets[index] == null)
 				{
-					int fx = index/100;
-					int tx = index%100;
+					int fx, tx;
+					if(!Common.E(index, out fx, out tx))return null;
 					using(FileStream stream = new FileStream(Paths.IconGraphicsN.Format(fx), FileMode.Open))
 					{
-						int len = XLDFile.ReadToIndex(stream, tx);
+						XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)tx);
+						int len = nav.SubfileLength;
 						tilesets[index] = new RawImage[len/256];
 						for(int i = 0; i < len/256; i++)
 						{
-							tilesets[index][i] = new RawImage(stream, 16, 16);
+							tilesets[index][i] = new RawImage(nav, 16, 16);
 						}
 					}
 				}

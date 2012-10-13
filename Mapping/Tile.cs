@@ -1,10 +1,11 @@
 ﻿using System.IO;
+
 namespace AlbLib.Mapping
 {
 	/// <summary>
-	/// Map tile.
+	/// 2D map tile.
 	/// </summary>
-	public struct Tile
+	public struct Tile : IMapSquare
 	{
 		/// <summary>
 		/// Tile X position.
@@ -28,6 +29,20 @@ namespace AlbLib.Mapping
 		/// </summary>
 		public short Overlay{
 			get;set;
+		}
+		
+		public EventHeader Event{
+			get;internal set;
+		}
+		
+		byte IMapSquare.X{
+			get{return X;}
+		}
+		byte IMapSquare.Y{
+			get{return Y;}
+		}
+		MapSquareType IMapSquare.Type{
+			get{return MapSquareType.Tile;}
 		}
 		
 		/// <summary>

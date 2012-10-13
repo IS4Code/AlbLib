@@ -44,7 +44,12 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public Image Render(byte index, ImagePalette palette)
 		{
-			return Drawing.DrawBitmap(Frames[index].ImageData, Frames[index].Width, Frames[index].Height, palette);
+			return Drawing.DrawBitmap(Frames[index].ImageData, Frames[index].Width, Frames[index].Height, palette, null);
+		}
+		
+		public Image Render(byte index, ImagePalette palette, RenderOptions options)
+		{
+			return Drawing.DrawBitmap(Frames[index].ImageData, Frames[index].Width, Frames[index].Height, palette, options);
 		}
 		
 		/// <summary>
@@ -59,6 +64,11 @@ namespace AlbLib.Imaging
 		public override Image Render(ImagePalette palette)
 		{
 			return Render(0, palette);
+		}
+		
+		public override Image Render(ImagePalette palette, RenderOptions options)
+		{
+			return Render(0, palette, options);
 		}
 		
 		/// <summary>

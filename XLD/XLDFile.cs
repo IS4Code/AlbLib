@@ -139,8 +139,9 @@ namespace AlbLib.XLD
 		/// <returns>
 		/// Length of subfile.
 		/// </returns>
-		public static int ReadToIndex(Stream stream, int index)
+		/*public static int ReadToIndex(Stream stream, int index)
 		{
+			if(index < 0)throw new ArgumentOutOfRangeException("index");
 			int lastEntry = -1;
 			BinaryReader reader = new BinaryReader(stream, Encoding.ASCII);
 			short nentries = 0;
@@ -169,7 +170,7 @@ namespace AlbLib.XLD
 				}
 			}
 			return -1;
-		}
+		}*/
 		
 		/// <summary>
 		/// Reads subfile at the given index.
@@ -217,6 +218,20 @@ namespace AlbLib.XLD
 		/// <summary>
 		/// Enumerates through all subfiles.
 		/// </summary>
+		/// <param name="file">
+		/// Path to XLD file.
+		/// </param>
+		/// <returns>
+		/// Enumerable object containing subfile contents.
+		/// </returns>
+		public static IEnumerable<XLDSubfile> EnumerateSubfiles(string file)
+		{
+			return EnumerateSubfiles(new FileStream(file, FileMode.Open), true);
+		}
+		
+		/// <summary>
+		/// Enumerates through all subfiles.
+		/// </summary>
 		/// <param name="stream">
 		/// Input stream. There must start the XLD.
 		/// </param>
@@ -225,26 +240,47 @@ namespace AlbLib.XLD
 		/// </returns>
 		public static IEnumerable<XLDSubfile> EnumerateSubfiles(Stream stream)
 		{
-			int lastEntry = -1;
-			BinaryReader reader = new BinaryReader(stream, Encoding.ASCII);
-			short nentries = 0;
-			int[] entrylen = null;
-			
-			string sig = new string(reader.ReadChars(6));
-			if(sig != "XLD0I\0")
-			{
-				throw new ArgumentException("This is not valid XLD file.", "stream");
-			}
-			nentries = reader.ReadInt16();
-			entrylen = new int[nentries];
-			for(short i = 0; i < nentries; i++)
-			{
-				entrylen[i] = reader.ReadInt32();
-			}
-			for(short i = 0; i < nentries; i++)
-			{
-				lastEntry = i;
-				yield return new XLDSubfile(stream, entrylen[i], i);
+			return EnumerateSubfiles(stream, false);
+		}
+		
+		/// <summary>
+		/// Enumerates through all subfiles.
+		/// </summary>
+		/// <param name="stream">
+		/// Input stream. There must start the XLD.
+		/// </param>
+		/// <param name="close">
+		/// If true, stream will be closed.
+		/// </param>
+		/// <returns>
+		/// Enumerable object containing subfile contents.
+		/// </returns>
+		public static IEnumerable<XLDSubfile> EnumerateSubfiles(Stream stream, bool close)
+		{
+			try{
+				int lastEntry = -1;
+				BinaryReader reader = new BinaryReader(stream, Encoding.ASCII);
+				short nentries = 0;
+				int[] entrylen = null;
+				
+				string sig = new string(reader.ReadChars(6));
+				if(sig != "XLD0I\0")
+				{
+					throw new ArgumentException("This is not valid XLD file.", "stream");
+				}
+				nentries = reader.ReadInt16();
+				entrylen = new int[nentries];
+				for(short i = 0; i < nentries; i++)
+				{
+					entrylen[i] = reader.ReadInt32();
+				}
+				for(short i = 0; i < nentries; i++)
+				{
+					lastEntry = i;
+					yield return new XLDSubfile(stream, entrylen[i], i);
+				}
+			}finally{
+				if(close)stream.Close();
 			}
 		}
 		

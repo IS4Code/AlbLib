@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using AlbLib.Imaging;
+using AlbLib.Texts;
 using AlbLib.XLD;
 
 namespace AlbLib.Mapping
@@ -29,19 +31,26 @@ namespace AlbLib.Mapping
 		/// <summary>
 		/// Map type.
 		/// </summary>
-		public MapType Type{get;set;}
+		public MapType Type{get;private set;}
 		
 		/// <summary>
-		/// Used sound. (?)
+		/// Map music.
 		/// </summary>
-		public byte Sound{get;set;}
+		public byte BackgroundMusic{get;set;}
 		
 		/// <summary>
 		/// Width in tiles.
 		/// </summary>
 		public byte Width{
 			get{
-				return (byte)Data.GetLength(0);
+				switch(Type)
+				{
+					case MapType.Map2D:
+						return (byte)TileData.GetLength(0);
+					case MapType.Map3D:
+						return (byte)BlockData.GetLength(0);
+				}
+				return 0;
 			}
 		}
 		
@@ -50,14 +59,54 @@ namespace AlbLib.Mapping
 		/// </summary>
 		public byte Height{
 			get{
-				return (byte)Data.GetLength(1);
+				switch(Type)
+				{
+					case MapType.Map2D:
+						return (byte)TileData.GetLength(1);
+					case MapType.Map3D:
+						return (byte)BlockData.GetLength(1);
+				}
+				return 0;
 			}
 		}
+		
+		private byte tilesid;
 		
 		/// <summary>
 		/// One-based tileset ID.
 		/// </summary>
-		public byte Tileset{get;set;}
+		public byte Tileset{
+			get{
+				if(Type == MapType.Map2D)
+				{
+					return tilesid;
+				}else throw new InvalidOperationException("Only 2D maps have tileset.");
+			}
+			set{
+				if(Type == MapType.Map2D)
+				{
+					tilesid = value;
+				}else throw new InvalidOperationException("Only 2D maps have tileset.");
+			}
+		}
+		
+		/// <summary>
+		/// One-based labdata ID.
+		/// </summary>
+		public byte Labdata{
+			get{
+				if(Type == MapType.Map3D)
+				{
+					return tilesid;
+				}else throw new InvalidOperationException("Only 3D maps have labdata.");
+			}
+			set{
+				if(Type == MapType.Map3D)
+				{
+					tilesid = value;
+				}else throw new InvalidOperationException("Only 3D maps have labdata.");
+			}
+		}
 		
 		/// <summary>
 		/// Combat background graphics.
@@ -74,20 +123,137 @@ namespace AlbLib.Mapping
 		/// </summary>
 		public byte AnimRate{get;set;}
 		
-		private Tile[,] data;
+		public EventHeader[] AutoEvents{get;set;}
+		
+		public EventHeader[][] TileEvents{get;set;}
+		
+		public Event[] Events{get;set;}
 		
 		/// <summary>
-		/// Array of map tiles.
+		/// NPC/monster data.
 		/// </summary>
-		public Tile[,] Data{
+		public NPC[] NPCs{get;set;}
+		
+		public IEnumerable<NPC> UsedNPCs{
 			get{
-				return data;
-			}
-			set{
-				if(value.GetLength(0) > Byte.MaxValue || value.GetLength(1) > Byte.MaxValue)throw new ArgumentException(null,"value");
-				data = value;
+				foreach(NPC npc in NPCs)
+				{
+					if(!npc.IsEmpty)yield return npc;
+				}
 			}
 		}
+		
+		private Tile[,] tiledata;
+		private Block[,] blockdata;
+		
+		/// <summary>
+		/// Array of 2D map tiles.
+		/// </summary>
+		public Tile[,] TileData{
+			get{
+				if(Type == MapType.Map2D)
+				{
+					return tiledata;
+				}else throw new InvalidOperationException("Only 2D maps have tiles.");
+			}
+			set{
+				if(Type == MapType.Map2D)
+				{
+					if(value == null || value.GetLength(0) > Byte.MaxValue || value.GetLength(1) > Byte.MaxValue)throw new ArgumentException("Map cannot be empty.", "value");
+					tiledata = value;
+				}else throw new InvalidOperationException("Only 2D maps have tiles.");
+			}
+		}
+		
+		/// <summary>
+		/// Array of 3D map blocks.
+		/// </summary>
+		public Block[,] BlockData{
+			get{
+				if(Type == MapType.Map3D)
+				{
+					return blockdata;
+				}else throw new InvalidOperationException("Only 3D maps have blocks.");
+			}
+			set{
+				if(Type == MapType.Map3D)
+				{
+					if(value == null || value.GetLength(0) > Byte.MaxValue || value.GetLength(1) > Byte.MaxValue)throw new ArgumentException("Map cannot be empty.", "value");
+					blockdata = value;
+				}else throw new InvalidOperationException("Only 3D maps have blocks.");
+			}
+		}
+		
+		/// <summary>
+		/// Array of map data, tiles or blocks.
+		/// </summary>
+		public IMapSquare[,] Data{
+			get{
+				IMapSquare[,] data = new IMapSquare[Width,Height];
+				Array source = null;
+				switch(Type)
+				{
+					case MapType.Map2D:
+						source = TileData;
+						break;
+					case MapType.Map3D:
+						source = BlockData;
+						break;
+				}
+				foreach(IMapSquare square in source)
+				{
+					data[square.X,square.Y] = square;
+				}
+				return data;
+			}
+		}
+		
+		private GotoPoint[] gotopoints;
+		
+		public GotoPoint[] GotoPoints{
+			get{
+				if(Type == MapType.Map3D)
+				{
+					return gotopoints;
+				}else throw new InvalidOperationException("Only 3D maps have goto-points.");
+			}
+			set{
+				if(Type == MapType.Map3D)
+				{
+					gotopoints = value;
+				}else throw new InvalidOperationException("Only 3D maps have goto-points.");
+			}
+		}
+		
+		private byte[] automap;
+		
+		public byte[] Automap{
+			get{
+				if(Type == MapType.Map3D)
+				{
+					return automap;
+				}else throw new InvalidOperationException("Only 3D maps have automap.");
+			}
+			set{
+				if(Type == MapType.Map3D)
+				{
+					automap = value;
+				}else throw new InvalidOperationException("Only 3D maps have automap.");
+			}
+		}
+		
+		private readonly bool corrupted;
+		
+		/// <summary>
+		/// True if an exception occured while loading map.
+		/// </summary>
+		public bool Corrupted{
+			get{
+				return corrupted;
+			}
+		}
+		
+		public short[] ActiveEvents{get;set;}
 		
 		/// <summary>
 		/// Loads map from stream.
@@ -113,31 +279,132 @@ namespace AlbLib.Mapping
 		{
 			Id = id;
 			
-			BinaryReader reader = new BinaryReader(stream);
+			BinaryReader reader = new BinaryReader(stream, TextCore.DefaultEncoding);
+			
+			//Basic info
 			Flags = reader.ReadByte();
 			NumNPC = reader.ReadByte();
 			Type = (MapType)reader.ReadByte();
-			Sound = reader.ReadByte();
+			if(Type != MapType.Map2D && Type != MapType.Map3D)throw new InvalidDataException("Unknown map format.");
+			BackgroundMusic = reader.ReadByte();
 			byte width = reader.ReadByte();
 			byte height = reader.ReadByte();
-			Tileset = reader.ReadByte();
+			tilesid = reader.ReadByte();
 			ComGFX = reader.ReadByte();
 			Palette = reader.ReadByte();
 			AnimRate = reader.ReadByte();
+			
+			//NPCs
+			int npcstruct;
 			if(NumNPC == 0)
 			{
-				reader.ReadBytes(320);
-			}else if(NumNPC == 0x40)
+				npcstruct = 32;
+			}else if(NumNPC == 64)
 			{
-				reader.ReadBytes(960);
+				npcstruct = 96; 
 			}else{
-				reader.ReadBytes(NumNPC*10);
+				npcstruct = NumNPC;
 			}
-			data = new Tile[width,height];
-			for(byte y = 0; y < height; y++)
-			for(byte x = 0; x < width; x++)
+			NPCs = new NPC[npcstruct];
+			for(int i = 0; i < npcstruct; i++)
 			{
-				data[x,y] = new Tile(x,y,stream);
+				NPCs[i] = new NPC(stream);
+			}
+			
+			if(Type == MapType.Map2D)
+			{
+				//Tile data
+				tiledata = new Tile[width,height];
+				for(byte y = 0; y < height; y++)
+				for(byte x = 0; x < width; x++)
+				{
+					tiledata[x,y] = new Tile(x,y,stream);
+				}
+			}else if(Type == MapType.Map3D)
+			{
+				//Block data
+				blockdata = new Block[width,height];
+				for(byte y = 0; y < height; y++)
+				for(byte x = 0; x < width; x++)
+				{
+					blockdata[x,y] = new Block(x,y,stream);
+				}
+			}
+			
+			try{
+				short autoevents = reader.ReadInt16();
+				AutoEvents = new EventHeader[autoevents];
+				for(int i = 0; i < autoevents; i++)
+				{
+					AutoEvents[i] = new EventHeader(reader);
+				}
+				
+				TileEvents = new EventHeader[height][];
+				for(int y = 0; y < height; y++)
+				{
+					short events = reader.ReadInt16();
+					TileEvents[y] = new EventHeader[events];
+					for(int i = 0; i < events; i++)
+					{
+						EventHeader e = TileEvents[y][i] = new EventHeader(reader);
+						if(Type == MapType.Map2D)
+							TileData[e.XPos,y].Event = e;
+						else if(Type == MapType.Map3D)
+							BlockData[e.XPos,y].Event = e;
+					}
+				}
+				
+				short numevents = reader.ReadInt16();
+				Events = new Event[numevents];
+				for(int i = 0; i < numevents; i++)
+				{
+					Events[i] = new Event(reader);
+				}
+				
+				//NPC positions
+				foreach(NPC npc in UsedNPCs)
+				{
+					if((npc.Movement & 3) != 0)
+					{
+						npc.Positions = new Position[1];
+						npc.Positions[0] = new Position((byte)(reader.ReadByte()-1), (byte)(reader.ReadByte()-1));
+					}else{
+						npc.Positions = new Position[1152];
+						for(int i = 0; i < 1152; i++)
+						{
+							npc.Positions[i] = new Position((byte)(reader.ReadByte()-1), (byte)(reader.ReadByte()-1));
+						}
+					}
+				}
+				
+				//Active events
+				int aesize;
+				if(Type == MapType.Map2D)
+				{
+					aesize = 250;
+				}else{
+				//Goto-points
+					short numgotop = reader.ReadInt16();
+					gotopoints = new GotoPoint[numgotop];
+					for(int i = 0; i < numgotop; i++)
+					{
+						GotoPoint gp = gotopoints[i] = new GotoPoint(reader);
+						if(gp.X < width && gp.Y < height)
+							BlockData[gp.X,gp.Y].GotoPoint = gp;
+					}
+				//Automap gfx remapping structure
+					automap = reader.ReadBytes(64);
+				//Active events	
+					aesize = 64;
+				}
+				ActiveEvents = new short[aesize];
+				for(int i = 0; i < aesize; i++)
+				{
+					ActiveEvents[i] = reader.ReadInt16();
+				}
+			}catch(EndOfStreamException)
+			{
+				corrupted = true;
 			}
 		}
 		
@@ -146,12 +413,13 @@ namespace AlbLib.Mapping
 		/// </summary>
 		public static Map Load(int id)
 		{
-			int fid = id/100;
-			int sid = id%100;
+			int fid, sid;
+			if(!Common.E(id, out fid, out sid))return null;
 			using(FileStream stream = new FileStream(Paths.MapDataN.Format(fid), FileMode.Open))
 			{
-				XLDFile.ReadToIndex(stream, sid);
-				return new Map(id, stream);
+				XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)sid);
+				int size = nav.SubfileLength;
+				return new Map(id, nav);
 			}
 		}
 		
@@ -163,17 +431,125 @@ namespace AlbLib.Mapping
 		/// </returns>
 		public GraphicPlane Combine()
 		{
-			GraphicPlane plane = new GraphicPlane(this.Width*16, this.Height*16);
-			plane.Palette = ImagePalette.GetFullPalette(this.Palette);
-			foreach(Tile t in this.Data)
+			if(this.Type == MapType.Map2D)
 			{
-				RawImage ul = IconGraphics.GetTileUnderlay(this.Tileset, t);
-				RawImage ol = IconGraphics.GetTileOverlay(this.Tileset, t);
-				Point loc = new Point(t.X*16, t.Y*16);
-				plane.Objects.Add(new GraphicObject(ul, loc));
-				plane.Objects.Add(new GraphicObject(ol, loc));
+				GraphicPlane plane = new GraphicPlane(this.Width*16, this.Height*16);
+				plane.Palette = ImagePalette.GetFullPalette(this.Palette);
+				foreach(Tile t in this.TileData)
+				{
+					RawImage ul = IconGraphics.GetTileUnderlay(this.Tileset, t);
+					RawImage ol = IconGraphics.GetTileOverlay(this.Tileset, t);
+					Point loc = new Point(t.X*16, t.Y*16);
+					plane.Objects.Add(new GraphicObject(ul, loc));
+					plane.Objects.Add(new GraphicObject(ol, loc));
+				}
+				return plane;
+			}else if(this.Type == MapType.Map3D)
+			{
+				MinimapType mt = MinimapType.Classic;
+				LabData ld = LabData.GetLabData(this.Labdata);
+				
+				GraphicPlane plane = new GraphicPlane(this.Width*8, this.Height*8);
+				ImagePalette src = ImagePalette.GetFullPalette(this.Palette);
+				ImagePalette dest = plane.Palette = new MinimapPalette(src);
+				
+				if(ld != null)
+				{
+					//Floors
+					Dictionary<int,RawImage> floorcache = new Dictionary<int, RawImage>();
+					foreach(Block b in this.BlockData)
+					{
+						if(b.Floor != 0)
+						{
+							Point loc = new Point(b.X*8, b.Y*8);
+							if(!floorcache.ContainsKey(b.Floor))
+							{
+								floorcache[b.Floor] = Minimize(LabGraphics.GetFloor(this.Labdata, b.Floor), src, dest);
+							}
+							RawImage floor = floorcache[b.Floor];
+							plane.Objects.Add(new GraphicObject(floor, loc));
+						}
+					}
+					
+					//Walls
+					foreach(Block b in this.BlockData)
+					{
+						if(b.IsWall && !ld.GetMinimapForm(b).VisibleOnMinimap)
+						{
+							WallForm form = WallForm.Close;
+							if(b.Y > 0 &&        BlockData[b.X  , b.Y-1].IsWall)form |= WallForm.OpenTop;
+							if(b.X < Width-1 &&  BlockData[b.X+1, b.Y  ].IsWall)form |= WallForm.OpenRight;
+							if(b.Y < Height-1 && BlockData[b.X  , b.Y+1].IsWall)form |= WallForm.OpenBottom;
+							if(b.X > 0 &&        BlockData[b.X-1, b.Y  ].IsWall)form |= WallForm.OpenLeft;
+							Point loc = new Point(b.X*8, b.Y*8);
+							plane.Objects.Add(new GraphicObject(AutoGFX.GetWall(form, mt), loc));
+						}
+					}
+				}
+				
+				
+				
+				foreach(Block b in this.BlockData)
+				{
+					Point loc = new Point(b.X*8, (b.Y-1)*8);
+					//NPCs
+					foreach(NPC npc in UsedNPCs)
+					{
+						if(npc.Positions[0].X == b.X && npc.Positions[0].Y == b.Y)
+						{
+							byte type = 0;
+							if(npc.Interaction == 2)type = 8;
+							else type = 17;
+							if(type != 0)
+								plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(type, mt), loc));
+						}
+					}
+					
+					//Objects
+					if(ld != null)
+					{
+						if(!b.IsEmpty)
+						{
+							byte type = ld.GetMinimapForm(b).MinimapType;
+							plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(type, mt), loc));
+						}
+					}
+					
+					//Goto-points
+					if(b.GotoPoint!=null)
+					{
+						plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(18, mt), loc));
+					}
+				}
+				return plane;
 			}
-			return plane;
+			return null;
+		}
+		
+		private static RawImage Minimize(ImageBase source, ImagePalette src, ImagePalette dest)
+		{
+			if(source == null)return null;
+			byte[] full = source.ImageData;
+			byte[] mini = new byte[64];
+			
+			for(int y = 0; y < 8; y++)
+			for(int x = 0; x < 8; x++)
+			{
+				int rs = 0, gs = 0, bs = 0, cn = 0;
+				for(int y2 = 0; y2 < 8; y2++)
+				for(int x2 = 0; x2 < 8; x2++)
+				{
+					Color c = src[full[x*8+x2+(y*8+y2)*64]];
+					rs += c.R;
+					gs += c.G;
+					bs += c.B;
+					cn += 1;
+				}
+				Color average = Color.FromArgb(Convert.ToInt32(rs/(float)cn), Convert.ToInt32(gs/(float)cn), Convert.ToInt32(bs/(float)cn));
+				byte avgbyte = (byte)dest.GetNearestColorIndex(average);
+				mini[x+y*8] = avgbyte;
+			}
+			return new RawImage(mini, 8, 8);
 		}
 	}
 }

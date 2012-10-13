@@ -155,7 +155,7 @@ namespace AlbLib.Imaging
 						break;
 					case "CMAP":
 						Color[] pal = new Color[chunk.Length/3];
-						for(int i = 0; i < Palette.Length; i++)
+						for(int i = 0; i < pal.Length; i++)
 						{
 							byte R = reader.ReadByte();
 							byte G = reader.ReadByte();
@@ -208,20 +208,6 @@ namespace AlbLib.Imaging
 		}
 		
 		/// <summary>
-		/// Draws the image to bitmap using specified <paramref name="palette"/>.
-		/// </summary>
-		/// <param name="palette">
-		/// Palette ID.
-		/// </param>
-		/// <returns>
-		/// Drawn image.
-		/// </returns>
-		public override Image Render(ImagePalette palette)
-		{
-			return Drawing.DrawBitmap(ImageData, Width, Height, palette);
-		}
-		
-		/// <summary>
 		/// Draws the image to bitmap using its own palette.
 		/// </summary>
 		/// <returns>
@@ -229,7 +215,12 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public Image Render()
 		{
-			return Drawing.DrawBitmap(ImageData, Width, Height, ImagePalette.Create(Palette));
+			return Drawing.DrawBitmap(ImageData, Width, Height, ImagePalette.Create(Palette), null);
+		}
+		
+		public Image Render(RenderOptions options)
+		{
+			return Drawing.DrawBitmap(ImageData, Width, Height, ImagePalette.Create(Palette), options);
 		}
 		
 		/// <summary>
@@ -246,6 +237,11 @@ namespace AlbLib.Imaging
 			return Tiny.Render(palette);
 		}
 		
+		public Image RenderTiny(ImagePalette palette, RenderOptions options)
+		{
+			return Tiny.Render(palette, options);
+		}
+		
 		/// <summary>
 		/// Draws the thumbnail to bitmap.
 		/// </summary>
@@ -254,7 +250,12 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public Image RenderTiny()
 		{
-			return Drawing.DrawBitmap(Tiny.ImageData, Tiny.Width, Tiny.Height, ImagePalette.Create(Palette));
+			return Drawing.DrawBitmap(Tiny.ImageData, Tiny.Width, Tiny.Height, ImagePalette.Create(Palette), null);
+		}
+		
+		public Image RenderTiny(RenderOptions options)
+		{
+			return Drawing.DrawBitmap(Tiny.ImageData, Tiny.Width, Tiny.Height, ImagePalette.Create(Palette), options);
 		}
 		
 		/// <summary>

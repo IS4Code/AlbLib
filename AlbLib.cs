@@ -61,6 +61,36 @@ namespace AlbLib
 		public static PathInfo TransparencyTablesN;
 		
 		/// <summary>
+		/// Absolute path to any XLDLIBS/LABDATA{0}.XLD.
+		/// </summary>
+		public static PathInfo LabDataN;
+		
+		/// <summary>
+		/// Absolute path to any XLDLIBS/3DFLOOR{0}.XLD.
+		/// </summary>
+		public static PathInfo _3DFloorN;
+		
+		/// <summary>
+		/// Absolute path to any XLDLIBS/3DWALLS{0}.XLD.
+		/// </summary>
+		public static PathInfo _3DWallsN;
+		
+		/// <summary>
+		/// Absolute path to any XLDLIBS/3DOBJEC{0}.XLD.
+		/// </summary>
+		public static PathInfo _3DObjectsN;
+		
+		/// <summary>
+		/// Absolute path to any XLDLIBS/3DOVERL{0}.XLD.
+		/// </summary>
+		public static PathInfo _3DOverlaysN;
+		
+		/// <summary>
+		/// Absolute path to any XLDLIBS/AUTOGFX{0}.XLD.
+		/// </summary>
+		public static PathInfo AutoGFXN;
+		
+		/// <summary>
 		/// Absolute path to MAIN.EXE.
 		/// </summary>
 		public static PathInfo Main;
@@ -79,7 +109,13 @@ namespace AlbLib
 			SamplesN =  Path.Combine(path, "SAMPLES{0}.XLD");
 			IconGraphicsN =  Path.Combine(path, "ICONGFX{0}.XLD");
 			IconDataN =  Path.Combine(path, "ICONDAT{0}.XLD");
+			LabDataN = Path.Combine(path, "LABDATA{0}.XLD");
 			MapDataN =  Path.Combine(path, "MAPDATA{0}.XLD");
+			_3DFloorN = Path.Combine(path, "3DFLOOR{0}.XLD");
+			_3DWallsN = Path.Combine(path, "3DWALLS{0}.XLD");
+			_3DObjectsN = Path.Combine(path, "3DOBJEC{0}.XLD");
+			_3DOverlaysN = Path.Combine(path, "3DOVERL{0}.XLD");
+			AutoGFXN = Path.Combine(path, "AUTOGFX{0}.XLD");
 			TransparencyTablesN =  Path.Combine(path, "TRANSTB{0}.XLD");
 		}
 	}
@@ -116,6 +152,16 @@ namespace AlbLib
 			FileName = Path.GetFullPath(path);
 			Directory = Path.GetDirectoryName(FileName);
 			SearchPattern = String.Format(Path.GetFileName(path), '*');
+		}
+		
+		public XLDNavigator OpenXLD()
+		{
+			return OpenXLD(0);
+		}
+		
+		public XLDNavigator OpenXLD(int index)
+		{
+			return new XLDNavigator(String.Format(FileName, index));
 		}
 		
 		/// <summary>
@@ -181,7 +227,7 @@ namespace AlbLib
 			{
 				foreach(XLDSubfile sub in XLDFile.EnumerateSubfiles(path))
 				{
-					yield return new KeyValuePair<int,XLDSubfile>(i*100+sub.Index, sub);
+					yield return new KeyValuePair<int,XLDSubfile>(Common.E(i, sub.Index), sub);
 				}
 				i += 1;
 			}
@@ -223,13 +269,48 @@ namespace AlbLib
 	}
 	
 	/// <summary>
-	/// Contains various magic contants.
+	/// Contains various common functions and magic contants.
 	/// </summary>
-	public static class Constants
+	public static class Common
 	{
 		/// <summary>
 		/// 63×ColorConversion = 255
 		/// </summary>
 		public const double ColorConversion = 4.047619047619047619047619047619;
+		
+		public static bool E(int index, out int fileIndex, out int subfileIndex)
+		{
+			if(index == 0)
+			{
+				fileIndex = 0; subfileIndex = 0;
+				return false;
+			}
+			fileIndex = index/100;
+			subfileIndex = index<100?index-1:index%100;
+			return true;
+		}
+		
+		public static int E(int fileIndex, int subfileIndex)
+		{
+			return fileIndex==0?subfileIndex+1:fileIndex*100+subfileIndex;
+		}
+		
+		private static readonly byte[] skipBuffer = new byte[4096];
+		
+		public static int Skip(this Stream input, int bytes)
+		{
+			int read = 0;
+			while(true)
+			{
+				if(bytes > 4096)
+				{
+					read += input.Read(skipBuffer, 0, 4096);
+					bytes -= 4096;
+				}else{
+					read += input.Read(skipBuffer, 0, bytes);
+				}
+			}
+			return read;
+		}
 	}
 }

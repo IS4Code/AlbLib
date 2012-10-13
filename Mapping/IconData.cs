@@ -20,15 +20,17 @@ namespace AlbLib.Mapping
 		{
 			if(tilesets[index] == null)
 			{
-				int fx = index/100;
-				int tx = index%100;
+				int fx, tx;
+				if(!Common.E(index, out fx, out tx))return null;
+				
 				using(FileStream stream = new FileStream(Paths.IconDataN.Format(fx), FileMode.Open))
 				{
-					int len = XLDFile.ReadToIndex(stream, tx);
+					XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)tx);
+					int len = nav.SubfileLength;
 					tilesets[index] = new TileData[len/8];
 					for(int i = 0; i < len/8; i++)
 					{
-						var data = new TileData(i, stream);
+						var data = new TileData(i, nav);
 						tilesets[index][i] = data;
 					}
 				}
