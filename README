@@ -1,26 +1,18 @@
-Loading savegame
-  Paths.SetXLDLIBS(Environment.CurrentDirectory);
-	Items.LoadItemStates();
-	Texts.LoadItemNames();
-	
-	XLD.XLDInfo xld;
-	int pos;
-	byte[] buffer = File.ReadAllBytes(@"C:\HRY\Albion\SAVES\SAVE.006");
-	SaveGame.SaveGameInfo info;
-	using(MemoryStream stream = new MemoryStream(buffer))
-	{
-		info = new SaveGame.SaveGameInfo(stream);
-		xld = XLD.FindXLD(stream, 0, out pos);
-	}
-	
-	var ch = new SaveGame.Character(xld.Subfiles[0]);
-	SaveGame.ItemStack stack = ch.Inventory[0,0];
-	Console.WriteLine(ch.Name+" has "+stack);
-	stack.Flags = SaveGame.ItemFlags.Broken | SaveGame.ItemFlags.ShowMoreInfo;
-	ch.Inventory[0,0] = stack;
-	xld.Subfiles[0] = ch.ToRawData();
-	xld.ToRawData().CopyTo(buffer, pos);
-	File.WriteAllBytes(@"C:\HRY\Albion\SAVES\SAVE.006", buffer);
-		
-Monster palettes
-	31,0,0,31,31,31,42,42,0,42,42,0,42,42,42,34,34,34,36,36,36,26,26,26,36,36,36,37,0,0,35,35,35,39,39,39,34,34,34,34,34,34,37,37,0,37,37,0,31,31,31,31,31,31,31,31,31,34,38,37
+Welcome.
+AlbLib is a class library which can simulate Albion behaviour in opening many file formats. What can it do?
+<dl>
+  <dt>Image rendering</dt>
+  <dd>Imaging namespace provides classes representing various image formats. It can also combine many images into one.</dd>
+  <dt>Items</dt>
+  <dd>ItemState is a structure containing static item data.</dd>
+  <dt>Mapping</dt>
+  <dd>This namespace of course reads maps. All maps in the game can be loaded and viewed by the Map class-</dd>
+  <dt>Saved games</dt>
+  <dd>SaveGame namespace shows the possibility to load and edit savegames.</dd>
+  <dt>Scripting</dt>
+  <dd>Classes here handle loading and executing of textual game scripts.</dd>
+  <dt>Sounds</dt>
+  <dd>You can load all sounds played in the game.</dd>
+  <dt>XLD archives</dt>
+  <dd>With classes in XLD namespaces, mainly XLDNavigator, you can load and browse XLD archives.</dd>
+</dl>
