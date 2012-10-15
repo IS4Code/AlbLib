@@ -300,16 +300,16 @@ namespace AlbLib
 		public static int Skip(this Stream input, int bytes)
 		{
 			int read = 0;
-			while(true)
-			{
+			do{
 				if(bytes > 4096)
 				{
 					read += input.Read(skipBuffer, 0, 4096);
 					bytes -= 4096;
 				}else{
 					read += input.Read(skipBuffer, 0, bytes);
+					bytes = 0;
 				}
-			}
+			}while(bytes != 0);
 			return read;
 		}
 	}
