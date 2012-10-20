@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Mapping
+﻿using System;
+namespace AlbLib.Mapping
 {
 	/// <summary>
 	/// Type of map.
 	/// </summary>
+	[Serializable]
 	public enum MapType : byte
 	{
 		/// <summary>

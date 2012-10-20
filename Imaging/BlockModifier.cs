@@ -1,9 +1,11 @@
-﻿namespace AlbLib.Imaging
+﻿using System;
+namespace AlbLib.Imaging
 {
 	/// <summary>
 	/// Modifier can be used to multiply color values.
 	/// </summary>
-	public class BlockModifier
+	[Serializable]
+	public class BlockModifier : IEquatable<BlockModifier>, ICloneable
 	{
 		/// <summary>
 		/// R multiplier.
@@ -102,6 +104,22 @@
 		public static BlockModifier Night(double mod)
 		{
 			return new BlockModifier(mod, 0, 191);
+		}
+		
+		public object Clone()
+		{
+			return new BlockModifier(R, G, B, A, LowerIndex, UpperIndex);
+		}
+		
+		public bool Equals(BlockModifier other)
+		{
+			return
+				this.R == other.R &&
+				this.G == other.G &&
+				this.B == other.B &&
+				this.A == other.A &&
+				this.LowerIndex == other.LowerIndex &&
+				this.UpperIndex == other.UpperIndex;
 		}
 	}
 }

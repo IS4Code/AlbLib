@@ -6,6 +6,7 @@ using AlbLib.Internal;
 
 namespace AlbLib.Texts
 {
+	[Serializable]
 	public class VisualEncoding : Encoding
 	{
 		private Dictionary<char,byte> c2b;

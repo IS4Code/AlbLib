@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 
@@ -7,7 +8,8 @@ namespace AlbLib.Imaging
 	/// <summary>
 	/// Plane containing more graphic objects.
 	/// </summary>
-	public class GraphicPlane : IRenderable, IPaletteRenderable
+	[Serializable]
+	public class GraphicPlane : IRenderable
 	{
 		/// <summary>
 		/// Main background image.
@@ -70,19 +72,6 @@ namespace AlbLib.Imaging
 		}
 		
 		/// <summary>
-		/// Draws plane to bitmap.
-		/// </summary>
-		public Image Render()
-		{
-			return Render(Palette);
-		}
-		
-		public Image Render(RenderOptions options)
-		{
-			return Render(Palette, options);
-		}
-		
-		/// <summary>
 		/// Draws plane to bitmap using other palette.
 		/// </summary>
 		public Image Render(byte palette)
@@ -90,24 +79,30 @@ namespace AlbLib.Imaging
 			return Render(ImagePalette.GetFullPalette(palette));
 		}
 		
+		/// <summary>
+		/// Draws plane to bitmap using palette and render options.
+		/// </summary>
 		public Image Render(byte palette, RenderOptions options)
 		{
-			return Render(ImagePalette.GetFullPalette(palette), options);
+			return Render(new RenderOptions(options){Palette = options.Palette??ImagePalette.GetFullPalette(palette)});
 		}
 		
-		public Image Render(ImagePalette palette)
+		/// <summary>
+		/// Draws plane to bitmap.
+		/// </summary>
+		public Image Render()
 		{
 			byte[] baked = GetBaked();
-			return Drawing.DrawBitmap(baked, Background.GetWidth(), Background.GetHeight(), palette, null);
+			return Drawing.DrawBitmap(baked, Background.GetWidth(), Background.GetHeight(), Palette);
 		}
 		
 		/// <summary>
 		/// Draws plane to bitmap using other palette.
 		/// </summary>
-		public Image Render(ImagePalette palette, RenderOptions options)
+		public Image Render(RenderOptions options)
 		{
 			byte[] baked = GetBaked();
-			return Drawing.DrawBitmap(baked, Background.GetWidth(), Background.GetHeight(), palette, options);
+			return Drawing.DrawBitmap(baked, Background.GetWidth(), Background.GetHeight(), options);
 		}
 		
 		/// <summary>

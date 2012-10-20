@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using AlbLib.Caching;
 using AlbLib.Imaging;
 using AlbLib.XLD;
 
@@ -9,8 +10,7 @@ namespace AlbLib.Mapping
 	/// </summary>
 	public static class IconGraphics
 	{
-		private static readonly RawImage[][] tilesets = new RawImage[short.MaxValue][];
-		private static readonly RawImage[][] tilesetssorted = new RawImage[short.MaxValue][];
+		private static readonly IndexedCache<RawImage[]> cache = new IndexedCache<RawImage[]>(LoadTileset, Cache.ZeroNull);
 		
 		/// <summary>
 		/// Loads tileset as an array of RawImages.
@@ -23,31 +23,29 @@ namespace AlbLib.Mapping
 		/// </returns>
 		public static RawImage[] GetTileset(int index)
 		{
-			if(tilesetssorted[index] == null)
+			return cache.Get(index);
+		}
+		
+		private static RawImage[] LoadTileset(int index)
+		{
+			int fx, tx;
+			if(!Common.E(index, out fx, out tx))return null;
+			using(FileStream stream = new FileStream(Paths.IconGraphicsN.Format(fx), FileMode.Open))
 			{
-				if(tilesets[index] == null)
+				XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)tx);
+				int len = nav.SubfileLength;
+				RawImage[] tileset = new RawImage[len/256];
+				for(int i = 0; i < len/256; i++)
 				{
-					int fx, tx;
-					if(!Common.E(index, out fx, out tx))return null;
-					using(FileStream stream = new FileStream(Paths.IconGraphicsN.Format(fx), FileMode.Open))
-					{
-						XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)tx);
-						int len = nav.SubfileLength;
-						tilesets[index] = new RawImage[len/256];
-						for(int i = 0; i < len/256; i++)
-						{
-							tilesets[index][i] = new RawImage(nav, 16, 16);
-						}
-					}
+					tileset[i] = new RawImage(nav, 16, 16);
 				}
-				TileData[] data = IconData.GetTileset(index);
-				tilesetssorted[index] = new RawImage[data.Length];
-				foreach(TileData td in data)
-				{
-					tilesetssorted[index][td.Id] = tilesets[index][td.GrID];
-				}
+				return tileset;
 			}
-			return tilesetssorted[index];
+		}
+		
+		public static RawImage GetTileGraphics(int tileset, int grindex)
+		{
+			return GetTileset(tileset)[grindex];
 		}
 		
 		/// <summary>
@@ -62,7 +60,8 @@ namespace AlbLib.Mapping
 		public static RawImage GetTile(int tileset, int index)
 		{
 			if(index <= 1)return null;
-			return GetTileset(tileset)[index-2];
+			TileData[] tiledata = IconData.GetTileset(tileset);
+			return GetTileGraphics(tileset, tiledata[index-2].GrID);
 		}
 		
 		/// <summary>
@@ -79,8 +78,7 @@ namespace AlbLib.Mapping
 		/// </returns>
 		public static RawImage GetTileUnderlay(int tileset, Tile tile)
 		{
-			if(tile.Underlay <= 1)return null;
-			return GetTileset(tileset)[tile.Underlay-2];
+			return GetTile(tileset, tile.Underlay);
 		}
 		
 		/// <summary>
@@ -97,8 +95,7 @@ namespace AlbLib.Mapping
 		/// </returns>
 		public static RawImage GetTileOverlay(int tileset, Tile tile)
 		{
-			if(tile.Overlay <= 1)return null;
-			return GetTileset(tileset)[tile.Overlay-2];
+			return GetTile(tileset, tile.Overlay);
 		}
 	}
 }

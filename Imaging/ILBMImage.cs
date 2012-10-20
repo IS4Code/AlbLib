@@ -9,6 +9,7 @@ namespace AlbLib.Imaging
 	/// <summary>
 	/// Image in ILBM format, containing many informations. Currently read-only.
 	/// </summary>
+	[Serializable]
 	public sealed class ILBMImage : ImageBase, IRenderable
 	{
 		/// <summary>
@@ -215,31 +216,21 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public Image Render()
 		{
-			return Drawing.DrawBitmap(ImageData, Width, Height, ImagePalette.Create(Palette), null);
-		}
-		
-		public Image Render(RenderOptions options)
-		{
-			return Drawing.DrawBitmap(ImageData, Width, Height, ImagePalette.Create(Palette), options);
+			return Drawing.DrawBitmap(ImageData, Width, Height, Palette);
 		}
 		
 		/// <summary>
-		/// Draws the thumbnail to bitmap.
+		/// Draws the image to bitmap using rendering options.
 		/// </summary>
-		/// <param name="palette">
-		/// Palette ID.
+		/// <param name="options">
+		/// Rendering options.
 		/// </param>
 		/// <returns>
 		/// Drawn image.
 		/// </returns>
-		public Image RenderTiny(ImagePalette palette)
+		public override Image Render(RenderOptions options)
 		{
-			return Tiny.Render(palette);
-		}
-		
-		public Image RenderTiny(ImagePalette palette, RenderOptions options)
-		{
-			return Tiny.Render(palette, options);
+			return Drawing.DrawBitmap(ImageData, Width, Height, new RenderOptions(options){Palette = options.Palette??Palette});
 		}
 		
 		/// <summary>
@@ -250,12 +241,18 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public Image RenderTiny()
 		{
-			return Drawing.DrawBitmap(Tiny.ImageData, Tiny.Width, Tiny.Height, ImagePalette.Create(Palette), null);
+			return Drawing.DrawBitmap(Tiny.ImageData, Tiny.Width, Tiny.Height, Palette);
 		}
 		
+		/// <summary>
+		/// Draws the thumbnail to bitmap.
+		/// </summary>
+		/// <returns>
+		/// Drawn image.
+		/// </returns>
 		public Image RenderTiny(RenderOptions options)
 		{
-			return Drawing.DrawBitmap(Tiny.ImageData, Tiny.Width, Tiny.Height, ImagePalette.Create(Palette), options);
+			return Drawing.DrawBitmap(Tiny.ImageData, Tiny.Width, Tiny.Height, new RenderOptions(options){Palette = options.Palette??Palette});
 		}
 		
 		/// <summary>

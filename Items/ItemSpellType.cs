@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Items
+﻿using System;
+namespace AlbLib.Items
 {
 	/// <summary>
 	/// Item spell class.
 	/// </summary>
+	[Serializable]
 	public enum ItemSpellType : byte
 	{
 		/// <summary>Dji Kas.</summary>

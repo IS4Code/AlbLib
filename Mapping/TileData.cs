@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+
 namespace AlbLib.Mapping
 {
 	/// <summary>
 	/// Data about map tile.
 	/// </summary>
+	[Serializable]
 	public struct TileData
 	{
 		/// <summary>
@@ -15,23 +18,40 @@ namespace AlbLib.Mapping
 		/// TODO.
 		/// </summary>
 		public readonly byte Type;
+		
 		/// <summary>
 		/// TODO.
 		/// </summary>
 		public readonly byte Collision;
+		
 		/// <summary>
 		/// TODO.
 		/// </summary>
 		public readonly short Info;
+		
 		/// <summary>
 		/// TODO.
 		/// </summary>
 		public readonly short GrID;
+		
 		/// <summary>
 		/// TODO.
 		/// </summary>
 		public readonly byte FramesCount;
-		readonly byte unknown1;
+		
+		public readonly byte Unknown1;
+		
+		public bool IsEmpty{
+			get{
+				return FramesCount == 0;
+			}
+		}
+		
+		public bool Discard{
+			get{
+				return IsEmpty || (Info & 0x20) != 0;
+			}
+		}
 	
 		/// <param name="id">
 		/// Id to assign.
@@ -49,7 +69,7 @@ namespace AlbLib.Mapping
 			Info = reader.ReadInt16();
 			GrID = reader.ReadInt16();
 			FramesCount = reader.ReadByte();
-			unknown1 = reader.ReadByte();
+			Unknown1 = reader.ReadByte();
 		}
 	}
 }

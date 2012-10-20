@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Items
+﻿using System;
+namespace AlbLib.Items
 {
 	/// <summary>
 	/// Class of item.
 	/// </summary>
+	[Serializable]
 	public enum ItemClass : byte
 	{
 		/// <summary>Unknown, unset class.</summary>

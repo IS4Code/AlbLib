@@ -6,6 +6,7 @@ namespace AlbLib.Imaging
 	/// <summary>
 	/// Object lieing on graphic plane.
 	/// </summary>
+	[Serializable]
 	public class GraphicObject
 	{
 		/// <summary>

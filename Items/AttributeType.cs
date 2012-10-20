@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Items
+﻿using System;
+namespace AlbLib.Items
 {
 	/// <summary>
 	/// Attribute type for item.
 	/// </summary>
+	[Serializable]
 	public enum AttributeType : byte
 	{
 		/// <summary>Strength.</summary>

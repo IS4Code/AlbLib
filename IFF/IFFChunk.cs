@@ -1,9 +1,11 @@
-﻿namespace AlbLib.IFF
+﻿using System;
+namespace AlbLib.IFF
 {
 	/// <summary>
 	/// Structure representing chunk header.
 	/// </summary>
-	public struct IFFChunk
+	[Serializable]
+	public class IFFChunk
 	{
 		/// <summary>
 		/// Type ID of data.

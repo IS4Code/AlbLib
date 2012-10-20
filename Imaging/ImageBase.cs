@@ -1,11 +1,13 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace AlbLib.Imaging
 {
 	/// <summary>
 	/// Base image class.
 	/// </summary>
-	public abstract class ImageBase : IPaletteRenderable
+	[Serializable]
+	public abstract class ImageBase : IRenderable
 	{
 		/// <returns>Width</returns>
 		public abstract int GetWidth();
@@ -34,7 +36,7 @@ namespace AlbLib.Imaging
 		/// <returns>
 		/// Drawn image.
 		/// </returns>
-		public virtual Image Render(int palette)
+		public Image Render(int palette)
 		{
 			return Render(ImagePalette.GetFullPalette(palette));
 		}
@@ -48,14 +50,14 @@ namespace AlbLib.Imaging
 		/// <returns>
 		/// Drawn image.
 		/// </returns>
-		public virtual Image Render(ImagePalette palette)
+		public Image Render(ImagePalette palette)
 		{
-			return Render(palette, null);
+			return Render(new RenderOptions(palette));
 		}
 		
-		public virtual Image Render(ImagePalette palette, RenderOptions options)
+		public virtual Image Render(RenderOptions options)
 		{
-			return Drawing.DrawBitmap(ImageData, GetWidth(), GetHeight(), palette, options);
+			return Drawing.DrawBitmap(ImageData, GetWidth(), GetHeight(), options);
 		}
 		
 		public static byte[,] Assemble(byte[] arr, int width, int height)

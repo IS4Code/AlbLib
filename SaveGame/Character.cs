@@ -7,6 +7,7 @@ namespace AlbLib.SaveGame
 	/// <summary>
 	/// Stores information about game character.
 	/// </summary>
+	[Serializable]
 	public class Character
 	{
 		private byte[] source;

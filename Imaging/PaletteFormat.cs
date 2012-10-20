@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Imaging
+﻿using System;
+namespace AlbLib.Imaging
 {
 	/// <summary>
 	/// Represents format of palette when loading.
 	/// </summary>
+	[Serializable]
 	public enum PaletteFormat
 	{
 		/// <summary>

@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace AlbLib.IFF
 {
 	/// <summary>
 	/// Class representing single node in IFF file.
 	/// </summary>
+	[Serializable]
 	public class IFFContentNode : IFFNode
 	{
 		/// <summary>

@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Texts
+﻿using System;
+namespace AlbLib.Texts
 {
 	/// <summary>
 	/// Style of font.
 	/// </summary>
+	[Serializable]
 	public enum FontStyle : byte
 	{
 		/// <summary>

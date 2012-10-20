@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using AlbLib.Caching;
 using AlbLib.Imaging;
 using AlbLib.Texts;
 using AlbLib.XLD;
@@ -11,6 +12,7 @@ namespace AlbLib.Mapping
 	/// <summary>
 	/// Class representing game map.
 	/// </summary>
+	[Serializable]
 	public class Map
 	{
 		/// <summary>
@@ -187,7 +189,7 @@ namespace AlbLib.Mapping
 		/// <summary>
 		/// Array of map data, tiles or blocks.
 		/// </summary>
-		public IMapSquare[,] Data{
+		/*public IMapSquare[,] Data{
 			get{
 				IMapSquare[,] data = new IMapSquare[Width,Height];
 				Array source = null;
@@ -206,7 +208,7 @@ namespace AlbLib.Mapping
 				}
 				return data;
 			}
-		}
+		}*/
 		
 		private GotoPoint[] gotopoints;
 		
@@ -423,13 +425,18 @@ namespace AlbLib.Mapping
 			}
 		}
 		
+		public GraphicPlane Combine()
+		{
+			return Combine(CombineArgs.Default);
+		}
+		
 		/// <summary>
 		/// Combines all tiles to form a graphic plane.
 		/// </summary>
 		/// <returns>
 		/// Newly created graphic plane.
 		/// </returns>
-		public GraphicPlane Combine()
+		public GraphicPlane Combine(CombineArgs args)
 		{
 			if(this.Type == MapType.Map2D)
 			{
@@ -437,11 +444,18 @@ namespace AlbLib.Mapping
 				plane.Palette = ImagePalette.GetFullPalette(this.Palette);
 				foreach(Tile t in this.TileData)
 				{
-					RawImage ul = IconGraphics.GetTileUnderlay(this.Tileset, t);
-					RawImage ol = IconGraphics.GetTileOverlay(this.Tileset, t);
 					Point loc = new Point(t.X*16, t.Y*16);
-					plane.Objects.Add(new GraphicObject(ul, loc));
-					plane.Objects.Add(new GraphicObject(ol, loc));
+					if(args.ShowUnderlays)
+					{
+						RawImage ul = IconGraphics.GetTileUnderlay(this.Tileset, t);
+						plane.Objects.Add(new GraphicObject(ul, loc));
+					}
+					if(!args.ShowHelpers&&IsHelperTile(tilesid, t.Overlay))continue;
+					if(args.ShowOverlays)
+					{
+						RawImage ol = IconGraphics.GetTileOverlay(this.Tileset, t);
+						plane.Objects.Add(new GraphicObject(ol, loc));
+					}
 				}
 				return plane;
 			}else if(this.Type == MapType.Map3D)
@@ -455,75 +469,94 @@ namespace AlbLib.Mapping
 				
 				if(ld != null)
 				{
-					//Floors
-					Dictionary<int,RawImage> floorcache = new Dictionary<int, RawImage>();
-					foreach(Block b in this.BlockData)
+					if(args.ShowFloors)
 					{
-						if(b.Floor != 0)
+						//Floors
+						IndexedCache<RawImage> floorcache = new IndexedCache<RawImage>(i=>Minimize(LabGraphics.GetFloor(this.Labdata, i), src, dest));
+						foreach(Block b in this.BlockData)
 						{
-							Point loc = new Point(b.X*8, b.Y*8);
-							if(!floorcache.ContainsKey(b.Floor))
+							if(b.Floor != 0)
 							{
-								floorcache[b.Floor] = Minimize(LabGraphics.GetFloor(this.Labdata, b.Floor), src, dest);
+								Point loc = new Point(b.X*8, b.Y*8);
+								plane.Objects.Add(new GraphicObject(floorcache[b.Floor], loc));
 							}
-							RawImage floor = floorcache[b.Floor];
-							plane.Objects.Add(new GraphicObject(floor, loc));
 						}
 					}
 					
-					//Walls
-					foreach(Block b in this.BlockData)
+					if(args.ShowWalls)
 					{
-						if(b.IsWall && !ld.GetMinimapForm(b).VisibleOnMinimap)
+						//Walls
+						foreach(Block b in this.BlockData)
 						{
-							WallForm form = WallForm.Close;
-							if(b.Y > 0 &&        BlockData[b.X  , b.Y-1].IsWall)form |= WallForm.OpenTop;
-							if(b.X < Width-1 &&  BlockData[b.X+1, b.Y  ].IsWall)form |= WallForm.OpenRight;
-							if(b.Y < Height-1 && BlockData[b.X  , b.Y+1].IsWall)form |= WallForm.OpenBottom;
-							if(b.X > 0 &&        BlockData[b.X-1, b.Y  ].IsWall)form |= WallForm.OpenLeft;
-							Point loc = new Point(b.X*8, b.Y*8);
-							plane.Objects.Add(new GraphicObject(AutoGFX.GetWall(form, mt), loc));
+							if(b.IsWall && !ld.GetMinimapForm(b).VisibleOnMinimap)
+							{
+								WallForm form = WallForm.Close;
+								if(b.Y > 0 &&        BlockData[b.X  , b.Y-1].IsWall)form |= WallForm.OpenTop;
+								if(b.X < Width-1 &&  BlockData[b.X+1, b.Y  ].IsWall)form |= WallForm.OpenRight;
+								if(b.Y < Height-1 && BlockData[b.X  , b.Y+1].IsWall)form |= WallForm.OpenBottom;
+								if(b.X > 0 &&        BlockData[b.X-1, b.Y  ].IsWall)form |= WallForm.OpenLeft;
+								Point loc = new Point(b.X*8, b.Y*8);
+								plane.Objects.Add(new GraphicObject(AutoGFX.GetWall(form, mt), loc));
+							}
 						}
 					}
 				}
 				
-				
-				
 				foreach(Block b in this.BlockData)
 				{
 					Point loc = new Point(b.X*8, (b.Y-1)*8);
-					//NPCs
-					foreach(NPC npc in UsedNPCs)
+					if(args.ShowNPCs)
 					{
-						if(npc.Positions[0].X == b.X && npc.Positions[0].Y == b.Y)
+						//NPCs
+						foreach(NPC npc in UsedNPCs)
 						{
-							byte type = 0;
-							if(npc.Interaction == 2)type = 8;
-							else type = 17;
-							if(type != 0)
+							if(npc.Positions[0].X == b.X && npc.Positions[0].Y == b.Y)
+							{
+								byte type = 0;
+								if(npc.Interaction == 2)type = 8;
+								else type = 17;
+								if(type != 0)
+									plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(type, mt), loc));
+							}
+						}
+					}
+					
+					if(args.ShowObjects)
+					{
+						//Objects
+						if(ld != null)
+						{
+							if(!b.IsEmpty)
+							{
+								byte type = ld.GetMinimapForm(b).MinimapType;
 								plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(type, mt), loc));
+							}
 						}
 					}
 					
-					//Objects
-					if(ld != null)
+					if(args.ShowGotoPoints)
 					{
-						if(!b.IsEmpty)
+						//Goto-points
+						if(b.GotoPoint!=null)
 						{
-							byte type = ld.GetMinimapForm(b).MinimapType;
-							plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(type, mt), loc));
+							plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(18, mt), loc));
 						}
-					}
-					
-					//Goto-points
-					if(b.GotoPoint!=null)
-					{
-						plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(18, mt), loc));
 					}
 				}
 				return plane;
 			}
 			return null;
+		}
+		
+		public IEnumerable<IMapSquare> EnumerateSquares()
+		{
+			if(Type == MapType.Map2D)
+			{
+				foreach(Tile t in TileData)yield return t;
+			}else if(Type == MapType.Map3D)
+			{
+				foreach(Block b in BlockData)yield return b;
+			}
 		}
 		
 		private static RawImage Minimize(ImageBase source, ImagePalette src, ImagePalette dest)
@@ -550,6 +583,62 @@ namespace AlbLib.Mapping
 				mini[x+y*8] = avgbyte;
 			}
 			return new RawImage(mini, 8, 8);
+		}
+		
+		public static bool IsHelperTile(int tileset, int tile)
+		{
+			switch(tileset)
+			{
+				case 2:
+					switch(tile)
+					{
+						case 2689:case 2690:return true;
+					}
+					break;
+				case 3:
+					switch(tile)
+					{
+						case 2763:case 2764:return true;
+					}
+					break;
+				case 5:
+					switch(tile)
+					{
+						case 3018:case 3019:return true;
+					}
+					break;
+				case 6:
+					switch(tile)
+					{
+						case 2605:case 2606:return true;
+					}
+					break;
+				case 7:
+					switch(tile)
+					{
+						case 2931:case 2932:case 3559:return true;
+					}
+					break;
+				case 8:
+					switch(tile)
+					{
+						case 2471:case 2472:case 2550:return true;
+					}
+					break;
+				case 9:
+					switch(tile)
+					{
+						case 2598:case 2599:case 2810:case 2811:return true;
+					}
+					break;
+				case 10:
+					switch(tile)
+					{
+						case 2048:case 2049:return true;
+					}
+					break;
+			}
+			return false;
 		}
 	}
 }

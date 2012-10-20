@@ -4,7 +4,7 @@ namespace AlbLib.Items
 	/// <summary>
 	/// Item gender limitation.
 	/// </summary>
-	[Flags]
+	[Flags, Serializable]
 	public enum Gender : byte
 	{
 		/// <summary>Nobody can use this.</summary>

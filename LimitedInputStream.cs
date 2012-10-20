@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+#pragma warning disable 1591
 
 namespace AlbLib
 {
 	/// <summary>
 	/// This stream captures base stream and limits reading.
 	/// </summary>
+	[Serializable]
 	public class LimitedInputStream : Stream
 	{
 		private Stream source;
@@ -17,6 +19,9 @@ namespace AlbLib
 			get; private set;
 		}
 		
+		/// <summary>
+		/// Wraps new stream.
+		/// </summary>
 		public LimitedInputStream(Stream source, int readlimit)
 		{
 			this.source = source;

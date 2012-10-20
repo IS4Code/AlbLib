@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+
 namespace AlbLib.XLD
 {
 	/// <summary>
 	/// This class represent single subfile in a XLD.
 	/// </summary>
+	[Serializable]
 	public class XLDSubfile
 	{
 		/// <summary>

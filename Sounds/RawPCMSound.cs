@@ -3,9 +3,7 @@ using System.IO;
 
 namespace AlbLib.Sounds
 {
-	/// <summary>
-	/// 
-	/// </summary>
+	[Serializable]
 	public class RawPCMSound : SoundBase
 	{
 		/// <summary>

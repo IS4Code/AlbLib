@@ -7,6 +7,7 @@ namespace AlbLib.Mapping
 	/// <summary>
 	/// 3D map goto-point.
 	/// </summary>
+	[Serializable]
 	public class GotoPoint
 	{
 		public byte X{get;set;}

@@ -1,46 +1,121 @@
 ﻿using System;
 using System.IO;
+using AlbLib.Caching;
 using AlbLib.Mapping;
 using AlbLib.XLD;
 
 namespace AlbLib.Imaging
 {
+	/// <summary>
+	/// Contains stuff from automap graphics.
+	/// </summary>
 	public static class AutoGFX
 	{
-		private static byte[][] gfx = new byte[2][];
+		private static IndexedCache<byte[]> cache = new IndexedCache<byte[]>(LoadCache);
 		
-		
+		/// <summary>
+		/// Gets minimap wall image.
+		/// </summary>
+		/// <param name="form">
+		/// Formation of wall.
+		/// </param>
+		/// <param name="setindex">
+		/// Automap type index.
+		/// </param>
+		/// <returns>
+		/// Wall image.
+		/// </returns>
 		public static RawImage GetWall(WallForm form, int setindex)
 		{
 			return GetWall((int)form, setindex);
 		}
 		
+		/// <summary>
+		/// Gets minimap wall image.
+		/// </summary>
+		/// <param name="form">
+		/// Formation of wall.
+		/// </param>
+		/// <param name="type">
+		/// Automap type.
+		/// </param>
+		/// <returns>
+		/// Wall image.
+		/// </returns>
 		public static RawImage GetWall(WallForm form, MinimapType type)
 		{
 			return GetWall((int)form, (int)type);
 		}
 		
+		
+		/// <summary>
+		/// Gets minimap wall image.
+		/// </summary>
+		/// <param name="index">
+		/// Formation of wall.
+		/// </param>
+		/// <param name="type">
+		/// Automap type.
+		/// </param>
+		/// <returns>
+		/// Wall image.
+		/// </returns>
 		public static RawImage GetWall(int index, MinimapType type)
 		{
 			return GetWall(index, (int)type);
 		}
 		
+		/// <summary>
+		/// Gets minimap wall image.
+		/// </summary>
+		/// <param name="index">
+		/// Formation of wall.
+		/// </param>
+		/// <param name="setindex">
+		/// Automap type index.
+		/// </param>
+		/// <returns>
+		/// Wall image.
+		/// </returns>
 		public static RawImage GetWall(int index, int setindex)
 		{
-			CheckCache(setindex);
 			byte[] wall = new byte[64];
-			Array.Copy(gfx[setindex], 0x8C00+index*64, wall, 0, 64);
+			Array.Copy(cache[setindex], 0x8C00+index*64, wall, 0, 64);
 			return new RawImage(wall, 8, 8);
 		}
 		
+		/// <summary>
+		/// Gets minimap object image.
+		/// </summary>
+		/// <param name="index">
+		/// Object type index.
+		/// </param>
+		/// <param name="type">
+		/// Automap type.
+		/// </param>
+		/// <returns>
+		/// Object image.
+		/// </returns>
 		public static RawImage GetMapObject(int index, MinimapType type)
 		{
 			return GetMapObject(index, (int)type);
 		}
 		
+		
+		/// <summary>
+		/// Gets minimap object image.
+		/// </summary>
+		/// <param name="index">
+		/// Object type index.
+		/// </param>
+		/// <param name="setindex">
+		/// Automap type index.
+		/// </param>
+		/// <returns>
+		/// Object image.
+		/// </returns>
 		public static RawImage GetMapObject(int index, int setindex)
 		{
-			CheckCache(setindex);
 			if(index<= 1)return null;
 			if(index<= 8)return GetObj(0x9000+(index-2)*256*4, setindex);
 			if(index<=19)return GetObj(0xAC00+(index-9)*256, setindex);
@@ -50,22 +125,19 @@ namespace AlbLib.Imaging
 		
 		private static RawImage GetObj(int offset, int setindex)
 		{
-			CheckCache(setindex);
 			byte[] img = new byte[256];
-			Array.Copy(gfx[setindex], offset, img, 0, 256);
+			Array.Copy(cache[setindex], offset, img, 0, 256);
 			return new RawImage(img, 16, 16);
 		}
 		
-		private static void CheckCache(int setindex)
+		private static byte[] LoadCache(int setindex)
 		{
-			if(gfx[setindex] == null)
+			using(FileStream stream = new FileStream(Paths.AutoGFXN.Format(0), FileMode.Open))
 			{
-				using(FileStream stream = new FileStream(Paths.AutoGFXN.Format(0), FileMode.Open))
-				{
-					XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)setindex);
-					gfx[setindex] = new byte[nav.SubfileLength];
-					nav.Read(gfx[setindex], 0, nav.SubfileLength);
-				}
+				XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)setindex);
+				byte[] gfx = new byte[nav.SubfileLength];
+				nav.Read(gfx, 0, gfx.Length);
+				return gfx;
 			}
 		}
 	}

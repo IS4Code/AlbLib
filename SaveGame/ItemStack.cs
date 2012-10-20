@@ -7,6 +7,7 @@ namespace AlbLib.SaveGame
 	/// <summary>
 	/// Class representing instance of item or items of same type.
 	/// </summary>
+	[Serializable]
 	public class ItemStack
 	{
 		/// <summary>

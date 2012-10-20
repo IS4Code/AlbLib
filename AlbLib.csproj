@@ -17,6 +17,8 @@
     <OutputType>Library</OutputType>
     <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
+    <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\Illidan\Data aplikací\ICSharpCode/SharpDevelop4\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -56,8 +58,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlbLib.cs" />
     <None Include="Examples.cs" />
+    <Compile Include="Caching\Cache.cs" />
+    <Compile Include="Caching\Cache2.cs" />
+    <Compile Include="Caching\Cache3.cs" />
+    <Compile Include="Caching\IndexedCache1.cs" />
+    <Compile Include="Caching\IndexedCache2.cs" />
+    <Compile Include="Caching\NoArgs.cs" />
+    <Compile Include="Caching\RefEq.cs" />
+    <Compile Include="Caching\Switch.cs">
+      <DependentUpon>IndexedCache2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common.cs" />
     <Compile Include="IFF\IFFChunk.cs" />
     <Compile Include="IFF\IFFContentNode.cs" />
     <Compile Include="IFF\IFFFile.cs" />
@@ -70,14 +82,24 @@
     <Compile Include="Imaging\Drawing.cs" />
     <Compile Include="Imaging\GraphicObject.cs" />
     <Compile Include="Imaging\GraphicPlane.cs" />
+    <Compile Include="Imaging\GrayscalePalette.cs">
+      <DependentUpon>ImagePalette.cs</DependentUpon>
+    </Compile>
     <Compile Include="Imaging\HeaderedImage.cs" />
-    <Compile Include="Imaging\IAnimatedPaletteRenderable.cs" />
     <Compile Include="Imaging\IAnimatedRenderable.cs" />
     <Compile Include="Imaging\ILBMImage.cs" />
     <Compile Include="Imaging\ImageBase.cs" />
+    <Compile Include="Imaging\ImageLocationInfo.cs">
+      <DependentUpon>MainExecutableImages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Imaging\ImagePalette.cs" />
-    <Compile Include="Imaging\IPaletteRenderable.cs" />
     <Compile Include="Imaging\IRenderable.cs" />
+    <Compile Include="Imaging\JoinPalette.cs">
+      <DependentUpon>ImagePalette.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Imaging\ListPalette.cs">
+      <DependentUpon>ImagePalette.cs</DependentUpon>
+    </Compile>
     <Compile Include="Imaging\MainExecutableImages.cs" />
     <Compile Include="Imaging\MinimapPalette.cs" />
     <Compile Include="Imaging\ModifierPalette.cs" />
@@ -87,6 +109,10 @@
     <Compile Include="Imaging\TinyImage.cs" />
     <Compile Include="Imaging\TransparencyTable.cs" />
     <Compile Include="Imaging\TransparencyType.cs" />
+    <Compile Include="INI\INIFile.cs" />
+    <Compile Include="INI\INIObject.cs" />
+    <Compile Include="INI\INIProperty.cs" />
+    <Compile Include="INI\INISection.cs" />
     <Compile Include="Items\AttributeType.cs" />
     <Compile Include="Items\Class.cs" />
     <Compile Include="Items\Gender.cs" />
@@ -101,6 +127,7 @@
     <Compile Include="LimitedInputStream.cs" />
     <Compile Include="Mapping\Block.cs" />
     <Compile Include="Mapping\Block2D.cs" />
+    <Compile Include="Mapping\CombineArgs.cs" />
     <Compile Include="Mapping\Event.cs" />
     <Compile Include="Mapping\EventHeader.cs" />
     <Compile Include="Mapping\FloorData.cs" />
@@ -120,11 +147,17 @@
     <Compile Include="Mapping\NPC.cs" />
     <Compile Include="Mapping\ObjectData.cs" />
     <Compile Include="Mapping\ObjectInfo.cs" />
+    <Compile Include="Mapping\Overlay.cs" />
     <Compile Include="Mapping\Position.cs" />
+    <Compile Include="Mapping\SubObject.cs">
+      <DependentUpon>ObjectData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mapping\Tile.cs" />
     <Compile Include="Mapping\TileData.cs" />
     <Compile Include="Mapping\WallForm.cs" />
     <Compile Include="Mapping\WallData.cs" />
+    <Compile Include="PathInfo.cs" />
+    <Compile Include="Paths.cs" />
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="SaveGame\Backpack.cs" />
     <Compile Include="SaveGame\Character.cs" />
@@ -181,6 +214,8 @@
     <Folder Include="Imaging" />
     <Folder Include="Items" />
     <Folder Include="Mapping" />
+    <Folder Include="Caching" />
+    <Folder Include="INI" />
     <Folder Include="Texts" />
     <Folder Include="Sounds" />
     <Folder Include="XLD" />

@@ -6,6 +6,7 @@ namespace AlbLib.Mapping
 	/// <summary>
 	/// 3D map block.
 	/// </summary>
+	[Serializable]
 	public struct Block : IMapSquare
 	{
 		/// <summary>

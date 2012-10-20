@@ -1,8 +1,10 @@
-﻿namespace AlbLib.SaveGame
+﻿using System;
+namespace AlbLib.SaveGame
 {
 	/// <summary>
 	/// Gender of character.
 	/// </summary>
+	[Serializable]
 	public enum CharacterGender : byte
 	{
 		/// <summary>

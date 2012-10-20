@@ -7,7 +7,7 @@ namespace AlbLib.Imaging
 	/// <summary>
 	/// Contains all interface images located in the main game executable.
 	/// </summary>
-	public static class MainExecutableImages
+	public static partial class MainExecutableImages
 	{
 		/// <summary>
 		/// Checks if images have been loaded.
@@ -48,20 +48,6 @@ namespace AlbLib.Imaging
 					}
 					images[i] = new RawImage(stream, info.Width, info.Height);
 				}
-			}
-		}
-		
-		struct ImageLocationInfo
-		{
-			public long Position;
-			public short Width;
-			public short Height;
-			
-			public ImageLocationInfo(long pos, short width, short height)
-			{
-				Position = pos;
-				Width = width;
-				Height = height;
 			}
 		}
 		

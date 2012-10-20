@@ -4,6 +4,7 @@ using System.IO;
 
 namespace AlbLib.Sounds
 {
+	[Serializable]
 	public class HeaderedPCMSound : SoundBase
 	{
 		public List<Sample> Samples{get; private set;}

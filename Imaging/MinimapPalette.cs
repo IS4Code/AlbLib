@@ -4,6 +4,7 @@ using AlbLib.Mapping;
 
 namespace AlbLib.Imaging
 {
+	[Serializable]
 	public class MinimapPalette : ImagePalette
 	{
 		private ImagePalette source;

@@ -6,6 +6,7 @@ namespace AlbLib.Scripting
 	/// <summary>
 	/// Dummy implementation of <see cref="ScriptExecutionMachine"/> which writes parsed functions to an output.
 	/// </summary>
+	[Serializable]
 	public class DebugExecutor : ScriptExecutionMachine
 	{
 		/// <summary>

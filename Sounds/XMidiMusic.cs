@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+
 namespace AlbLib.Sounds
 {
 	/// <summary>
 	/// Music in XMidi (XMI) format. Incomplete.
 	/// </summary>
+	[Serializable]
 	public class XMidiMusic
 	{
 		/// <summary>

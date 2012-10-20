@@ -4,6 +4,7 @@ namespace AlbLib.Scripting
 	/// <summary>
 	/// Virtual machine which parses script text.
 	/// </summary>
+	[Serializable]
 	public abstract class ScriptExecutionMachine : IScriptExecutor
 	{
 		/// <summary>

@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Items
+﻿using System;
+namespace AlbLib.Items
 {
 	/// <summary>
 	/// What item activates.
 	/// </summary>
+	[Serializable]
 	public enum ItemActivates : byte
 	{
 		/// <summary>Compass activated.</summary>

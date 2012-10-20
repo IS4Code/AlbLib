@@ -4,7 +4,7 @@ namespace AlbLib.Items
 	/// <summary>
 	/// Item class limitation.
 	/// </summary>
-	[Flags]
+	[Flags, Serializable]
 	public enum Class : byte
 	{
 		//TODO

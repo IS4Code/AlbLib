@@ -4,7 +4,7 @@ namespace AlbLib.SaveGame
 	/// <summary>
 	/// Character magic class.
 	/// </summary>
-	[Flags]
+	[Flags, Serializable]
 	public enum CharacterMagic : byte
 	{
 		/// <summary>

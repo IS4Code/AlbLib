@@ -4,7 +4,7 @@ namespace AlbLib.Items
 	/// <summary>
 	/// Item race limitation.
 	/// </summary>
-	[Flags]
+	[Flags, Serializable]
 	public enum Race : byte
 	{
 		//TODO

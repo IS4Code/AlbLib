@@ -4,6 +4,7 @@ namespace AlbLib.Scripting
 	/// <summary>
 	/// Exception which stores additional information when normal exception raises.
 	/// </summary>
+	[Serializable]
 	public class ScriptExecutionException : Exception
 	{
 		/// <summary>

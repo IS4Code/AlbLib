@@ -4,6 +4,7 @@ using AlbLib.XLD;
 
 namespace AlbLib.Mapping
 {
+	[Serializable]
 	public class LabData
 	{
 		private static readonly LabData[] labdatas = new LabData[256];

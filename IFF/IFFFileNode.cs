@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -7,6 +8,7 @@ namespace AlbLib.IFF
 	/// <summary>
 	/// Class respresenting single file in IFF format.
 	/// </summary>
+	[Serializable]
 	public sealed class IFFFileNode : IFFNode
 	{
 		/// <summary>

@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace AlbLib.Mapping
 {
 	/// <summary>
 	/// 2D map tile.
 	/// </summary>
+	[Serializable]
 	public struct Tile : IMapSquare
 	{
 		/// <summary>

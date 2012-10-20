@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using AlbLib.Texts;
 using Texts = AlbLib.Texts;
 
@@ -7,9 +8,52 @@ namespace AlbLib.Items
 	/// <summary>
 	/// Structure representing static information about item type.
 	/// </summary>
+	[Serializable]
 	public struct ItemState
 	{
 		private static ItemState[] ItemStates;
+		
+		public ItemState(Stream stream, short type) : this(new BinaryReader(stream), type){}
+		
+		public ItemState(BinaryReader reader, short type) : this()
+		{
+			Type = type;
+			reader.ReadByte();
+			Class = (ItemClass)reader.ReadByte();
+			Slot = (ItemSlot)reader.ReadByte();
+			BreakRate = reader.ReadByte();
+			Gender = (Gender)reader.ReadByte();
+			FreeHands = reader.ReadByte();
+			LifePointsBonus = reader.ReadByte();
+			SpellPointsBonus = reader.ReadByte();
+			AttributeType = (AttributeType)reader.ReadByte();
+			AttributeBonus = reader.ReadByte();
+			SkillTypeBonus = (SkillType)reader.ReadByte();
+			SkillBonus = reader.ReadByte();
+			PhysicalDamageProtection = reader.ReadByte();
+			PhysicalDamageCaused = reader.ReadByte();
+			AmmunitionType = reader.ReadByte();
+			SkillType1Tax = (SkillType)reader.ReadByte();
+			SkillType2Tax = (SkillType)reader.ReadByte();
+			Skill1Tax = reader.ReadSByte();
+			Skill2Tax = reader.ReadSByte();
+			TorchIntensity = reader.ReadByte();
+			AmmoAnimation = reader.ReadByte();
+			Spell = (ItemSpellType)reader.ReadByte();
+			SpellID = reader.ReadByte();
+			Charges = reader.ReadByte();
+			NumRecharged = reader.ReadByte();
+			MaxNumRecharged = reader.ReadByte();
+			MaxCharges = reader.ReadByte();
+			Count1 = reader.ReadByte();
+			Count2 = reader.ReadByte();
+			IconAnim = reader.ReadByte();
+			Weight = reader.ReadInt16();
+			Value = reader.ReadInt16()/10f;
+			Icon = reader.ReadInt16();
+			UsingClass = reader.ReadInt16();
+			UsingRace = reader.ReadInt16();
+		}
 		
 		private static void LoadItemStates()
 		{
@@ -20,44 +64,7 @@ namespace AlbLib.Items
 				ItemState[] itemStates = new ItemState[count];
 				for(int i = 0; i < count; i++)
 				{
-					ItemState state = new ItemState();
-					state.Type = (short)(i+1);
-					reader.ReadByte();
-					state.Class = (ItemClass)reader.ReadByte();
-					state.Slot = (ItemSlot)reader.ReadByte();
-					state.BreakRate = reader.ReadByte();
-					state.Gender = (Gender)reader.ReadByte();
-					state.FreeHands = reader.ReadByte();
-					state.LifePointsBonus = reader.ReadByte();
-					state.SpellPointsBonus = reader.ReadByte();
-					state.AttributeType = (AttributeType)reader.ReadByte();
-					state.AttributeBonus = reader.ReadByte();
-					state.SkillTypeBonus = (SkillType)reader.ReadByte();
-					state.SkillBonus = reader.ReadByte();
-					state.PhysicalDamageProtection = reader.ReadByte();
-					state.PhysicalDamageCaused = reader.ReadByte();
-					state.AmmunitionType = reader.ReadByte();
-					state.SkillType1Tax = (SkillType)reader.ReadByte();
-					state.SkillType2Tax = (SkillType)reader.ReadByte();
-					state.Skill1Tax = reader.ReadSByte();
-					state.Skill2Tax = reader.ReadSByte();
-					state.TorchIntensity = reader.ReadByte();
-					state.AmmoAnimation = reader.ReadByte();
-					state.Spell = (ItemSpellType)reader.ReadByte();
-					state.SpellID = reader.ReadByte();
-					state.Charges = reader.ReadByte();
-					state.NumRecharged = reader.ReadByte();
-					state.MaxNumRecharged = reader.ReadByte();
-					state.MaxCharges = reader.ReadByte();
-					state.Count1 = reader.ReadByte();
-					state.Count2 = reader.ReadByte();
-					state.IconAnim = reader.ReadByte();
-					state.Weight = reader.ReadInt16();
-					state.Value = reader.ReadInt16()/10f;
-					state.Icon = reader.ReadInt16();
-					state.UsingClass = reader.ReadInt16();
-					state.UsingRace = reader.ReadInt16();
-					itemStates[i] = state;
+					itemStates[i] = new ItemState(reader, (short)(i+1));
 				}
 				ItemStates = itemStates;
 			}

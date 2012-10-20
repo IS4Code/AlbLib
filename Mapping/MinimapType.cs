@@ -1,5 +1,7 @@
-﻿namespace AlbLib.Mapping
+﻿using System;
+namespace AlbLib.Mapping
 {
+	[Serializable]
 	public enum MinimapType
 	{
 		Classic = 0,

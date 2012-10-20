@@ -3,6 +3,7 @@ using System.IO;
 
 namespace AlbLib.Sounds
 {
+	[Serializable]
 	public class Sample
 	{
 		public bool Used{get; set;}

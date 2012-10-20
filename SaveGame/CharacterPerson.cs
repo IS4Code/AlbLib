@@ -1,8 +1,10 @@
-﻿namespace AlbLib.SaveGame
+﻿using System;
+namespace AlbLib.SaveGame
 {
 	/// <summary>
 	/// Actual playable characters in game.
 	/// </summary>
+	[Serializable]
 	public enum CharacterPerson : byte
 	{
 		/// <summary>

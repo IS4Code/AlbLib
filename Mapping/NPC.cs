@@ -7,6 +7,7 @@ namespace AlbLib.Mapping
 	/// <summary>
 	/// Map NPC/monster.
 	/// </summary>
+	[Serializable]
 	public class NPC
 	{
 		public byte ID{get;set;}

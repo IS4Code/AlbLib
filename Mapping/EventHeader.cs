@@ -11,6 +11,7 @@ using System.IO;
 
 namespace AlbLib.Mapping
 {
+	[Serializable]
 	public class EventHeader
 	{
 		public short XPos{get;set;}

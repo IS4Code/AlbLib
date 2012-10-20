@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Imaging
+﻿using System;
+namespace AlbLib.Imaging
 {
 	/// <summary>
 	/// Type of transparency.
 	/// </summary>
+	[Serializable]
 	public enum TransparencyType
 	{
 		/// <summary>

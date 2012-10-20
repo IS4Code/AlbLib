@@ -4,6 +4,7 @@ namespace AlbLib.SaveGame
 	/// <summary>
 	/// Character attribute stat.
 	/// </summary>
+	[Serializable]
 	public struct CharacterAttribute
 	{
 		/// <summary>

@@ -6,6 +6,7 @@ namespace AlbLib.Mapping
 	/// <summary>
 	/// BLKLIST.
 	/// </summary>
+	[Serializable]
 	public class Block2D
 	{
 		/// <summary>
@@ -51,7 +52,6 @@ namespace AlbLib.Mapping
 				return data;
 			}
 			set{
-				if(value.GetLength(0) > Byte.MaxValue || value.GetLength(1) > Byte.MaxValue)throw new ArgumentException(null,"value");
 				data = value;
 			}
 		}

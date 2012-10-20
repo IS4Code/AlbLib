@@ -1,9 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+
 namespace AlbLib.Imaging
 {
 	/// <summary>
 	/// When getting color from this palette, values are multiplied by specified modifier.
 	/// </summary>
+	[Serializable]
 	public class ModifierPalette : ImagePalette
 	{
 		/// <summary>
@@ -25,6 +28,12 @@ namespace AlbLib.Imaging
 			Inner = inner;
 		}
 		
+		public ModifierPalette(ImagePalette inner, params BlockModifier[] modifiers)
+		{
+			Inner = inner;
+			Modifiers = modifiers;
+		}
+		
 		/// <summary>
 		/// Gets count of all colors.
 		/// </summary>
@@ -41,15 +50,19 @@ namespace AlbLib.Imaging
 			get{
 				Color c = Inner[index];
 				if(Modifiers==null)return c;
+				double A = c.A,R = c.R,G = c.G,B = c.B;
 				foreach(BlockModifier mod in Modifiers)
 				{
 					if(mod==null)continue;
 					if(mod.LowerIndex <= index && index <= mod.UpperIndex)
 					{
-						c = Color.FromArgb((int)(c.A*mod.A), (int)(c.R*mod.R), (int)(c.G*mod.G), (int)(c.B*mod.B));
+						A *= mod.A;
+						R *= mod.R;
+						G *= mod.G;
+						B *= mod.B;
 					}
 				}
-				return c;
+				return Color.FromArgb((int)A,(int)R,(int)G,(int)B);
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using AlbLib.Caching;
 
 namespace AlbLib.Texts
 {
@@ -9,7 +10,8 @@ namespace AlbLib.Texts
 	/// </summary>
 	public static class TextCore
 	{
-		private static string[][] ItemNames;
+		//private static string[][] ItemNames;
+		private static IndexedCache<string[], RefEq<Encoding>> NameCache = new IndexedCache<string[], RefEq<Encoding>>(LoadItemName);
 		
 		/// <summary>
 		/// Default language in common localization operations.
@@ -25,32 +27,27 @@ namespace AlbLib.Texts
 			get;set;
 		}
 		
-		private static Encoding lastEncoding;
-		
 		static TextCore()
 		{
 			DefaultLanguage = Language.English;
 			DefaultEncoding = Encoding.ASCII;
 		}
 		
-		private static void LoadItemNames()
+		private static string ReadString(BinaryReader reader)
 		{
+			return TrimNull(reader.ReadChars(20));
+		}
+		
+		private static string[] LoadItemName(int index, RefEq<Encoding> encoding)
+		{
+			if(index == 0)return new[]{"","",""};
+			index -= 1;
 			using(FileStream stream = new FileStream(Paths.ItemName, FileMode.Open))
 			{
-				BinaryReader reader = new BinaryReader(stream, TextCore.DefaultEncoding);
-				int count = (int)(stream.Length/60);
-				string[][] itemNames = new string[count][];
-				for(int i = 0; i < count; i++)
-				{
-					string[] names = new string[3];
-					names[0] = new string(reader.ReadChars(20)).TrimEnd('\0');
-					names[1] = new string(reader.ReadChars(20)).TrimEnd('\0');
-					names[2] = new string(reader.ReadChars(20)).TrimEnd('\0');
-					itemNames[i] = names;
-				}
-				ItemNames = itemNames;
+				stream.Seek(index*60, SeekOrigin.Begin);
+				BinaryReader reader = new BinaryReader(stream, encoding.Value);
+				return new string[]{ReadString(reader), ReadString(reader), ReadString(reader)};
 			}
-			lastEncoding = DefaultEncoding;
 		}
 		
 		/// <summary>
@@ -82,11 +79,7 @@ namespace AlbLib.Texts
 		public static string GetItemName(short type, Language language)
 		{
 			if(type == 0)return String.Empty;
-			if(ItemNames == null || DefaultEncoding != lastEncoding)
-			{
-				LoadItemNames();
-			}
-			return ItemNames[type-1][(int)language];
+			return NameCache[type][(int)language];
 		}
 		
 		/// <summary>

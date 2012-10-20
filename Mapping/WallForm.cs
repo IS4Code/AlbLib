@@ -2,7 +2,7 @@
 
 namespace AlbLib.Mapping
 {
-	[Flags]
+	[Flags, Serializable]
 	public enum WallForm
 	{
 		Close = 0,

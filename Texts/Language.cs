@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Texts
+﻿using System;
+namespace AlbLib.Texts
 {
 	/// <summary>
 	/// Used game languages.
 	/// </summary>
+	[Serializable]
 	public enum Language
 	{
 		/// <summary>German.</summary>

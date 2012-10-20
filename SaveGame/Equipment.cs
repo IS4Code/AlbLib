@@ -6,6 +6,7 @@ namespace AlbLib.SaveGame
 	/// <summary>
 	/// Character equipment items.
 	/// </summary>
+	[Serializable]
 	public class Equipment : Inventory
 	{
 		/// <summary>

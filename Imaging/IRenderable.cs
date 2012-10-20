@@ -9,11 +9,6 @@ namespace AlbLib.Imaging
 		/// <summary>
 		/// Renders object.
 		/// </summary>
-		Image Render();
-		
-		/// <summary>
-		/// Renders object.
-		/// </summary>
 		Image Render(RenderOptions options);
 	}
 }

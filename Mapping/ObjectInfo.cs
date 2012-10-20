@@ -3,6 +3,7 @@ using System.IO;
 
 namespace AlbLib.Mapping
 {
+	[Serializable]
 	public struct ObjectInfo : ITextured, ICollidable
 	{
 		public byte Type{get;private set;}

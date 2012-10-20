@@ -3,6 +3,7 @@ using System.IO;
 
 namespace AlbLib.Mapping
 {
+	[Serializable]
 	public struct FloorData : ITextured, ICollidable
 	{
 		public byte[] Collision{get;private set;}

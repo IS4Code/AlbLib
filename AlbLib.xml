@@ -1,0 +1,4467 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AlbLib</name>
+    </assembly>
+    <members>
+        <member name="T:AlbLib.Paths">
+            <summary>
+            Contains all paths used in this library.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.PaletteN">
+            <summary>
+            Absolute path to any XLDLIBS/PALETTE{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.GlobalPalette">
+            <summary>
+            Absolute path to XLDLIBS/PALETTE.000.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.ScriptsN">
+            <summary>
+            Absolute path to any XLDLIBS/SCRIPT{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.ItemName">
+            <summary>
+            Absolute path to XLDLIBS/ITEMNAME.DAT.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.ItemList">
+            <summary>
+            Absolute path to XLDLIBS/ITEMLIST.DAT.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.SamplesN">
+            <summary>
+            Absolute path to any XLDLIBS/SAMPLES{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.IconGraphicsN">
+            <summary>
+            Absolute path to any XLDLIBS/ICONGFX{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.IconDataN">
+            <summary>
+            Absolute path to any XLDLIBS/ICONDAT{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.MapDataN">
+            <summary>
+            Absolute path to any XLDLIBS/MAPDATA{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.TransparencyTablesN">
+            <summary>
+            Absolute path to any XLDLIBS/TRANSTB{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.LabDataN">
+            <summary>
+            Absolute path to any XLDLIBS/LABDATA{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths._3DFloorN">
+            <summary>
+            Absolute path to any XLDLIBS/3DFLOOR{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths._3DWallsN">
+            <summary>
+            Absolute path to any XLDLIBS/3DWALLS{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths._3DObjectsN">
+            <summary>
+            Absolute path to any XLDLIBS/3DOBJEC{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths._3DOverlaysN">
+            <summary>
+            Absolute path to any XLDLIBS/3DOVERL{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.AutoGFXN">
+            <summary>
+            Absolute path to any XLDLIBS/AUTOGFX{0}.XLD.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Paths.Main">
+            <summary>
+            Absolute path to MAIN.EXE.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Paths.SetXLDLIBS(System.String)">
+            <summary>
+            Sets all paths.
+            </summary>
+            <param name="path">Absolute path to XLDLIBS folder.</param>
+        </member>
+        <member name="T:AlbLib.PathInfo">
+            <summary>
+            Informations about path to Albion resource.
+            </summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.#ctor(System.String)">
+            <summary></summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.OpenXLD">
+            <summary>
+            Opens XLD navigator at index 0.
+            </summary>
+            <returns>
+            XLD navigator at start of data.
+            </returns>
+        </member>
+        <member name="M:AlbLib.PathInfo.OpenXLD(System.Int32)">
+            <summary>
+            Opens XLD navigator at <paramref name="index"/>.
+            </summary>
+            <param name="index">
+            Start index.
+            </param>
+            <returns>
+            XLD navigator at start of data.
+            </returns>
+        </member>
+        <member name="M:AlbLib.PathInfo.EnumerateList">
+            <summary>
+            Enumerates through all file sequences.
+            </summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.EnumerateList(System.Int32)">
+            <summary>
+            Enumerates through all file sequences.
+            </summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.EnumeratePairList">
+            <summary>
+            Enumerates through all file sequences.
+            </summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.EnumeratePairList(System.Int32)">
+            <summary>
+            Enumerates through all file sequences.
+            </summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.EnumerateAllSubfiles">
+            <summary>
+            Enumerates through all file and subfile sequences.
+            </summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.EnumerateAllSubfiles(System.Int32)">
+            <summary>
+            Enumerates through all file and subfile sequences.
+            </summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.Format(System.Object[])">
+            <summary>
+            Formats variable path.
+            </summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.Format(System.Int32)">
+            <summary>
+            Formats variable path.
+            </summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.op_Implicit(System.String)~AlbLib.PathInfo">
+            <summary></summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.op_Implicit(AlbLib.PathInfo)~System.String">
+            <summary></summary>
+        </member>
+        <member name="M:AlbLib.PathInfo.ToString">
+            <summary></summary>
+        </member>
+        <member name="P:AlbLib.PathInfo.FileName">
+            <summary>
+            Absolute file path.
+            </summary>
+        </member>
+        <member name="P:AlbLib.PathInfo.Directory">
+            <summary>
+            Directory containing resource.
+            </summary>
+        </member>
+        <member name="P:AlbLib.PathInfo.SearchPattern">
+            <summary>
+            File name formatted with *.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Common">
+            <summary>
+            Contains various common functions and magic contants.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Common.ColorConversion">
+            <summary>
+            63×ColorConversion = 255
+            </summary>
+        </member>
+        <member name="M:AlbLib.Common.E(System.Int32,System.Int32@,System.Int32@)">
+            <summary>
+            Converts nullable index to file index and subfile index
+            </summary>
+            <param name="index">
+            Nullable index. (0 = null, 1 - 99 => 0 - 99, 100+ => 100+)
+            </param>
+            <param name="fileIndex">
+            File index.
+            </param>
+            <param name="subfileIndex">
+            Subfile index.
+            </param>
+            <returns>
+            True if <paramref name="index"/> is non-zero.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Common.E(System.Int32,System.Int32)">
+            <summary>
+            Converts file and subfile index to nullable index.
+            </summary>
+            <param name="fileIndex">
+            File index.
+            </param>
+            <param name="subfileIndex">
+            Subfile index.
+            </param>
+            <returns>
+            Nullable index. (0 = null, 1 - 99 => 0 - 99, 100+ => 100+)
+            </returns>
+        </member>
+        <member name="M:AlbLib.Common.Skip(System.IO.Stream,System.Int32)">
+            <summary>
+            Skips <paramref name="bytes"/> from stream.
+            </summary>
+            <param name="input">
+            Input stream.
+            </param>
+            <param name="bytes">
+            Number of bytes to skip.
+            </param>
+            <returns>
+            Number of skipped bytes.
+            </returns>
+        </member>
+        <member name="T:AlbLib.Caching.Cache">
+            <summary>
+            Base class of cache types.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Caching.Cache.Clear">
+            <summary>
+            Clears all cached data.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Caching.Cache.ZeroNull``2(``1,``0@)">
+            <summary>
+            Returns true if <paramref name="index"/> is zero or default.
+            </summary>
+            <param name="index">
+            Index parameter.
+            </param>
+            <param name="elem">
+            Return parameter.
+            </param>
+            <returns>
+            True if <paramref name="index"/> is zero or default.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Caching.Cache.ZeroNull``3(``1,``2,``0@)">
+            <summary>
+            Returns true if <paramref name="index"/> is zero or default.
+            </summary>
+            <param name="index">
+            Index parameter.
+            </param>
+            <param name="args">
+            Doesn't matter.
+            </param>
+            <param name="elem">
+            Return parameter.
+            </param>
+            <returns>
+            True if <paramref name="index"/> is zero or default.
+            </returns>
+        </member>
+        <member name="P:AlbLib.Caching.Cache.Count">
+            <summary>
+            Returns size of cache.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Caching.Cache`2">
+            <summary>
+            This cache class uses one index parameter.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Caching.Cache`3">
+            <summary>
+            This cache class uses two index parameters, main index and descriptive arguments.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Caching.Cache`3.Receiver">
+            <summary>
+            This delegate is called if element is not found in a cache.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Caching.Cache`3.Repeater">
+            <summary>
+            This delegate is called at the beginning.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Caching.Cache`3.ElemList">
+            <summary>
+            List of elements in the cache.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Caching.Cache`3.IndexList">
+            <summary>
+            List of indexes in the cache.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Caching.Cache`3.ArgList">
+            <summary>
+            List of arguments in the cache.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Caching.Cache`3.Get(`1)">
+            <summary>
+            Returns or creates element in the cache.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Caching.Cache`3.Get(`1,`2)">
+            <summary>
+            Returns or creates element in the cache.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Caching.Cache`3.Clear">
+            <summary>
+            Clears all cached data.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Caching.Cache`3.Item(`1)">
+            <summary>
+            Returns or creates element in the cache.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Caching.Cache`3.Item(`1,`2)">
+            <summary>
+            Returns or creates element in the cache.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Caching.Cache`3.ReceiverDelegate">
+            <summary>
+            This delegate is called if element is not found in a cache.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Caching.Cache`3.RepeaterDelegate">
+            <summary>
+            This delegate is called at the beginning.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Caching.Cache`2.ReceiverDelegate2">
+            <summary>
+            This delegate is called if element is not found in a cache.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Caching.Cache`2.RepeaterDelegate2">
+            <summary>
+            This delegate is called at the beginning.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Caching.NoArgs">
+            <summary>
+            This structure is used if a cache has no descriptive arguments.
+            </summary>
+        </member>
+        <member name="T:AlbLib.IFF.IFFChunk">
+            <summary>
+            Structure representing chunk header.
+            </summary>
+        </member>
+        <member name="F:AlbLib.IFF.IFFChunk.TypeID">
+            <summary>
+            Type ID of data.
+            </summary>
+        </member>
+        <member name="F:AlbLib.IFF.IFFChunk.Length">
+            <summary>
+            Chunk length.
+            </summary>
+        </member>
+        <member name="M:AlbLib.IFF.IFFChunk.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="T:AlbLib.IFF.IFFContentNode">
+            <summary>
+            Class representing single node in IFF file.
+            </summary>
+        </member>
+        <member name="T:AlbLib.IFF.IFFNode">
+            <summary>
+            Represent data container in IFF format. File or node.
+            </summary>
+        </member>
+        <member name="F:AlbLib.IFF.IFFNode.reader">
+            <summary>
+            IFF reader.
+            </summary>
+        </member>
+        <member name="M:AlbLib.IFF.IFFNode.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes new instance using stream.
+            </summary>
+            <param name="input">
+            Input stream.
+            </param>
+        </member>
+        <member name="P:AlbLib.IFF.IFFNode.TypeID">
+            <summary>
+            Type of data.
+            </summary>
+        </member>
+        <member name="P:AlbLib.IFF.IFFNode.Length">
+            <summary>
+            Length of data in bytes.
+            </summary>
+        </member>
+        <member name="M:AlbLib.IFF.IFFContentNode.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes new instance using stream.
+            </summary>
+            <param name="input">
+            Input stream.
+            </param>
+        </member>
+        <member name="P:AlbLib.IFF.IFFContentNode.Content">
+            <summary>
+            Node's content as byte array.
+            </summary>
+        </member>
+        <member name="T:AlbLib.IFF.IFFFile">
+            <summary>
+            Structure representing file header.
+            </summary>
+        </member>
+        <member name="F:AlbLib.IFF.IFFFile.TypeID">
+            <summary>
+            Type ID of data.
+            </summary>
+            <returns>
+            FORM
+            </returns>
+        </member>
+        <member name="F:AlbLib.IFF.IFFFile.FormatID">
+            <summary>
+            File subformat.
+            </summary>
+        </member>
+        <member name="F:AlbLib.IFF.IFFFile.Length">
+            <summary>
+            File length.
+            </summary>
+        </member>
+        <member name="M:AlbLib.IFF.IFFFile.#ctor(System.String,System.String,System.Int32)">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="T:AlbLib.IFF.IFFFileNode">
+            <summary>
+            Class respresenting single file in IFF format.
+            </summary>
+        </member>
+        <member name="M:AlbLib.IFF.IFFFileNode.#ctor(System.String)">
+            <summary>
+            Initializes new instance using file name.
+            </summary>
+            <param name="file">
+            File path.
+            </param>
+        </member>
+        <member name="M:AlbLib.IFF.IFFFileNode.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes new instance using stream.
+            </summary>
+            <param name="input">
+            Input stream.
+            </param>
+        </member>
+        <member name="P:AlbLib.IFF.IFFFileNode.Nodes">
+            <summary>
+            List of all entries or nodes in file.
+            </summary>
+        </member>
+        <member name="P:AlbLib.IFF.IFFFileNode.FormatID">
+            <summary>
+            4-character format ID.
+            </summary>
+        </member>
+        <member name="T:AlbLib.IFF.IFFReader">
+            <summary>
+            Class used when reading files in IFF format.
+            </summary>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes new instance using stream.
+            </summary>
+            <param name="input">
+            Input stream.
+            </param>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadFileHeader">
+            <summary>
+            Reads file header on beginning of data.
+            </summary>
+            <returns>
+            File header.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadChunkHeader">
+            <summary>
+            Reads chunk header.
+            </summary>
+            <returns>
+            Chunk header.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadByte">
+            <summary>
+            Reads one byte.
+            </summary>
+            <returns>
+            One byte.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadInt16">
+            <summary>
+            Reads one int16. Automatically converted to little endian.
+            </summary>
+            <returns>
+            One int16.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadInt32">
+            <summary>
+            Reads one int32. Automatically converted to little endian.
+            </summary>
+            <returns>
+            One int32.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadUInt16">
+            <summary>
+            Reads one uint16. Automatically converted to little endian.
+            </summary>
+            <returns>
+            One uint16.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadUInt32">
+            <summary>
+            Reads one uint32. Automatically converted to little endian.
+            </summary>
+            <returns>
+            One uint32.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadRest">
+            <summary>
+            Reads all remaining bytes from chunk.
+            </summary>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadBytes(System.Int32)">
+            <summary>
+            Reads bytes with specified <paramref name="count"/>.
+            </summary>
+            <param name="count">
+            Bytes count.
+            </param>
+            <returns>
+            Byte array.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadUnpack(System.Int32)">
+            <summary>
+            Reads packed bytes with specified <paramref name="count"/>.
+            </summary>
+            <param name="count">
+            Bytes count.
+            </param>
+            <returns>
+            Byte array.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ReadAll">
+            <summary>
+            Enumerates through all chunks in file.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ToLittleEndian(System.Int32)">
+            <summary>
+            Converts value in big endian to current endian.
+            </summary>
+            <param name="value">
+            Value to convert.
+            </param>
+            <returns>
+            Converted value.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ToLittleEndian(System.UInt32)">
+            <summary>
+            Converts value in big endian to current endian.
+            </summary>
+            <param name="value">
+            Value to convert.
+            </param>
+            <returns>
+            Converted value.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ToLittleEndian(System.Int16)">
+            <summary>
+            Converts value in big endian to current endian.
+            </summary>
+            <param name="value">
+            Value to convert.
+            </param>
+            <returns>
+            Converted value.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.ToLittleEndian(System.UInt16)">
+            <summary>
+            Converts value in big endian to current endian.
+            </summary>
+            <param name="value">
+            Value to convert.
+            </param>
+            <returns>
+            Converted value.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.Unpack(System.IO.Stream,System.Int32,System.Int32@)">
+            <summary>
+            Reads packed data from stream.
+            </summary>
+            <param name="input">
+            Input stream.
+            </param>
+            <param name="size">
+            Data size.
+            </param>
+            <param name="read">
+            Bytes read.
+            </param>
+            <returns>
+            Uncompressed data.
+            </returns>
+        </member>
+        <member name="M:AlbLib.IFF.IFFReader.Unpack(System.IO.Stream,System.IO.Stream,System.Int32)">
+            <summary>
+            Reads packed data from stream.
+            </summary>
+            <param name="input">
+            Input stream.
+            </param>
+            <param name="output">
+            Output stream.
+            </param>
+            <param name="size">
+            Data size.
+            </param>
+            <returns>
+            Bytes read.
+            </returns>
+        </member>
+        <member name="T:AlbLib.Imaging.AnimatedHeaderedImage">
+            <summary>
+            Image containing multiple images - frames.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.ImageBase">
+            <summary>
+            Base image class.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.IRenderable">
+            <summary>
+            Represents an object which can be rendered.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.IRenderable.Render(AlbLib.Imaging.RenderOptions)">
+            <summary>
+            Renders object.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.ImageBase.GetWidth">
+            <returns>Width</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImageBase.GetHeight">
+            <returns>Height</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImageBase.ToRawData">
+            <summary>
+            Converts entire image to format-influenced byte array.
+            </summary>
+            <returns>
+            Byte array containing image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImageBase.Render(System.Int32)">
+            <summary>
+            Draws the image to bitmap.
+            </summary>
+            <param name="palette">
+            Palette ID.
+            </param>
+            <returns>
+            Drawn image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImageBase.Render(AlbLib.Imaging.ImagePalette)">
+            <summary>
+            Draws the image to bitmap.
+            </summary>
+            <param name="palette">
+            Palette.
+            </param>
+            <returns>
+            Drawn image.
+            </returns>
+        </member>
+        <member name="P:AlbLib.Imaging.ImageBase.ImageData">
+            <summary>
+            Byte array containing actual pixels of image.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.IAnimatedRenderable">
+            <summary>
+            Represents an object list which can be rendered and needs index.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.IAnimatedRenderable.Render(System.Byte,AlbLib.Imaging.RenderOptions)">
+            <summary>
+            Renders object.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.AnimatedHeaderedImage.GetWidth">
+            <returns>Width</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.AnimatedHeaderedImage.GetHeight">
+            <returns>Height</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.AnimatedHeaderedImage.Render(System.Byte,AlbLib.Imaging.RenderOptions)">
+            <summary>
+            Draws the animated image to bitmap.
+            </summary>
+            <param name="index">
+            Zero-based frame index.
+            </param>
+            <param name="options">
+            More rendering options.
+            </param>
+            <returns>
+            Drawn image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.AnimatedHeaderedImage.Render(AlbLib.Imaging.RenderOptions)">
+            <summary>
+            Draws the image to bitmap.
+            </summary>
+            <param name="options">
+            More rendering options.
+            </param>
+            <returns>
+            Drawn image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.AnimatedHeaderedImage.ToRawData">
+            <summary>
+            Converts entire image to format-influenced byte array.
+            </summary>
+            <returns>
+            Byte array containing image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.AnimatedHeaderedImage.#ctor(System.Byte[])">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.AnimatedHeaderedImage.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.AnimatedHeaderedImage.FromRawData(System.Byte[])">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.AnimatedHeaderedImage.FromStream(System.IO.Stream)">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.AnimatedHeaderedImage.FramesCount">
+            <summary>
+            Count of frames.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.AnimatedHeaderedImage.Frames">
+            <summary>
+            List of frames.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.AutoGFX">
+            <summary>
+            Contains stuff from automap graphics.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.AutoGFX.GetWall(AlbLib.Mapping.WallForm,System.Int32)">
+            <summary>
+            Gets minimap wall image.
+            </summary>
+            <param name="form">
+            Formation of wall.
+            </param>
+            <param name="setindex">
+            Automap type index.
+            </param>
+            <returns>
+            Wall image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.AutoGFX.GetWall(AlbLib.Mapping.WallForm,AlbLib.Mapping.MinimapType)">
+            <summary>
+            Gets minimap wall image.
+            </summary>
+            <param name="form">
+            Formation of wall.
+            </param>
+            <param name="type">
+            Automap type.
+            </param>
+            <returns>
+            Wall image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.AutoGFX.GetWall(System.Int32,AlbLib.Mapping.MinimapType)">
+            <summary>
+            Gets minimap wall image.
+            </summary>
+            <param name="index">
+            Formation of wall.
+            </param>
+            <param name="type">
+            Automap type.
+            </param>
+            <returns>
+            Wall image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.AutoGFX.GetWall(System.Int32,System.Int32)">
+            <summary>
+            Gets minimap wall image.
+            </summary>
+            <param name="index">
+            Formation of wall.
+            </param>
+            <param name="setindex">
+            Automap type index.
+            </param>
+            <returns>
+            Wall image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.AutoGFX.GetMapObject(System.Int32,AlbLib.Mapping.MinimapType)">
+            <summary>
+            Gets minimap object image.
+            </summary>
+            <param name="index">
+            Object type index.
+            </param>
+            <param name="type">
+            Automap type.
+            </param>
+            <returns>
+            Object image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.AutoGFX.GetMapObject(System.Int32,System.Int32)">
+            <summary>
+            Gets minimap object image.
+            </summary>
+            <param name="index">
+            Object type index.
+            </param>
+            <param name="setindex">
+            Automap type index.
+            </param>
+            <returns>
+            Object image.
+            </returns>
+        </member>
+        <member name="T:AlbLib.Imaging.BlockModifier">
+            <summary>
+            Modifier can be used to multiply color values.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.BlockModifier.R">
+            <summary>
+            R multiplier.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.BlockModifier.G">
+            <summary>
+            G multiplier.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.BlockModifier.B">
+            <summary>
+            B multiplier.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.BlockModifier.A">
+            <summary>
+            Alpha multiplier.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.BlockModifier.LowerIndex">
+            <summary>
+            Modifier will be applied on values going from <see cref="F:AlbLib.Imaging.BlockModifier.LowerIndex"/> to <see cref="F:AlbLib.Imaging.BlockModifier.UpperIndex"/>, inclusive.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.BlockModifier.UpperIndex">
+            <summary>
+            Modifier will be applied on values going from <see cref="F:AlbLib.Imaging.BlockModifier.LowerIndex"/> to <see cref="F:AlbLib.Imaging.BlockModifier.UpperIndex"/>, inclusive.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.BlockModifier.#ctor(System.Double,System.Double,System.Double,System.Double,System.Int32,System.Int32)">
+            <param name="r">R modifier.</param>
+            <param name="g">G modifier.</param>
+            <param name="b">B modifier.</param>
+            <param name="a">Alpha modifier.</param>
+            <param name="lower">Lower color index.</param>
+            <param name="upper">Upper color index.</param>
+        </member>
+        <member name="M:AlbLib.Imaging.BlockModifier.#ctor(System.Double,System.Double,System.Double,System.Int32,System.Int32)">
+            <param name="r">R modifier.</param>
+            <param name="g">G modifier.</param>
+            <param name="b">B modifier.</param>
+            <param name="lower">Lower color index.</param>
+            <param name="upper">Upper color index.</param>
+        </member>
+        <member name="M:AlbLib.Imaging.BlockModifier.#ctor(System.Double,System.Int32,System.Int32)">
+            <param name="mod">All but alpha modifiers.</param>
+            <param name="lower">Lower color index.</param>
+            <param name="upper">Upper color index.</param>
+        </member>
+        <member name="M:AlbLib.Imaging.BlockModifier.#ctor(System.Double,System.Double,System.Int32,System.Int32)">
+            <param name="mod">All but alpha modifiers.</param>
+            <param name="a">Alpha modifier.</param>
+            <param name="lower">Lower color index.</param>
+            <param name="upper">Upper color index.</param>
+        </member>
+        <member name="M:AlbLib.Imaging.BlockModifier.Night(System.Double)">
+            <summary>
+            Creates night modifier. Applies only to local palette.
+            </summary>
+            <param name="mod">
+            1 is day, 0.5 is midnight.
+            </param>
+        </member>
+        <member name="T:AlbLib.Imaging.Drawing">
+            <summary>
+            Main class which works with palettes and draws images.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.Drawing.DrawBitmap(System.Byte[],System.Int32,System.Int32,System.Byte)">
+            <summary>
+            Draws bitmap.
+            </summary>
+            <param name="data">
+            Image pixel data.
+            </param>
+            <param name="width">
+            Output image width.
+            </param>
+            <param name="height">
+            Output image height.
+            </param>
+            <param name="palette">
+            Used palette index.
+            </param>
+            <returns>
+            Drawn bitmap.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.Drawing.DrawBitmap(System.Byte[],System.Int32,System.Int32,AlbLib.Imaging.RenderOptions)">
+            <summary>
+            Draws bitmap.
+            </summary>
+            <param name="data">
+            Image pixel data.
+            </param>
+            <param name="width">
+            Output image width.
+            </param>
+            <param name="height">
+            Output image height.
+            </param>
+            <param name="options">
+            More rendering options.
+            </param>
+            <returns>
+            Drawn bitmap.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.Drawing.DrawBitmap(System.Byte[],System.Int32,System.Byte)">
+            <summary>
+            Computes height and draws bitmap.
+            </summary>
+            <param name="data">
+            Image pixel data.
+            </param>
+            <param name="width">
+            Output image width.
+            </param>
+            <param name="palette">
+            Used palette index.
+            </param>
+            <returns>
+            Drawn bitmap.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.Drawing.LoadBitmap(System.Drawing.Bitmap,AlbLib.Imaging.ImagePalette)">
+            <summary>
+            Converts bitmap to byte array using external palette.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.GraphicObject">
+            <summary>
+            Object lieing on graphic plane.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.GraphicObject.#ctor(AlbLib.Imaging.ImageBase,System.Drawing.Point)">
+            <param name="image">
+            Source image.
+            </param>
+            <param name="location">
+            Location of object.
+            </param>
+        </member>
+        <member name="P:AlbLib.Imaging.GraphicObject.Location">
+            <summary>
+            Location of object.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.GraphicObject.Image">
+            <summary>
+            Source image.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.GraphicObject.Transparency">
+            <summary>
+            Type of transparency.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.GraphicObject.TransparentIndex">
+            <summary>
+            Transparent color index.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.GraphicPlane">
+            <summary>
+            Plane containing more graphic objects.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.GraphicPlane.#ctor">
+            <summary>
+            Creates empty graphic plane.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.GraphicPlane.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates graphic plane with predefined background.
+            </summary>
+            <param name="width">
+            Width of graphic plane.
+            </param>
+            <param name="height">
+            Height of graphic plane.
+            </param>
+        </member>
+        <member name="M:AlbLib.Imaging.GraphicPlane.Render(System.Byte)">
+            <summary>
+            Draws plane to bitmap using other palette.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.GraphicPlane.Render(System.Byte,AlbLib.Imaging.RenderOptions)">
+            <summary>
+            Draws plane to bitmap using palette and render options.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.GraphicPlane.Render">
+            <summary>
+            Draws plane to bitmap.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.GraphicPlane.Render(AlbLib.Imaging.RenderOptions)">
+            <summary>
+            Draws plane to bitmap using other palette.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.GraphicPlane.Bake">
+            <summary>
+            Inserts all objects into background.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.GraphicPlane.Background">
+            <summary>
+            Main background image.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.GraphicPlane.Objects">
+            <summary>
+            Collection of all objects.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.GraphicPlane.Palette">
+            <summary>
+            Main palette.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.GraphicPlane.TransparencyTable">
+            <summary>
+            Transparency table used when blending colors.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.GraphicPlane.PaletteID">
+            <summary>
+            Sets 
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.HeaderedImage">
+            <summary>
+            Image with basic size information. Can contain multiple frames.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.HeaderedImage.GetWidth">
+            <returns>Width</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.HeaderedImage.GetHeight">
+            <returns>Height</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.HeaderedImage.ToRawData">
+            <summary>
+            Converts entire image to format-influenced byte array.
+            </summary>
+            <returns>
+            Byte array containing image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.HeaderedImage.#ctor(System.Byte[])">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.HeaderedImage.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.HeaderedImage.#ctor(System.Int16,System.Int16,System.Byte[])">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.HeaderedImage.FromRawData(System.Byte[])">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.HeaderedImage.FromStream(System.IO.Stream)">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.HeaderedImage.Width">
+            <summary>
+            Image width.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.HeaderedImage.Height">
+            <summary>
+            Image height.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.HeaderedImage.FramesCount">
+            <summary>
+            Number or frames.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.ILBMImage">
+            <summary>
+            Image in ILBM format, containing many informations. Currently read-only.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.GetWidth">
+            <returns>Width</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.GetHeight">
+            <returns>Height</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.#ctor(System.Byte[])">
+            <param name="rawdata">
+            Byte array containing ILBM image data.
+            </param>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.#ctor(System.IO.Stream)">
+            <param name="stream">
+            Stream containing ILBM image data.
+            </param>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.ToRawData">
+            <summary>
+            Converts entire image to format-influenced byte array.
+            </summary>
+            <returns>
+            Byte array containing image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.Render">
+            <summary>
+            Draws the image to bitmap using its own palette.
+            </summary>
+            <returns>
+            Drawn image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.Render(AlbLib.Imaging.RenderOptions)">
+            <summary>
+            Draws the image to bitmap using rendering options.
+            </summary>
+            <param name="options">
+            Rendering options.
+            </param>
+            <returns>
+            Drawn image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.RenderTiny">
+            <summary>
+            Draws the thumbnail to bitmap.
+            </summary>
+            <returns>
+            Drawn image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.RenderTiny(AlbLib.Imaging.RenderOptions)">
+            <summary>
+            Draws the thumbnail to bitmap.
+            </summary>
+            <returns>
+            Drawn image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.FromRawData(System.Byte[])">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.FromStream(System.IO.Stream)">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.Width">
+            <summary>
+            Width of image.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.Height">
+            <summary>
+            Height of image.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.PosX">
+            <summary>
+            Parent-relative position X.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.PosY">
+            <summary>
+            Parent-relative position Y.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.NumPlanes">
+            <summary>
+            Number of image planes.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.Mask">
+            <summary>
+            Image mask type.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.Compression">
+            <summary>
+            Image compression type.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.Padding">
+            <summary>
+            Parent-relative padding.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.Transparent">
+            <summary>
+            Transparent color index.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.AspectRatio">
+            <summary>
+            Aspect ratio when viewing.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.PageWidth">
+            <summary>
+            Page width when viewing.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.PageHeight">
+            <summary>
+            Page height when viewing.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.Palette">
+            <summary>
+            Image palette.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.HotspotX">
+            <summary>
+            Hotspot position X. Mostly on cursors.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.HotspotY">
+            <summary>
+            Hotspot position Y. Mostly on cursors.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.Tiny">
+            <summary>
+            Thumbnail.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.ColorRanges">
+            <summary>
+            Color ranges.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.ILBMImage.ColorRange">
+            <summary>
+            Maybe useful for palette swapping?
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.ColorRange.#ctor(AlbLib.IFF.IFFReader)">
+            <summary>
+            Reads range from IFF stream.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.ILBMImage.ColorRange.#ctor(System.IO.Stream)">
+            <summary>
+            Reads range from normal stream.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.ColorRange.Rate">
+            <summary>
+            Animation rate.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.ColorRange.Flags">
+            <summary>
+            Range flags.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.ColorRange.Low">
+            <summary>
+            Low color index.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ILBMImage.ColorRange.High">
+            <summary>
+            High color index.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.ILBMImage.ColorRangeFlags">
+            <summary>
+            Range flags.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.ILBMImage.ColorRangeFlags.None">
+            <summary>
+            None.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.ILBMImage.ColorRangeFlags.Active">
+            <summary>
+            Animation is active.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.ILBMImage.ColorRangeFlags.Reversed">
+            <summary>
+            Animation is reversed.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.ImagePalette">
+            <summary>
+            Color palette used when drawing images.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.GetEnumerator">
+            <summary>
+            Enumerates through all colors in a palette.
+            </summary>
+            <returns>Enumerator object.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.CopyTo(System.Drawing.Color[],System.Int32)">
+            <summary>
+            Copies colors to another array.
+            </summary>
+            <param name="array">Output array.</param>
+            <param name="index">Start index.</param>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.Contains(System.Drawing.Color)">
+            <summary>
+            Checks if palette contains given color.
+            </summary>
+            <param name="item">Color to check.</param>
+            <returns>True if <paramref name="item"/> is in palette, otherwise false.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.IndexOf(System.Drawing.Color)">
+            <summary>
+            Returns index of color in a palette.
+            </summary>
+            <param name="item">Color to find.</param>
+            <returns>Zero-based index of <paramref name="item"/>.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.GetNearestColorIndex(System.Drawing.Color)">
+            <summary>
+            Returns index of the nearest color to <paramref name="original"/>.
+            </summary>
+            <param name="original">Original color.</param>
+            <returns>Nearest color index.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.ToArray">
+            <summary>
+            Converts palette to color array.
+            </summary>
+            <returns>Array containing palette colors.</returns>
+        </member>
+        <member name="F:AlbLib.Imaging.ImagePalette.TransparentIndex">
+            <summary>
+            Default transparent color index. Default is -1.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.LoadPalettes">
+            <summary>
+            Loads all palettes.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.ReadPalette(System.IO.Stream,System.Int32)">
+            <summary>
+            Parses palette from stream.
+            </summary>
+            <param name="input">
+            Input stream containing palette data.
+            </param>
+            <param name="length">
+            Length of palette bytes. Usually triple of colors count.
+            </param>
+            <returns>
+            Palette as color array.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.ReadPalette(System.Byte[])">
+            <summary>
+            Parses palette from byte array.
+            </summary>
+            <param name="palette">
+            Palette data as bytes. Usually multiple of three.
+            </param>
+            <returns>
+            Palette as color array.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.GetGlobalPalette">
+            <summary>
+            Returns the global palette which is used in combination with local palette.
+            </summary>
+            <returns>
+            The global palette.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.GetPalette(System.Int32)">
+            <summary>
+            Gets local palette using specified <paramref name="index"/>.
+            </summary>
+            <param name="index">
+            Zero-based index.
+            </param>
+            <returns>
+            The local palette.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.GetFullPalette(System.Int32)">
+            <summary>
+            Joins local and global palettes.
+            </summary>
+            <param name="index">
+            Zero-based local palette index.
+            </param>
+            <returns>
+            The joined palette.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.Load(System.String,System.Int32,AlbLib.Imaging.PaletteFormat)">
+            <summary>
+            Loads palette from a <paramref name="file"/>.
+            </summary>
+            <param name="file">Path to a file.</param>
+            <param name="numcolors">Number of colors in a palette.</param>
+            <param name="format">Palette format.</param>
+            <returns>Loaded palette.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.Load(System.IO.Stream,System.Int32,AlbLib.Imaging.PaletteFormat)">
+            <summary>
+            Loads palette from stream.
+            </summary>
+            <param name="sourceStream">Stream containg color data.</param>
+            <param name="numcolors">Number of colors in a palette.</param>
+            <param name="format">Palette format.</param>
+            <returns>Loaded palette.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.LoadJASC(System.IO.Stream)">
+            <summary>
+            Loads palette in JASC format from stream.
+            </summary>
+            <param name="sourceStream">Stream containg color data.</param>
+            <returns>Loaded palette.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.Create(System.Drawing.Color[])">
+            <summary>
+            Creates new palette using color list.
+            </summary>
+            <param name="args">Colors.</param>
+            <returns>Newly created palette.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.Create(System.Collections.Generic.IList{System.Drawing.Color})">
+            <summary>
+            Creates new palette using color list.
+            </summary>
+            <param name="list">List of colors.</param>
+            <returns>Newly created palette.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.Join(AlbLib.Imaging.ImagePalette,AlbLib.Imaging.ImagePalette)">
+            <summary>
+            Joins two palettes together.
+            </summary>
+            <param name="a">Left palette.</param>
+            <param name="b">Right palette.</param>
+            <returns>Joined palette.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.ImagePalette.op_Addition(AlbLib.Imaging.ImagePalette,AlbLib.Imaging.ImagePalette)">
+            <summary>
+            Joins two palettes together.
+            </summary>
+            <param name="a">Left palette.</param>
+            <param name="b">Right palette.</param>
+            <returns>Joined palette.</returns>
+        </member>
+        <member name="P:AlbLib.Imaging.ImagePalette.Item(System.Int32)">
+            <summary>
+            Returns Color at index in palette.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ImagePalette.IsReadOnly">
+            <summary>
+            Palettes are always read-only.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ImagePalette.Length">
+            <summary>
+            Gets count of all colors.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ImagePalette.Grayscale">
+            <summary>
+            Grayscale palette from black to white.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.MainExecutableImages">
+            <summary>
+            Contains all interface images located in the main game executable.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.MainExecutableImages.Load">
+            <summary>
+            Loads all images.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.MainExecutableImages.Loaded">
+            <summary>
+            Checks if images have been loaded.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.MainExecutableImages.Images">
+            <summary>
+            Returns list of all found images.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.ModifierPalette">
+            <summary>
+            When getting color from this palette, values are multiplied by specified modifier.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.ModifierPalette.Inner">
+            <summary>
+            Source palette.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.ModifierPalette.#ctor(AlbLib.Imaging.ImagePalette)">
+            <summary>
+            Creates new instance using source palette.
+            </summary>
+            <param name="inner">Souce palette.</param>
+        </member>
+        <member name="P:AlbLib.Imaging.ModifierPalette.Modifiers">
+            <summary>
+            Modifiers to apply.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ModifierPalette.Length">
+            <summary>
+            Gets count of all colors.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.ModifierPalette.Item(System.Int32)">
+            <summary>
+            Returns Color at index in palette.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.PaletteFormat">
+            <summary>
+            Represents format of palette when loading.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.PaletteFormat.Binary">
+            <summary>
+            Palette is stored in binary format. Each byte represents R or G or B.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.PaletteFormat.Text">
+            <summary>
+            Each color is in one line, `R G B\n'
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.PaletteFormat.TextDOS">
+            <summary>
+            Each color is in one line, `R G B\n', ranging 0-63.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.RawImage">
+            <summary>
+            Image that consists only of pixels with no other data.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.GetWidth">
+            <returns>Width</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.GetHeight">
+            <returns>Height</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.ToRawData">
+            <summary>
+            Converts entire image to format-influenced byte array.
+            </summary>
+            <returns>
+            Byte array containing image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.#ctor(System.Byte[])">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.#ctor(System.IO.Stream,System.Int32)">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.#ctor(System.IO.Stream,System.Int32,System.Int32)">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.#ctor(System.Byte[],System.Int32)">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.#ctor(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.FromRawData(System.Byte[])">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.FromStream(System.IO.Stream,System.Int32)">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.RawImage.FromBitmap(System.Drawing.Bitmap,AlbLib.Imaging.ImagePalette)">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.RawImage.Width">
+            <summary>
+            Image width is not stored within image data.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.RawImage.Height">
+            <summary>
+            Image height is not stored within image data.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.TinyImage">
+            <summary>
+            Thumbnail variation of ILBM image.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.TinyImage.GetWidth">
+            <returns>Width</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.TinyImage.GetHeight">
+            <returns>Height</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.TinyImage.ToRawData">
+            <summary>
+            Converts entire image to format-influenced byte array.
+            </summary>
+            <returns>
+            Byte array containing image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Imaging.TinyImage.#ctor(System.Byte[])">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.TinyImage.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.TinyImage.#ctor(System.Int16,System.Int16,System.Byte[])">
+            <summary>
+            Initializes new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.TinyImage.FromRawData(System.Byte[])">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.TinyImage.FromStream(System.IO.Stream)">
+            <summary>
+            Creates new instance.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.TinyImage.Width">
+            <summary>
+            Width of image.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Imaging.TinyImage.Height">
+            <summary>
+            Height of image.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.TransparencyTable">
+            <summary>
+            Transparency tables define color blending.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Imaging.TransparencyTable.#ctor(System.Byte[])">
+            <param name="source">
+            Byte array containing the table.
+            </param>
+        </member>
+        <member name="M:AlbLib.Imaging.TransparencyTable.#ctor(System.Int32,System.Byte[])">
+            <param name="palette">
+            Palette which this table applies to.
+            </param>
+            <param name="source">
+            Byte array containing the table.
+            </param>
+        </member>
+        <member name="M:AlbLib.Imaging.TransparencyTable.#ctor(System.IO.Stream)">
+            <param name="input">
+            Stream containing the table.
+            </param>
+        </member>
+        <member name="M:AlbLib.Imaging.TransparencyTable.#ctor(System.Int32,System.IO.Stream)">
+            <param name="palette">
+            Palette which this table applies to.
+            </param>
+            <param name="input">
+            Stream containing the table.
+            </param>
+        </member>
+        <member name="M:AlbLib.Imaging.TransparencyTable.GetResultingColorIndex(System.Byte,System.Byte,AlbLib.Imaging.TransparencyType)">
+            <summary>
+            Gets resulting color when blending two others.
+            </summary>
+            <param name="overlaying">
+            Foreground color.
+            </param>
+            <param name="underlaying">
+            Background color.
+            </param>
+            <param name="type">
+            Type of blending.
+            </param>
+            <returns>Blended color index.</returns>
+        </member>
+        <member name="M:AlbLib.Imaging.TransparencyTable.GetTransparencyTable(System.Int32)">
+            <summary>
+            Loads transparency table for palette.
+            </summary>
+            <param name="palette">
+            One-based palette index.
+            </param>
+            <returns>
+            Assigned transparency table.
+            </returns>
+        </member>
+        <member name="P:AlbLib.Imaging.TransparencyTable.Palette">
+            <summary>
+            Palette which this table applies to.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Imaging.TransparencyType">
+            <summary>
+            Type of transparency.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.TransparencyType.None">
+            <summary>
+            No transparency.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.TransparencyType.Dark">
+            <summary>
+            Classic blending.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.TransparencyType.Main">
+            <summary>
+            No blending, only major color.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Imaging.TransparencyType.Light">
+            <summary>
+            Glowing blending.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Items.AttributeType">
+            <summary>
+            Attribute type for item.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Items.AttributeType.Strength">
+            <summary>Strength.</summary>
+        </member>
+        <member name="F:AlbLib.Items.AttributeType.Intelligence">
+            <summary>Intelligence.</summary>
+        </member>
+        <member name="F:AlbLib.Items.AttributeType.Dexterity">
+            <summary>Dexterity.</summary>
+        </member>
+        <member name="F:AlbLib.Items.AttributeType.Speed">
+            <summary>Speed.</summary>
+        </member>
+        <member name="F:AlbLib.Items.AttributeType.Stamina">
+            <summary>Stamina.</summary>
+        </member>
+        <member name="F:AlbLib.Items.AttributeType.Luck">
+            <summary>Luck.</summary>
+        </member>
+        <member name="F:AlbLib.Items.AttributeType.MagicResistance">
+            <summary>Magic resistance.</summary>
+        </member>
+        <member name="F:AlbLib.Items.AttributeType.MagicTalent">
+            <summary>Magic talent.</summary>
+        </member>
+        <member name="T:AlbLib.Items.Class">
+            <summary>
+            Item class limitation.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Items.Gender">
+            <summary>
+            Item gender limitation.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Items.Gender.None">
+            <summary>Nobody can use this.</summary>
+        </member>
+        <member name="F:AlbLib.Items.Gender.Male">
+            <summary>Only for males.</summary>
+        </member>
+        <member name="F:AlbLib.Items.Gender.Female">
+            <summary>Only for females.</summary>
+        </member>
+        <member name="F:AlbLib.Items.Gender.Any">
+            <summary>For any gender.</summary>
+        </member>
+        <member name="T:AlbLib.Items.ItemActivates">
+            <summary>
+            What item activates.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemActivates.Compass">
+            <summary>Compass activated.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemActivates.MonsterEye">
+            <summary>Monster eye activated.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemActivates.Clock">
+            <summary>Clock activated.</summary>
+        </member>
+        <member name="T:AlbLib.Items.ItemClass">
+            <summary>
+            Class of item.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Unknown">
+            <summary>Unknown, unset class.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Armour">
+            <summary>Armour.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Helmet">
+            <summary>Helmet.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Shoes">
+            <summary>Shoes.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Shield">
+            <summary>Shield.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Melee">
+            <summary>Melee.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Ranged">
+            <summary>Ranged.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Ammo">
+            <summary>Ammo.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Document">
+            <summary>Document.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Spell">
+            <summary>Spell.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Drink">
+            <summary>Drink.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Amulet">
+            <summary>Amulet.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Ring">
+            <summary>Ring.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Jewel">
+            <summary>Jewel.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Tool">
+            <summary>Tool.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Key">
+            <summary>Key.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Normal">
+            <summary>Normal/junk.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Magical">
+            <summary>Magical.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Special">
+            <summary>Special.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Lockpick">
+            <summary>Lockpick.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemClass.Staff">
+            <summary>Staff/torch.</summary>
+        </member>
+        <member name="T:AlbLib.Items.ItemSlot">
+            <summary>
+            Item slot.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.Inventory">
+            <summary>Inventory item only.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.Neck">
+            <summary>Necklace.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.Head">
+            <summary>Helmet.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.Tail">
+            <summary>Tail only.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.RightHand">
+            <summary>Right hand.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.Chest">
+            <summary>Chest.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.LeftHand">
+            <summary>Left hand.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.RightFinger">
+            <summary>Right finger ring.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.Feet">
+            <summary>Shoes.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.LeftFinger">
+            <summary>Left finger ring.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSlot.RightHandOrTail">
+            <summary>Right hand or tail item.</summary>
+        </member>
+        <member name="T:AlbLib.Items.ItemSpellType">
+            <summary>
+            Item spell class.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSpellType.DjiKas">
+            <summary>Dji Kas.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSpellType.EnlightenedOne">
+            <summary>Enlightened one.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSpellType.Druid">
+            <summary>Druid.</summary>
+        </member>
+        <member name="F:AlbLib.Items.ItemSpellType.OquloKamulos">
+            <summary>Oqulo Kamulos.</summary>
+        </member>
+        <member name="T:AlbLib.Items.ItemState">
+            <summary>
+            Structure representing static information about item type.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Items.ItemState.GetItemState(System.Int16)">
+            <summary>
+            Find specified item state for <paramref name="type"/>.
+            </summary>
+            <param name="type">
+            Type ID.
+            </param>
+            <returns>
+            Item state bound to the <paramref name="type"/>.
+            </returns>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Type">
+            <summary>
+            Type ID.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Class">
+            <summary>
+            Item class.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Slot">
+            <summary>
+            Item slot that can hold the item.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.BreakRate">
+            <summary>
+            Chance to break the item.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Gender">
+            <summary>
+            Gender limitation.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.FreeHands">
+            <summary>
+            Number of free hands needed.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.LifePointsBonus">
+            <summary>
+            Bonus value for life points.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.SpellPointsBonus">
+            <summary>
+            Bonus value for spell points.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.AttributeType">
+            <summary>
+            Bonus attribute type.
+            </summary>
+            <seealso cref="P:AlbLib.Items.ItemState.AttributeBonus"/>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.AttributeBonus">
+            <summary>
+            Bonus attribute value for type.
+            </summary>
+            <seealso cref="P:AlbLib.Items.ItemState.AttributeType"/>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.SkillTypeBonus">
+            <summary>
+            Bonus skill type.
+            </summary>
+            <seealso cref="P:AlbLib.Items.ItemState.SkillBonus"/>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.SkillBonus">
+            <summary>
+            Bonus skill value for type.
+            </summary>
+            <seealso cref="P:AlbLib.Items.ItemState.SkillTypeBonus"/>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.PhysicalDamageProtection">
+            <summary>
+            Protection from physical damage.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.PhysicalDamageCaused">
+            <summary>
+            Caused physical damage.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.AmmunitionType">
+            <summary>
+            Type of ammunition.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.SkillType1Tax">
+            <summary>
+            Skill 1 tax type.
+            </summary>
+            <seealso cref="P:AlbLib.Items.ItemState.Skill1Tax"/>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.SkillType2Tax">
+            <summary>
+            Skill 2 tax type.
+            </summary>
+            <seealso cref="P:AlbLib.Items.ItemState.Skill2Tax"/>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Skill1Tax">
+            <summary>
+            Skill 1 tax value.
+            </summary>
+            <seealso cref="P:AlbLib.Items.ItemState.SkillType1Tax"/>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Skill2Tax">
+            <summary>
+            Skill 2 tax value.
+            </summary>
+            <seealso cref="P:AlbLib.Items.ItemState.SkillType2Tax"/>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.TorchIntensity">
+            <summary>
+            If <see cref="P:AlbLib.Items.ItemState.Class"/> is <see cref="F:AlbLib.Items.ItemClass.Staff"/>, intensity of torch.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Activates">
+            <summary>
+            If <see cref="P:AlbLib.Items.ItemState.Class"/> is <see cref="F:AlbLib.Items.ItemClass.Special"/>, what this item activates.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.AmmoAnimation">
+            <summary>
+            Ammo combat animation.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Spell">
+            <summary>
+            Spell type.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.SpellID">
+            <summary>
+            Spell ID.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Charges">
+            <summary>
+            If <see cref="P:AlbLib.Items.ItemState.Class"/> is <see cref="F:AlbLib.Items.ItemClass.Staff"/>, torch lifetime. Otherwise charges left in item.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.NumRecharged">
+            <summary>
+            How many this item was recharged.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.MaxNumRecharged">
+            <summary>
+            How many this item can be recharged.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.MaxCharges">
+            <summary>
+            Maximum possible charges.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Count1">
+            <summary></summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Count2">
+            <summary></summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.IconAnim">
+            <summary>
+            Number of animated images in icon.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Weight">
+            <summary>
+            Item weight in grammes.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Value">
+            <summary>
+            Item sell value.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.Icon">
+            <summary>
+            Icon ID.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.UsingClass">
+            <summary>
+            Which class can use it.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.UsingRace">
+            <summary>
+            Which race can use it. Maybe broken.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Items.ItemState.TypeName">
+            <summary>
+            Localized type name.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Items.Race">
+            <summary>
+            Item race limitation.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Items.SkillType">
+            <summary>
+            Skill type for item.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Items.SkillType.CloseRangeCombat">
+            <summary>Close-range combat.</summary>
+        </member>
+        <member name="F:AlbLib.Items.SkillType.LongRangeCombat">
+            <summary>Long-range combat.</summary>
+        </member>
+        <member name="F:AlbLib.Items.SkillType.CriticalHit">
+            <summary>Critical hit.</summary>
+        </member>
+        <member name="F:AlbLib.Items.SkillType.Lockpicking">
+            <summary>Lockpicking.</summary>
+        </member>
+        <member name="T:AlbLib.IWritable">
+            <summary>
+            Writes data to stream.
+            </summary>
+        </member>
+        <member name="M:AlbLib.IWritable.WriteTo(System.IO.Stream)">
+            <summary>
+            Writes data to <paramref name="output"/> stream.
+            </summary>
+            <param name="output">
+            Output stream.
+            </param>
+            <returns>
+            Number of written bytes.
+            </returns>
+        </member>
+        <member name="T:AlbLib.LimitedInputStream">
+            <summary>
+            This stream captures base stream and limits reading.
+            </summary>
+        </member>
+        <member name="M:AlbLib.LimitedInputStream.#ctor(System.IO.Stream,System.Int32)">
+            <summary>
+            Wraps new stream.
+            </summary>
+        </member>
+        <member name="P:AlbLib.LimitedInputStream.Remaining">
+            <summary>
+            Remaining bytes.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Mapping.Block">
+            <summary>
+            3D map block.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.Block.X">
+            <summary>
+            Tile X position.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.Block.Y">
+            <summary>
+            Tile Y position.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Block.#ctor(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Reads a map block.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Block.#ctor(System.IO.Stream)">
+            <summary>
+            Reads a map block.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Block.#ctor(System.Byte,System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Reads a map block.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Block.#ctor(System.Byte,System.Byte,System.IO.Stream)">
+            <summary>
+            Reads a map block.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Mapping.Block2D">
+            <summary>
+            BLKLIST.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Block2D.#ctor(System.IO.Stream)">
+            <param name="stream">
+            Source stream.
+            </param>
+        </member>
+        <member name="P:AlbLib.Mapping.Block2D.Width">
+            <summary>
+            Width in tiles.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Block2D.Height">
+            <summary>
+            Height in tiles.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Block2D.Data">
+            <summary>
+            Block of tiles.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Mapping.GotoPoint">
+            <summary>
+            3D map goto-point.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Mapping.IconData">
+            <summary>
+            This class represents static tile data.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.IconData.GetTileset(System.Int32)">
+            <summary>
+            Returns data array for tileset.
+            </summary>
+            <param name="index">
+            One-based tileset index.
+            </param>
+        </member>
+        <member name="M:AlbLib.Mapping.IconData.GetTile(System.Int32,System.Int32)">
+            <summary>
+            Returns tile data from tileset.
+            </summary>
+            <param name="tileset">
+            One-based tileset index.
+            </param>
+            <param name="index">
+            Tile index.
+            </param>
+        </member>
+        <member name="T:AlbLib.Mapping.IconGraphics">
+            <summary>
+            Used for loading tile images.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.IconGraphics.GetTileset(System.Int32)">
+            <summary>
+            Loads tileset as an array of RawImages.
+            </summary>
+            <param name="index">
+            Zero-based tileset index.
+            </param>
+            <returns>
+            Array representing the tileset.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Mapping.IconGraphics.GetTile(System.Int32,System.Int32)">
+            <summary>
+            Gets tile graphics using tile index.
+            </summary>
+            <param name="tileset">
+            Zero-based tileset index.
+            </param>
+            <param name="index">
+            Overlay or underlay.
+            </param>
+        </member>
+        <member name="M:AlbLib.Mapping.IconGraphics.GetTileUnderlay(System.Int32,AlbLib.Mapping.Tile)">
+            <summary>
+            Returns image representing underlay portion of tile.
+            </summary>
+            <param name="tileset">
+            Zero-based tileset index.
+            </param>
+            <param name="tile">
+            Tile.
+            </param>
+            <returns>
+            Underlay image.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Mapping.IconGraphics.GetTileOverlay(System.Int32,AlbLib.Mapping.Tile)">
+            <summary>
+            Returns image representing overlay portion of tile.
+            </summary>
+            <param name="tileset">
+            Zero-based tileset index.
+            </param>
+            <param name="tile">
+            Tile.
+            </param>
+            <returns>
+            Overlay image.
+            </returns>
+        </member>
+        <member name="T:AlbLib.Mapping.IMinimapVisible">
+            <summary>
+            Description of IMinimapVisible.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Mapping.Map">
+            <summary>
+            Class representing game map.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.Map.Id">
+            <summary>
+            Id of map.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.Map.gotopoints">
+            <summary>
+            Array of map data, tiles or blocks.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Map.#ctor(System.IO.Stream)">
+            <summary>
+            Loads map from stream.
+            </summary>
+            <param name="stream">
+            Source stream.
+            </param>
+        </member>
+        <member name="M:AlbLib.Mapping.Map.#ctor(System.Int32,System.IO.Stream)">
+            <summary>
+            Loads map from stream and assigns an id.
+            </summary>
+            <param name="id">
+            Id of map.
+            </param>
+            <param name="stream">
+            Source stream.
+            </param>
+        </member>
+        <member name="M:AlbLib.Mapping.Map.Load(System.Int32)">
+            <summary>
+            Loads existing map using in-game ID. (Alt+F2)
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Map.Combine(AlbLib.Mapping.CombineArgs)">
+            <summary>
+            Combines all tiles to form a graphic plane.
+            </summary>
+            <returns>
+            Newly created graphic plane.
+            </returns>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.Flags">
+            <summary>
+            Switch for wait/rest, light-environment, NPC converge range, possibly more.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.NumNPC">
+            <summary>
+            Amount of NPCs and monsters.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.Type">
+            <summary>
+            Map type.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.BackgroundMusic">
+            <summary>
+            Map music.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.Width">
+            <summary>
+            Width in tiles.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.Height">
+            <summary>
+            Height in tiles.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.Tileset">
+            <summary>
+            One-based tileset ID.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.Labdata">
+            <summary>
+            One-based labdata ID.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.ComGFX">
+            <summary>
+            Combat background graphics.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.Palette">
+            <summary>
+            One-based palette ID.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.AnimRate">
+            <summary>
+            Frequency of animations.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.NPCs">
+            <summary>
+            NPC/monster data.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.TileData">
+            <summary>
+            Array of 2D map tiles.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.BlockData">
+            <summary>
+            Array of 3D map blocks.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Map.Corrupted">
+            <summary>
+            True if an exception occured while loading map.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Mapping.MapType">
+            <summary>
+            Type of map.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.MapType.Unknown">
+            <summary>
+            Undefined type.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.MapType.Map3D">
+            <summary>
+            3D.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.MapType.Map2D">
+            <summary>
+            2D.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Mapping.NPC">
+            <summary>
+            Map NPC/monster.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Mapping.Position">
+            <summary>
+            Description of Position.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Mapping.Tile">
+            <summary>
+            2D map tile.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.Tile.X">
+            <summary>
+            Tile X position.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.Tile.Y">
+            <summary>
+            Tile Y position.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Tile.#ctor(System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Reads a map tile.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Tile.#ctor(System.IO.Stream)">
+            <summary>
+            Reads a map tile.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Tile.#ctor(System.Byte,System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Reads a map tile.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.Tile.#ctor(System.Byte,System.Byte,System.IO.Stream)">
+            <summary>
+            Reads a map tile.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Tile.Underlay">
+            <summary>
+            Underlay tile id.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Mapping.Tile.Overlay">
+            <summary>
+            Overlay tile id.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Mapping.TileData">
+            <summary>
+            Data about map tile.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.TileData.Id">
+            <summary>
+            Assigned id.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.TileData.Type">
+            <summary>
+            TODO.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.TileData.Collision">
+            <summary>
+            TODO.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.TileData.Info">
+            <summary>
+            TODO.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.TileData.GrID">
+            <summary>
+            TODO.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Mapping.TileData.FramesCount">
+            <summary>
+            TODO.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Mapping.TileData.#ctor(System.Int32,System.IO.Stream)">
+            <param name="id">
+            Id to assign.
+            </param>
+            <param name="stream">
+            Source stream.
+            </param>
+        </member>
+        <member name="T:AlbLib.Internal.Resources">
+            <summary>
+            Class for accessing embedded XML resources.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Internal.Resources.GetResource(System.String)">
+            <summary>
+            Loads a XML resource.
+            </summary>
+            <param name="name">
+            Resource name.
+            </param>
+            <returns>
+            XML document.
+            </returns>
+        </member>
+        <member name="P:AlbLib.Internal.Resources.AlwaysUseEmbedded">
+            <summary>
+            When this set on, this class will load resources only from this assembly.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Internal.Resources.Functions">
+            <summary>
+            functions
+            |- function:
+                 name = Function name.
+                 parameters = Number of parameters.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Internal.Resources.FileData">
+            <summary>
+            files
+            |- file:
+                 name = File name.
+                 type = File type.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Internal.Resources.CharTable">
+            <summary>
+            chartable
+            |- [treename]:
+                 char = Unicode character.
+                 code = Byte code.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.Backpack">
+            <summary>
+            Character backpack items.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.Inventory">
+            <summary>
+            Inventory holding items.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.Inventory.GetEnumerator">
+            <summary>
+            Enumerates through all items in inventory.
+            </summary>
+            <returns>
+            Item enumerator.
+            </returns>
+        </member>
+        <member name="M:AlbLib.SaveGame.Inventory.CopyTo(AlbLib.SaveGame.ItemStack[],System.Int32)">
+            <summary>
+            Copies items to item array.
+            </summary>
+            <param name="array"></param>
+            <param name="arrayIndex"></param>
+        </member>
+        <member name="M:AlbLib.SaveGame.Inventory.Contains(AlbLib.SaveGame.ItemStack)">
+            <summary>
+            Check if inventory contains given item stack.
+            </summary>
+            <param name="item"></param>
+            <returns>
+            True if inventory contains specified item.
+            </returns>
+        </member>
+        <member name="M:AlbLib.SaveGame.Inventory.Add(AlbLib.SaveGame.ItemStack)">
+            <summary>
+            Adds new <paramref name="item"/> stack to inventory.
+            </summary>
+            <param name="item">
+            Item to add.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.Inventory.RemoveAt(System.Int32)">
+            <summary>
+            Removes item stack at specified <paramref name="index"/>.
+            </summary>
+            <param name="index">
+            Index of item slot.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.Inventory.RemoveOne(System.Int32)">
+            <summary>
+            Decreases item count of stack at specified <paramref name="index"/>.
+            </summary>
+            <param name="index">
+            Index of item slot.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.Inventory.Clear">
+            <summary>
+            Removes all items from inventory.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.Inventory.ToRawData">
+            <summary>
+            Converts items to byte array.
+            </summary>
+            <returns>
+            Array containg items.
+            </returns>
+        </member>
+        <member name="P:AlbLib.SaveGame.Inventory.Item(System.Int32)">
+            <summary>
+            Accesses item using item <paramref name="index"/>.
+            </summary>
+            <param name="index">
+            Item index from 0 to <see cref="P:AlbLib.SaveGame.Inventory.Capacity"/>-1.
+            </param>
+        </member>
+        <member name="P:AlbLib.SaveGame.Inventory.Capacity">
+            <summary>
+            Count of item slots.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Inventory.Count">
+            <summary>
+            Counts all used item slots.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Inventory.IsFull">
+            <summary>
+            Checks if inventory is full.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Inventory.IsEmpty">
+            <summary>
+            Checks if inventory is empty.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.Backpack.#ctor">
+            <summary>
+            Creates empty inventory.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.Backpack.#ctor(System.Byte[],System.Int32)">
+            <summary>
+            Loads inventory from byte array.
+            </summary>
+            <param name="data">
+            Byte array containing inventory items.
+            </param>
+            <param name="offset">
+            Position of inventory.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.Backpack.ToRawData">
+            <summary>
+            Converts items to byte array.
+            </summary>
+            <returns>
+            Array containg items.
+            </returns>
+        </member>
+        <member name="M:AlbLib.SaveGame.Backpack.Clear">
+            <summary>
+            Removes all items from inventory.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.Backpack.GetEnumerator">
+            <summary>
+            Enumerates through all items in inventory.
+            </summary>
+            <returns>
+            Item enumerator.
+            </returns>
+        </member>
+        <member name="P:AlbLib.SaveGame.Backpack.Capacity">
+            <summary>
+            Count of item slots.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Backpack.Item(System.Int32)">
+            <summary>
+            Accesses item using item <paramref name="index"/>.
+            </summary>
+            <param name="index">
+            Item index in range from 0 to 23.
+            </param>
+        </member>
+        <member name="P:AlbLib.SaveGame.Backpack.Item(System.Int32,System.Int32)">
+            <summary>
+            Accesses item using <paramref name="x"/> and <paramref name="y"/> displayed position.
+            </summary>
+            <param name="x">
+            Item X position between 0 and 3.
+            </param>
+            <param name="y">
+            Item Y position between 0 and 5.
+            </param>
+        </member>
+        <member name="T:AlbLib.SaveGame.Character">
+            <summary>
+            Stores information about game character.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.Character.#ctor">
+            <summary>
+            Creates new character.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.Character.#ctor(System.Byte[])">
+            <summary>
+            Loads character.
+            </summary>
+            <param name="data">
+            Byte array containing character data.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.Character.ToRawData">
+            <summary>
+            Saves character to byte array.
+            </summary>
+            <returns>
+            Saved character.
+            </returns>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Gender">
+            <summary>
+            Gender of character.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Race">
+            <summary>
+            Race of character.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Class">
+            <summary>
+            Class of character.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Magic">
+            <summary>
+            Magic type of character.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Level">
+            <summary>
+            Level of character.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Language">
+            <summary>
+            Speaking language of character.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Appearance">
+            <summary>
+            Character appearance.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Face">
+            <summary>
+            Character face.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.InventoryPicture">
+            <summary>
+            Character inventory picture.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.NamedAppearance">
+            <summary>
+            Actual character appearance.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.NamedFace">
+            <summary>
+            Actual character face.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.NamedInventoryPicture">
+            <summary>
+            Actual character inventory picture.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.TrainingPoints">
+            <summary>
+            Training points.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Gold">
+            <summary>
+            Gold in inventory.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Rations">
+            <summary>
+            Rations in inventory.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Conditions">
+            <summary>
+            Character conditions.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Strength">
+            <summary>
+            Character strength stat.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Intelligence">
+            <summary>
+            Character intelligence stat.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Dexterity">
+            <summary>
+            Character dexterity stat.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Speed">
+            <summary>
+            Character speed stat.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Stamina">
+            <summary>
+            Character stamina stat.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Luck">
+            <summary>
+            Character luck stat.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.MagicResistance">
+            <summary>
+            Character magic resistance stat.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.MagicTallent">
+            <summary>
+            Character magic tallent stat.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.CloseRangeCombat">
+            <summary>
+            Character close-range combat points.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.LongRangeCombat">
+            <summary>
+            Character long-range combat points.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.CriticalHit">
+            <summary>
+            Character critical hit stat.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Lockpicking">
+            <summary>
+            Character lockpicking stat.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.LifePoints">
+            <summary>
+            Character life points.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.SpellPoints">
+            <summary>
+            Character spell points.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Age">
+            <summary>
+            Character age in years.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Experience">
+            <summary>
+            Character experience points.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.ClassSpells">
+            <summary>
+            Character class-relative spells.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Name">
+            <summary>
+            Character name.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Equipment">
+            <summary>
+            Character equipment items.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Character.Inventory">
+            <summary>
+            Character backpack items.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.CharacterAttribute">
+            <summary>
+            Character attribute stat.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.CharacterAttribute.#ctor(System.Int16,System.Int16)">
+            <summary>
+            Creates structure using actual values.
+            </summary>
+            <param name="value">
+            Current value.
+            </param>
+            <param name="maxvalue">
+            Maximum available value.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.CharacterAttribute.#ctor(System.Byte[],System.Int32)">
+            <summary>
+            Creates structure using byte array and start index.
+            </summary>
+            <param name="data">
+            Byte array containing attribute.
+            </param>
+            <param name="startIndex">
+            Index in array where attribute lies.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.CharacterAttribute.ToRawData">
+            <summary>
+            Converts structure to byte array.
+            </summary>
+            <returns>
+            Structure as array of bytes.
+            </returns>
+        </member>
+        <member name="M:AlbLib.SaveGame.CharacterAttribute.ToString">
+            <summary>
+            Converts attribute to string.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.CharacterAttribute.Value">
+            <summary>
+            Current value.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.CharacterAttribute.MaximumValue">
+            <summary>
+            Maximum available value.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.CharacterClass">
+            <summary>
+            Class of character.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterClass.Pilot">
+            <summary>
+            Pilot.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterClass.Scientist">
+            <summary>
+            Scientist.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterClass.Warrior">
+            <summary>
+            Warrior.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterClass.DjiKasMage">
+            <summary>
+            Dji Kas mage.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterClass.Druid">
+            <summary>
+            Druid.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterClass.EnlightenedOne">
+            <summary>
+            Enlightened one.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterClass.Technician">
+            <summary>
+            Technician.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterClass.OquloWarrior">
+            <summary>
+            Oqulo Kamulos.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterClass.Warrior2">
+            <summary>
+            Warrior 2.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.CharacterConditions">
+            <summary>
+            Character condition states.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Unconscious">
+            <summary>
+            Unconscious.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Poisoned">
+            <summary>
+            Poisoned.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Ill">
+            <summary>
+            Ill.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Exhausted">
+            <summary>
+            Exhausted.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Paralyzed">
+            <summary>
+            Paralyzed.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Fleeing">
+            <summary>
+            Fleeing.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Intoxicated">
+            <summary>
+            Intoxicated.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Blind">
+            <summary>
+            Blind.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Panicking">
+            <summary>
+            Panicking.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Asleep">
+            <summary>
+            Asleep.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Insane">
+            <summary>
+            Insane.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterConditions.Irritated">
+            <summary>
+            Irritated.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.CharacterGender">
+            <summary>
+            Gender of character.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterGender.Male">
+            <summary>
+            Male.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterGender.Female">
+            <summary>
+            Female.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.CharacterLanguage">
+            <summary>
+            Character language.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterLanguage.None">
+            <summary>
+            None learnt.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterLanguage.Terran">
+            <summary>
+            Terran only.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterLanguage.Iskai">
+            <summary>
+            Iskai only.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterLanguage.Celtic">
+            <summary>
+            Celtic only.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.CharacterMagic">
+            <summary>
+            Character magic class.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterMagic.None">
+            <summary>
+            Character can't do magic.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterMagic.DjiKas">
+            <summary>
+            Dji Kas.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterMagic.EnlightenedOne">
+            <summary>
+            Enlightened one.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterMagic.Druid">
+            <summary>
+            Druid.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterMagic.OquloKamulos">
+            <summary>
+            Oqulo.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.CharacterPerson">
+            <summary>
+            Actual playable characters in game.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterPerson.None">
+            <summary>
+            Nobody.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterPerson.Tom">
+            <summary>
+            Tom Driscoll.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterPerson.Rainer">
+            <summary>
+            Rainer Hofstedt.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterPerson.Drirr">
+            <summary>
+            Drirr.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterPerson.Sira">
+            <summary>
+            Sira.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterPerson.Mellthas">
+            <summary>
+            Mellthas.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterPerson.Harriet">
+            <summary>
+            Harriet.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterPerson.Joe">
+            <summary>
+            Joe Bernard.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterPerson.Khunag">
+            <summary>
+            Khunag.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterPerson.Siobhan">
+            <summary>
+            Siobhan.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.CharacterRace">
+            <summary>
+            Race of character.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterRace.Terran">
+            <summary>
+            Terran.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterRace.Iskai">
+            <summary>
+            Iskai.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterRace.Celt">
+            <summary>
+            Celt.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterRace.KengetKamulos">
+            <summary>
+            Kenget Kamulos.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterRace.DjiCantos">
+            <summary>
+            Dji-Cantos.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterRace.Mahino">
+            <summary>
+            Mahino.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterRace.Decadent">
+            <summary>
+            Decadent.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterRace.Umajo">
+            <summary>
+            Umajo.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.CharacterRace.Monster">
+            <summary>
+            Monster.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.Equipment">
+            <summary>
+            Character equipment items.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.Equipment.Neck">
+            <summary>
+            Item on neck.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.Equipment.Head">
+            <summary>
+            Item on head.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.Equipment.Tail">
+            <summary>
+            Item in tail.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.Equipment.RightHand">
+            <summary>
+            Item in right hand.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.Equipment.Chest">
+            <summary>
+            Item on chest.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.Equipment.LeftHand">
+            <summary>
+            Item in left hand.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.Equipment.RightFinger">
+            <summary>
+            Item on right finger.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.Equipment.Feet">
+            <summary>
+            Item on feet.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.Equipment.LeftFinger">
+            <summary>
+            Item on left finger.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.Equipment.#ctor">
+            <summary>
+            Creates empty inventory.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.Equipment.#ctor(System.Byte[],System.Int32)">
+            <summary>
+            Loads inventory from byte array.
+            </summary>
+            <param name="data">
+            Byte array containing inventory items.
+            </param>
+            <param name="offset">
+            Position of inventory.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.Equipment.ToRawData">
+            <summary>
+            Converts items to byte array.
+            </summary>
+            <returns>
+            Array containg items.
+            </returns>
+        </member>
+        <member name="M:AlbLib.SaveGame.Equipment.GetEnumerator">
+            <summary>
+            Enumerates through all items in inventory.
+            </summary>
+            <returns>
+            Item enumerator.
+            </returns>
+        </member>
+        <member name="M:AlbLib.SaveGame.Equipment.Clear">
+            <summary>
+            Removes all items from inventory.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.Equipment.Item(System.Int32)">
+            <summary>
+            Accesses item using item <paramref name="index"/>.
+            </summary>
+            <param name="index">
+            Item index in range from 0 to 8.
+            </param>
+        </member>
+        <member name="P:AlbLib.SaveGame.Equipment.Capacity">
+            <summary>
+            Count of item slots.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.ItemFlags">
+            <summary>
+            Special item flags.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.ItemFlags.None">
+            <summary>
+            Item has no special flags.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.ItemFlags.ShowMoreInfo">
+            <summary>
+            Showing detailed info is available.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.ItemFlags.Broken">
+            <summary>
+            Item is broken and cannot be used.
+            </summary>
+        </member>
+        <member name="F:AlbLib.SaveGame.ItemFlags.Cursed">
+            <summary>
+            Item is cursed.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.ItemStack">
+            <summary>
+            Class representing instance of item or items of same type.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.ItemStack.#ctor(System.Byte[],System.Int32)">
+            <summary>
+            Loads an item stack from byte array.
+            </summary>
+            <param name="data">
+            Byte array containing item informations.
+            </param>
+            <param name="offset">
+            Offset where informations are located.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.ItemStack.#ctor(System.Byte,System.Int16)">
+            <summary>
+            Creates new item stack from type and count.
+            </summary>
+            <param name="count">
+            Count of items in stack.
+            </param>
+            <param name="type">
+            Type of item or items.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.ItemStack.ToRawData">
+            <summary>
+            Converts item stack to byte array.
+            </summary>
+            <returns>
+            Converted item stack.
+            </returns>
+        </member>
+        <member name="M:AlbLib.SaveGame.ItemStack.ToString">
+            <summary>
+            Converts item stack to string.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.ItemStack.Equals(System.Object)">
+            <summary>
+            Compares two item stacks.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.ItemStack.Equals(AlbLib.SaveGame.ItemStack)">
+            <summary>
+            Compares two item stacks.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.ItemStack.op_Equality(AlbLib.SaveGame.ItemStack,AlbLib.SaveGame.ItemStack)">
+            <summary>
+            Compares two item stacks.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.ItemStack.op_Inequality(AlbLib.SaveGame.ItemStack,AlbLib.SaveGame.ItemStack)">
+            <summary>
+            Compares two item stacks.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.ItemStack.GetHashCode">
+            <summary>
+            Computes unique hash code for this item stack.
+            </summary>
+            <returns>
+            A hash code for this item stack.
+            </returns>
+        </member>
+        <member name="P:AlbLib.SaveGame.ItemStack.Count">
+            <summary>
+            Count of items in stack.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.ItemStack.Charges">
+            <summary>
+            Number of charges.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.ItemStack.NumRecharged">
+            <summary>
+            How many times was item recharged.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.ItemStack.Flags">
+            <summary>
+            Item flags.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.ItemStack.Type">
+            <summary>
+            Item type.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.ItemStack.TypeName">
+            <summary>
+            Returns localized item name.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.ItemStack.State">
+            <summary>
+            Returns information about item type.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.ItemStack.IsEmpty">
+            <summary>
+            Checks if item is not empty slot.
+            </summary>
+        </member>
+        <member name="T:AlbLib.SaveGame.SaveGameInfo">
+            <summary>
+            Information about saved game.
+            </summary>
+        </member>
+        <member name="M:AlbLib.SaveGame.SaveGameInfo.#ctor(System.String)">
+            <summary>
+            Loads saved game from specified file.
+            </summary>
+            <param name="path">
+            File where saved game is stored.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.SaveGameInfo.#ctor(System.IO.Stream)">
+            <summary>
+            Loads saved game from specified <paramref name="stream"/>.
+            </summary>
+            <param name="stream">
+            Input stream.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.SaveGameInfo.Write(System.IO.Stream)">
+            <summary>
+            Writes saved game header to a stream.
+            </summary>
+            <param name="output">
+            Output stream.
+            </param>
+        </member>
+        <member name="M:AlbLib.SaveGame.SaveGameInfo.ToRawData">
+            <summary>
+            Converts saved game header to byte array.
+            </summary>
+            <returns>
+            Converted saved game.
+            </returns>
+        </member>
+        <member name="P:AlbLib.SaveGame.SaveGameInfo.Name">
+            <summary>
+            Name of save game.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.SaveGameInfo.Version">
+            <summary>
+            Game version.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.SaveGameInfo.Days">
+            <summary>
+            Game days.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.SaveGameInfo.Hours">
+            <summary>
+            Game hours.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.SaveGameInfo.Minutes">
+            <summary>
+            Game minutes.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.SaveGameInfo.MapID">
+            <summary>
+            Party map ID.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.SaveGameInfo.PartyX">
+            <summary>
+            Party X position.
+            </summary>
+        </member>
+        <member name="P:AlbLib.SaveGame.SaveGameInfo.PartyY">
+            <summary>
+            Party Y position.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Scripting.DebugExecutor">
+            <summary>
+            Dummy implementation of <see cref="T:AlbLib.Scripting.ScriptExecutionMachine"/> which writes parsed functions to an output.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Scripting.ScriptExecutionMachine">
+            <summary>
+            Virtual machine which parses script text.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Scripting.IScriptExecutor">
+            <summary>
+            Interface which handles scripts.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Scripting.IScriptExecutor.Execute(System.String)">
+            <summary>
+            Executes a script.
+            </summary>
+            <param name="script">
+            Script text.
+            </param>
+            <returns>
+            True on success. If handled, false on failure.
+            </returns>
+            <exception cref="T:AlbLib.Scripting.ScriptExecutionException">
+            In some implementations when exception occurs during parsing or at runtime.
+            </exception>
+        </member>
+        <member name="F:AlbLib.Scripting.ScriptExecutionMachine.DebugExecutor">
+            <summary>
+            Default debug executor.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Scripting.ScriptExecutionMachine.OnComment(System.String)">
+            <summary>
+            Occurs when a comment is found.
+            </summary>
+            <param name="comment">
+            Found comment.
+            </param>
+        </member>
+        <member name="M:AlbLib.Scripting.ScriptExecutionMachine.OnFunction(System.String,System.Int32[])">
+            <summary>
+            Occurs when a function is called.
+            </summary>
+            <param name="function">
+            Found function name.
+            </param>
+            <param name="args">
+            Found function arguments.
+            </param>
+        </member>
+        <member name="M:AlbLib.Scripting.ScriptExecutionMachine.Execute(System.String,AlbLib.Scripting.ScriptExecutionException@)">
+            <summary>
+            Executes a script.
+            </summary>
+            <param name="script">
+            Script text.
+            </param>
+            <param name="exception">
+            Thrown exception, if any, will be stored there.
+            </param>
+            <returns>
+            True on success. False on failure.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Scripting.ScriptExecutionMachine.Execute(System.String)">
+            <summary>
+            Executes a script. Does not throw any exceptions.
+            </summary>
+            <param name="script">
+            Script text.
+            </param>
+            <returns>
+            True on success. False on failure.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Scripting.DebugExecutor.OnComment(System.String)">
+            <summary>
+            Occurs when a comment is found.
+            </summary>
+            <param name="comment">
+            Found comment.
+            </param>
+        </member>
+        <member name="M:AlbLib.Scripting.DebugExecutor.OnFunction(System.String,System.Int32[])">
+            <summary>
+            Occurs when a function is called.
+            </summary>
+            <param name="function">
+            Found function name.
+            </param>
+            <param name="args">
+            Found function arguments.
+            </param>
+        </member>
+        <member name="M:AlbLib.Scripting.DebugExecutor.#ctor">
+            <summary>
+            Initializes new instance using <see cref="P:System.Console.Out"/> as an output.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Scripting.DebugExecutor.#ctor(System.IO.TextWriter)">
+            <summary>
+            Initializes new instance using <paramref name="output"/> as an output.
+            </summary>
+            <param name="output">
+            Output where debug information will be written.
+            </param>
+        </member>
+        <member name="M:AlbLib.Scripting.DebugExecutor.Execute(System.String)">
+            <summary>
+            Executes a script.
+            </summary>
+            <param name="script">
+            Script text.
+            </param>
+            <returns>
+            True on success.
+            </returns>
+            <exception cref="T:AlbLib.Scripting.ScriptExecutionException">
+            When any exception raises in script execution.
+            </exception>
+        </member>
+        <member name="P:AlbLib.Scripting.DebugExecutor.Output">
+            <summary>
+            Output where to write debug information.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Scripting.ExecuteHandler">
+            <summary>
+            Delegate which handles scripts.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Scripting.ScriptExecutionException">
+            <summary>
+            Exception which stores additional information when normal exception raises.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Scripting.ScriptExecutionException.#ctor(System.Int32,System.String,System.String,System.Exception)">
+            <summary>
+            Initializes new instance of this exception.
+            </summary>
+            <param name="line">
+            Line number where did exception occur.
+            </param>
+            <param name="errorline">
+            Actual line.
+            </param>
+            <param name="message">
+            Message which was thrown.
+            </param>
+            <param name="innerException">
+            Inner exception if any.
+            </param>
+        </member>
+        <member name="P:AlbLib.Scripting.ScriptExecutionException.LinePosition">
+            <summary>
+            Line number.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Scripting.ScriptExecutionException.CurrentLine">
+            <summary>
+            Actual line.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Scripting.Scripts">
+            <summary>
+            Core scripting class.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Scripting.Scripts.GetScript(System.Int32)">
+            <summary>
+            Returns script text.
+            </summary>
+            <param name="index">
+            Zero-based script index.
+            </param>
+            <returns>
+            Script.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Scripting.Scripts.RunScript(System.String,AlbLib.Scripting.IScriptExecutor)">
+            <summary>
+            Executes script.
+            </summary>
+            <param name="script">
+            The script text to execute.
+            </param>
+            <param name="executor">
+            Virtual machine which executes the script.
+            </param>
+            <returns>
+            True on success. False on failure.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Scripting.Scripts.RunScript(System.Int32,AlbLib.Scripting.IScriptExecutor)">
+            <summary>
+            Executes script.
+            </summary>
+            <param name="index">
+            The script index to execute.
+            </param>
+            <param name="executor">
+            Virtual machine which executes the script.
+            </param>
+            <returns>
+            True on success. False on failure.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Scripting.Scripts.RunScript(System.String,AlbLib.Scripting.ExecuteHandler)">
+            <summary>
+            Executes script.
+            </summary>
+            <param name="script">
+            The script text to execute.
+            </param>
+            <param name="handler">
+            Delegate which is called.
+            </param>
+            <returns>
+            True on success. False on failure.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Scripting.Scripts.RunScript(System.Int32,AlbLib.Scripting.ExecuteHandler)">
+            <summary>
+            Executes script.
+            </summary>
+            <param name="index">
+            The script index to execute.
+            </param>
+            <param name="handler">
+            Delegate which is called.
+            </param>
+            <returns>
+            True on success. False on failure.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Sounds.RawPCMSound.#ctor(System.Byte[])">
+            <summary>
+            Loads sound from byte array.
+            </summary>
+            <param name="data">
+            Raw PCM data.
+            </param>
+        </member>
+        <member name="M:AlbLib.Sounds.RawPCMSound.#ctor(System.IO.Stream,System.Int32)">
+            <summary>
+            Loads sound from stream.
+            </summary>
+            <param name="stream">
+            Input stream.
+            </param>
+            <param name="length">
+            Length of
+            </param>
+        </member>
+        <member name="M:AlbLib.Sounds.RawPCMSound.ToWAVE">
+            <summary>
+            Converts sound to wave format.
+            </summary>
+            <returns>
+            Byte array containing whole WAVE data.
+            </returns>
+        </member>
+        <member name="P:AlbLib.Sounds.RawPCMSound.Rate">
+            <summary>
+            Frequency of PCM sound.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Sounds.RawPCMSound.SoundData">
+            <summary>
+            Raw sound data.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Sounds.XMidiMusic">
+            <summary>
+            Music in XMidi (XMI) format. Incomplete.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Sounds.XMidiMusic.#ctor(System.Byte[])">
+            <summary>
+            Creates new 
+            </summary>
+            <param name="xmidi">
+            
+            </param>
+        </member>
+        <member name="M:AlbLib.Sounds.XMidiMusic.#ctor(System.IO.Stream)">
+            <summary>
+            
+            </summary>
+            <param name="stream">
+            
+            </param>
+        </member>
+        <member name="P:AlbLib.Sounds.XMidiMusic.NumTracks">
+            <summary>
+            Number of tracks.
+            </summary>
+        </member>
+        <member name="T:AlbLib.Texts.FontStyle">
+            <summary>
+            Style of font.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Texts.FontStyle.Normal">
+            <summary>
+            Normal text (subfile 0).
+            </summary>
+        </member>
+        <member name="F:AlbLib.Texts.FontStyle.Bold">
+            <summary>
+            Bold text (subfile 1).
+            </summary>
+        </member>
+        <member name="T:AlbLib.Texts.Language">
+            <summary>
+            Used game languages.
+            </summary>
+        </member>
+        <member name="F:AlbLib.Texts.Language.German">
+            <summary>German.</summary>
+        </member>
+        <member name="F:AlbLib.Texts.Language.English">
+            <summary>English.</summary>
+        </member>
+        <member name="F:AlbLib.Texts.Language.French">
+            <summary>French.</summary>
+        </member>
+        <member name="T:AlbLib.Texts.TextColor">
+            <summary>
+            Color index palette for texts.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Texts.TextColor.#ctor(System.Byte[])">
+            <param name="colors">
+            Array normally of five bytes.
+            </param>
+        </member>
+        <member name="T:AlbLib.Texts.TextCore">
+            <summary>
+            Core texts class.
+            </summary>
+        </member>
+        <member name="M:AlbLib.Texts.TextCore.GetItemName(System.Int16)">
+            <summary>
+            Gets localized item name for <paramref name="type"/> using default language.
+            </summary>
+            <param name="type">
+            Item type.
+            </param>
+            <returns>
+            The localized name.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Texts.TextCore.GetItemName(System.Int16,AlbLib.Texts.Language)">
+            <summary>
+            Gets localized item name for <paramref name="type"/> and specified <paramref name="language"/>.
+            </summary>
+            <param name="type">
+            Item type.
+            </param>
+            <param name="language">
+            Language of the name.
+            </param>
+            <returns>
+            The localized name.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Texts.TextCore.TrimNull(System.String)">
+            <summary>
+            Trims a string to first null character.
+            </summary>
+            <param name="str">
+            String to trim.
+            </param>
+            <returns>
+            Trimmed string.
+            </returns>
+        </member>
+        <member name="M:AlbLib.Texts.TextCore.TrimNull(System.Char[])">
+            <summary>
+            Creates a string from character array up to first null character.
+            </summary>
+            <param name="chars">
+            Source character array.
+            </param>
+            <returns>
+            New string.
+            </returns>
+        </member>
+        <member name="P:AlbLib.Texts.TextCore.DefaultLanguage">
+            <summary>
+            Default language in common localization operations.
+            </summary>
+        </member>
+        <member name="P:AlbLib.Texts.TextCore.DefaultEncoding">
+            <summary>
+            Encoding used in all text-related readings.
+            </summary>
+        </member>
+        <member name="T:AlbLib.XLD.XLDFile">
+            <summary>
+            This class holds all information about XLD file.
+            </summary>
+        </member>
+        <member name="F:AlbLib.XLD.XLDFile.Signature">
+            <summary>
+            XLD header signature as string.
+            </summary>
+            <returns>
+            XLD0I\0
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.#ctor(System.Collections.Generic.IList{AlbLib.XLD.XLDSubfile})">
+            <summary></summary>
+            <param name="subfiles">
+            List of subfiles.
+            </param>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.GetEnumerator">
+            <summary>
+            Enumerates through all subfiles.
+            </summary>
+            <returns>
+            Subfile enumerator.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.WriteTo(System.IO.Stream)">
+            <summary>
+            Writes XLD to stream.
+            </summary>
+            <param name="output">
+            Output stream to write.
+            </param>
+            <returns>
+            Count of bytes written.
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when <see cref="P:AlbLib.XLD.XLDFile.Count"/> is not in range between <see cref="F:System.UInt16.MinValue"/> and <see cref="F:System.UInt16.MaxValue"/>.
+            </exception>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.ToByteArray">
+            <summary>
+            Writes XLD to memory and return.
+            </summary>
+            <returns>
+            Byte array containing XLD.
+            </returns>
+            <seealso cref="M:AlbLib.XLD.XLDFile.WriteTo(System.IO.Stream)"/>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.ReadSubfile(System.IO.Stream,System.Int32)">
+            <summary>
+            Reads subfile at the given index.
+            </summary>
+            <param name="stream">
+            Input stream. There must start the XLD.
+            </param>
+            <param name="index">
+            Zero-based index of subfile.
+            </param>
+            <returns>
+            Byte array containing the content of subfile.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.EnumerateSubfiles(System.String)">
+            <summary>
+            Enumerates through all subfiles.
+            </summary>
+            <param name="file">
+            Path to XLD file.
+            </param>
+            <returns>
+            Enumerable object containing subfile contents.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.EnumerateSubfiles(System.IO.Stream)">
+            <summary>
+            Enumerates through all subfiles.
+            </summary>
+            <param name="stream">
+            Input stream. There must start the XLD.
+            </param>
+            <returns>
+            Enumerable object containing subfile contents.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.EnumerateSubfiles(System.IO.Stream,System.Boolean)">
+            <summary>
+            Enumerates through all subfiles.
+            </summary>
+            <param name="stream">
+            Input stream. There must start the XLD.
+            </param>
+            <param name="close">
+            If true, stream will be closed.
+            </param>
+            <returns>
+            Enumerable object containing subfile contents.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.Parse(System.Byte[])">
+            <summary>
+            Parses data in XLD format.
+            </summary>
+            <param name="data">
+            Byte array containing file data.
+            </param>
+            <returns>
+            Parsed XLD file.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.Parse(System.String)">
+            <summary>
+            Parses data in XLD format.
+            </summary>
+            <param name="path">
+            Path to file containing XLD data.
+            </param>
+            <returns>
+            Parsed XLD file.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.Parse(System.IO.Stream)">
+            <summary>
+            Parses data in XLD format.
+            </summary>
+            <param name="stream">
+            Input stream. There must start the XLD.
+            </param>
+            <returns>
+            Parsed XLD file.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.ReadToXLD(System.IO.Stream)">
+            <summary>
+            Moves stream to position of first XLD file to occur.
+            </summary>
+            <param name="stream">
+            Input stream.
+            </param>
+            <returns>
+            True if XLD file was found. Otherwise false.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            Thrown when input <paramref name="stream"/> does not support seeking.
+            </exception>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.FindXLDs(System.String)">
+            <summary>
+            Lists all XLD files in a file.
+            </summary>
+            <param name="path">
+            File where to search for XLDs.
+            </param>
+            <returns>
+            List of all XLD files.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.FindXLDs(System.IO.Stream)">
+            <summary>
+            Lists all XLD files in a <paramref name="stream"/>.
+            </summary>
+            <param name="stream">
+            Input stream.
+            </param>
+            <returns>
+            List of all XLD files.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.FindXLD(System.IO.Stream,System.Int32)">
+            <summary>
+            Finds <paramref name="n"/>-th XLD file in a <paramref name="stream"/>.
+            </summary>
+            <param name="stream">
+            Input stream.
+            </param>
+            <param name="n">
+            Number of XLD file in <paramref name="stream"/>.
+            </param>
+            <returns>
+            <paramref name="n"/>-th XLD file in a stream.
+            </returns>
+        </member>
+        <member name="M:AlbLib.XLD.XLDFile.FindXLD(System.IO.Stream,System.Int32,System.Int32@)">
+            <summary>
+            Finds <paramref name="n"/>-th XLD file in a <paramref name="stream"/> and stores <paramref name="offset"/>.
+            </summary>
+            <param name="stream">
+            Input stream.
+            </param>
+            <param name="n">
+            Number of XLD file in <paramref name="stream"/>.
+            </param>
+            <param name="offset">
+            Offset where the XLD begins.
+            </param>
+            <returns>
+            <paramref name="n"/>-th XLD file in a stream.
+            </returns>
+        </member>
+        <member name="P:AlbLib.XLD.XLDFile.SignatureChars">
+            <summary>
+            XLD header signature as char array.
+            </summary>
+            <returns>
+            X, L, D, 0, I, \0
+            </returns>
+        </member>
+        <member name="P:AlbLib.XLD.XLDFile.SignatureBytes">
+            <summary>
+            XLD header signature as byte array.
+            </summary>
+            <returns>
+            58-4C-44-30-49-00
+            </returns>
+        </member>
+        <member name="P:AlbLib.XLD.XLDFile.Count">
+            <summary>
+            Count of subfiles in this file.
+            </summary>
+        </member>
+        <member name="P:AlbLib.XLD.XLDFile.Subfiles">
+            <summary>
+            List of all subfiles.
+            </summary>
+        </member>
+        <member name="T:AlbLib.XLD.XLDNavigator">
+            <summary>
+            Description of XLDNavigator.
+            </summary>
+        </member>
+        <member name="T:AlbLib.XLD.XLDSubfile">
+            <summary>
+            This class represent single subfile in a XLD.
+            </summary>
+        </member>
+        <member name="M:AlbLib.XLD.XLDSubfile.#ctor(System.IO.Stream,System.Int32)">
+            <param name="stream">
+            Source stream.
+            </param>
+            <param name="length">
+            Contents length.
+            </param>
+        </member>
+        <member name="M:AlbLib.XLD.XLDSubfile.#ctor(System.IO.Stream,System.Int32,System.Int16)">
+            <param name="stream">
+            Source stream.
+            </param>
+            <param name="length">
+            Contents length.
+            </param>
+            <param name="index">
+            Assigned index.
+            </param>
+        </member>
+        <member name="M:AlbLib.XLD.XLDSubfile.GetInputStream">
+            <summary>
+            Returns memory stream containg subfile contents.
+            </summary>
+        </member>
+        <member name="P:AlbLib.XLD.XLDSubfile.Data">
+            <summary>
+            Subfile contents.
+            </summary>
+        </member>
+        <member name="P:AlbLib.XLD.XLDSubfile.Length">
+            <summary>
+            Contents length.
+            </summary>
+        </member>
+        <member name="P:AlbLib.XLD.XLDSubfile.Index">
+            <summary>
+            Assigned index.
+            </summary>
+        </member>
+    </members>
+</doc>

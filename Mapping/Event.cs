@@ -3,6 +3,7 @@ using System.IO;
 
 namespace AlbLib.Mapping
 {
+	[Serializable]
 	public class Event
 	{
 		public byte Type{get;set;}

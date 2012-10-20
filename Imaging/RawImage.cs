@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 
 namespace AlbLib.Imaging
@@ -6,6 +7,7 @@ namespace AlbLib.Imaging
 	/// <summary>
 	/// Image that consists only of pixels with no other data.
 	/// </summary>
+	[Serializable]
 	public sealed class RawImage : ImageBase
 	{
 		/// <summary>

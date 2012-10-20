@@ -9,6 +9,7 @@ namespace AlbLib.XLD
 	/// <summary>
 	/// This class holds all information about XLD file.
 	/// </summary>
+	[Serializable]
 	public class XLDFile : IEnumerable<XLDSubfile>
 	{
 		/// <summary>
@@ -127,7 +128,7 @@ namespace AlbLib.XLD
 			return stream.ToArray();
 		}
 		
-		/// <summary>
+		/*/// <summary>
 		/// Simply reads to a subfile at the given index. Stream must be set to beginning of XLD format.
 		/// </summary>
 		/// <param name="stream">
@@ -139,7 +140,7 @@ namespace AlbLib.XLD
 		/// <returns>
 		/// Length of subfile.
 		/// </returns>
-		/*public static int ReadToIndex(Stream stream, int index)
+		public static int ReadToIndex(Stream stream, int index)
 		{
 			if(index < 0)throw new ArgumentOutOfRangeException("index");
 			int lastEntry = -1;

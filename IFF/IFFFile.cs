@@ -1,9 +1,11 @@
-﻿namespace AlbLib.IFF
+﻿using System;
+namespace AlbLib.IFF
 {
 	/// <summary>
 	/// Structure representing file header.
 	/// </summary>
-	public struct IFFFile
+	[Serializable]
+	public class IFFFile
 	{
 		/// <summary>
 		/// Type ID of data.

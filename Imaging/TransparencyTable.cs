@@ -7,6 +7,7 @@ namespace AlbLib.Imaging
 	/// <summary>
 	/// Transparency tables define color blending.
 	/// </summary>
+	[Serializable]
 	public class TransparencyTable
 	{
 		static TransparencyTable[] tables = new TransparencyTable[Byte.MaxValue];

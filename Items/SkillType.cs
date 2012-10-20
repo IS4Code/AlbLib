@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Items
+﻿using System;
+namespace AlbLib.Items
 {
 	/// <summary>
 	/// Skill type for item.
 	/// </summary>
+	[Serializable]
 	public enum SkillType : byte
 	{
 		/// <summary>Close-range combat.</summary>

@@ -603,3 +603,144 @@ using(FileStream stream = new FileStream("res/WAVELIB0.XLD", FileMode.Open))
 		
 		bmp.Save("mapiso.png");
 		//*/
+
+	{
+		Dictionary<byte,List<byte>> labpalettes = new Dictionary<byte, List<byte>>();
+		Dictionary<byte,List<byte>> iconpalettes = new Dictionary<byte, List<byte>>();
+		
+		foreach(var pair in Paths.MapDataN.EnumerateAllSubfiles(1))
+		{
+			if(pair.Value.Length == 0)continue;
+			Map m = new Map(pair.Key, pair.Value.GetInputStream());
+			if(m.Type == MapType.Map3D)
+			{
+				if(!labpalettes.ContainsKey(m.Labdata))labpalettes[m.Labdata] = new List<byte>();
+				if(!labpalettes[m.Labdata].Contains(m.Palette))labpalettes[m.Labdata].Add(m.Palette);
+			}else if(m.Type == MapType.Map2D)
+			{
+				if(!iconpalettes.ContainsKey(m.Tileset))iconpalettes[m.Tileset] = new List<byte>();
+				if(!iconpalettes[m.Tileset].Contains(m.Palette))iconpalettes[m.Tileset].Add(m.Palette);
+			}
+		}
+		
+		List<TextureReference> textures = new List<TextureReference>();
+		
+		foreach(var pair in Paths.LabDataN.EnumerateAllSubfiles())
+		{
+			if(pair.Value.Length == 0)continue;
+			if(!labpalettes.ContainsKey((byte)(pair.Key)))continue;
+			var lab = new LabData(pair.Value.GetInputStream());
+			Directory.CreateDirectory("obj/"+pair.Key);
+			/*foreach(var floor in lab.Floors)
+			{
+				int fx, sx;
+				if(!Common.E(floor.Texture, out fx, out sx))continue;
+				string file = Paths._3DFloorN.Format(fx);
+				textures.Add(new TextureReference{XLD = file, Index = (byte)sx, Labdata = (byte)pair.Key, Texture = floor, OutDir = "all"});
+			}//*/
+			
+			/*foreach(var obj in lab.ObjectInfos)
+			{
+				if(obj.AnimationsCount == 0)continue;
+				int fx, sx;
+				if(!Common.E(obj.Texture, out fx, out sx))continue;
+				string file = Paths._3DObjectsN.Format(fx);
+				textures.Add(new TextureReference{XLD = file, Index = (byte)sx, Labdata = (byte)pair.Key, Texture = obj, OutDir = "obj"});
+			}//*/
+			
+			foreach(var obj in lab.Walls)
+			{
+				if(obj.AnimationsCount == 0)continue;
+				{
+					int fx, sx;
+					if(!Common.E(obj.Texture, out fx, out sx))continue;
+					string file = Paths._3DWallsN.Format(fx);
+					textures.Add(new TextureReference{XLD = file, Index = (byte)sx, Labdata = (byte)pair.Key, Texture = obj, OutDir = "wall", Switch = true});
+				}//*/
+				
+				/*foreach(var ovrl in obj.Overlays)
+				{
+					int fx, sx;
+					if(!Common.E(ovrl.Texture, out fx, out sx))continue;
+					string file = Paths._3DOverlaysN.Format(fx);
+					textures.Add(new TextureReference{XLD = file, Index = (byte)sx, Labdata = (byte)pair.Key, Texture = ovrl, OutDir = "ovrl", Switch = true});
+				}//*/
+			}//*/
+		}
+		
+		string lastfile = null;
+		XLDNavigator nav = null;
+		foreach(TextureReference tr in textures)
+		{
+			string file = tr.XLD;
+			byte sx = tr.Index;
+			byte labdata = tr.Labdata;
+			ITextured obj = tr.Texture;
+			ImagePalette.TransparentIndex = obj.IsTransparent?0:-1;
+			if(lastfile != file)
+			{
+				lastfile = file;
+				if(nav != null)
+				{
+					nav.Dispose();
+				}
+				nav = new XLDNavigator(file);
+			}
+			nav.GoToSubfile(sx);
+			if(nav.SubfileLength == 0)continue;
+			for(int i = 0; i < obj.AnimationsCount; i++)
+			{
+				RawImage img = new RawImage(nav, tr.Switch?obj.TextureHeight:obj.TextureWidth, tr.Switch?obj.TextureWidth:obj.TextureHeight);
+				foreach(byte pal in labpalettes[labdata])
+				{
+					Directory.CreateDirectory(tr.OutDir+"/"+labdata+"/"+pal);
+					string basename = tr.OutDir+"/"+labdata+"/"+pal+"/"+obj.Texture;
+					{
+						Image render = img.Render(pal);
+						string filename = basename;
+						if(obj.AnimationsCount == 1)
+						{
+							filename += ".png";
+						}else{
+							Directory.CreateDirectory(filename);
+							filename += "/"+i+".png";
+						}
+						if(File.Exists(filename) || Directory.Exists(filename))
+						{
+							continue;
+						}
+						render.Save(filename);
+					}
+					RawImage imglight;
+					if(img.ExtractLight(out imglight))
+					{
+						Image render = imglight.Render(pal);
+						string filename = basename;
+						if(obj.AnimationsCount == 1)
+						{
+							filename += "-l.png";
+						}else{
+							Directory.CreateDirectory(filename+"-l");
+							filename += "-l/"+i+".png";
+						}
+						if(File.Exists(filename) || Directory.Exists(filename))
+						{
+							continue;
+						}
+						render.Save(filename);
+					}
+				}
+			}
+		}
+		
+		class TextureReference
+		{
+			public string XLD;
+			public string OutDir;
+			public byte Index;
+			public byte Labdata;
+			public ITextured Texture;
+			public bool Switch;
+		}
+	}
+		

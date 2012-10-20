@@ -4,7 +4,7 @@ namespace AlbLib.SaveGame
 	/// <summary>
 	/// Character language.
 	/// </summary>
-	[Flags]
+	[Flags, Serializable]
 	public enum CharacterLanguage : byte
 	{
 		/// <summary>

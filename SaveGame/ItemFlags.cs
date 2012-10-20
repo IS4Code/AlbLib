@@ -4,7 +4,7 @@ namespace AlbLib.SaveGame
 	/// <summary>
 	/// Special item flags.
 	/// </summary>
-	[Flags]
+	[Flags, Serializable]
 	public enum ItemFlags : byte
 	{
 		/// <summary>

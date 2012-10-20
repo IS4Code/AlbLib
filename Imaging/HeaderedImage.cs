@@ -8,6 +8,7 @@ namespace AlbLib.Imaging
 	/// <summary>
 	/// Image with basic size information. Can contain multiple frames.
 	/// </summary>
+	[Serializable]
 	public sealed class HeaderedImage : ImageBase
 	{
 		/// <summary>

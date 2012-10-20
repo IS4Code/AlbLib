@@ -7,7 +7,8 @@ namespace AlbLib.Imaging
 	/// <summary>
 	/// Image containing multiple images - frames.
 	/// </summary>
-	public sealed class AnimatedHeaderedImage : ImageBase, IAnimatedPaletteRenderable
+	[Serializable]
+	public sealed class AnimatedHeaderedImage : ImageBase, IAnimatedRenderable
 	{
 		/// <summary>
 		/// Count of frames.
@@ -36,39 +37,29 @@ namespace AlbLib.Imaging
 		/// <param name="index">
 		/// Zero-based frame index.
 		/// </param>
-		/// <param name="palette">
-		/// Palette ID.
+		/// <param name="options">
+		/// More rendering options.
 		/// </param>
 		/// <returns>
 		/// Drawn image.
 		/// </returns>
-		public Image Render(byte index, ImagePalette palette)
+		public Image Render(byte index, RenderOptions options)
 		{
-			return Drawing.DrawBitmap(Frames[index].ImageData, Frames[index].Width, Frames[index].Height, palette, null);
-		}
-		
-		public Image Render(byte index, ImagePalette palette, RenderOptions options)
-		{
-			return Drawing.DrawBitmap(Frames[index].ImageData, Frames[index].Width, Frames[index].Height, palette, options);
+			return Drawing.DrawBitmap(Frames[index].ImageData, Frames[index].Width, Frames[index].Height, options);
 		}
 		
 		/// <summary>
 		/// Draws the image to bitmap.
 		/// </summary>
-		/// <param name="palette">
-		/// Palette ID.
+		/// <param name="options">
+		/// More rendering options.
 		/// </param>
 		/// <returns>
 		/// Drawn image.
 		/// </returns>
-		public override Image Render(ImagePalette palette)
+		public override Image Render(RenderOptions options)
 		{
-			return Render(0, palette);
-		}
-		
-		public override Image Render(ImagePalette palette, RenderOptions options)
-		{
-			return Render(0, palette, options);
+			return Render(0, options);
 		}
 		
 		/// <summary>

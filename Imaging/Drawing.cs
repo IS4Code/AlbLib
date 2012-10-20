@@ -30,7 +30,7 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public static Bitmap DrawBitmap(byte[] data, int width, int height, byte palette)
 		{
-			return DrawBitmap(data, width, height, ImagePalette.GetFullPalette(palette), null);
+			return DrawBitmap(data, width, height, ImagePalette.GetFullPalette(palette));
 		}
 		
 		/// <summary>
@@ -45,15 +45,15 @@ namespace AlbLib.Imaging
 		/// <param name="height">
 		/// Output image height.
 		/// </param>
-		/// <param name="palette">
-		/// Color palette.
+		/// <param name="options">
+		/// More rendering options.
 		/// </param>
 		/// <returns>
 		/// Drawn bitmap.
 		/// </returns>
-		public static Bitmap DrawBitmap(byte[] data, int width, int height, ImagePalette palette, RenderOptions options)
+		public static Bitmap DrawBitmap(byte[] data, int width, int height, RenderOptions options)
 		{
-			options = options??RenderOptions.Empty;
+			ImagePalette palette = options.Palette;
 			Bitmap bmp = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
 			ColorPalette pal = bmp.Palette;
 			palette.CopyTo(pal.Entries, 0);

@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+
 namespace AlbLib.SaveGame
 {
 	/// <summary>
 	/// Character backpack items.
 	/// </summary>
+	[Serializable]
 	public class Backpack : Inventory
 	{
 		private ItemStack[] inventory = new ItemStack[24];

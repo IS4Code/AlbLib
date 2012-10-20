@@ -14,6 +14,7 @@ namespace AlbLib.XLD
 	/// <summary>
 	/// Description of XLDNavigator.
 	/// </summary>
+	[Serializable]
 	public class XLDNavigator : Stream, IDisposable
 	{
 		private readonly Stream baseStream;
@@ -69,6 +70,87 @@ namespace AlbLib.XLD
 			remaining = entriesLengths[0];
 		}
 		
+		public int SubfileLength{
+			get{
+				return GetSubfileLength(CurrentSubfile);
+			}
+		}
+		
+		public XLDNavigator GoToSubfile(short index)
+		{
+			if(0 > index || index > nEntries)throw new ArgumentOutOfRangeException("index");
+			if(index == CurrentSubfile)
+			{
+				if(remaining != SubfileLength)
+					if(baseStream.CanSeek)baseStream.Position = streamStart+entriesPos[index];
+					else
+						throw new NotSupportedException("Can't return to previous subfile.");
+			}
+			
+			if(baseStream.CanSeek)
+			{
+				baseStream.Position = streamStart+entriesPos[index];
+			}else{
+				if(CurrentSubfile > index)
+				{
+					throw new NotSupportedException("Can't return to previous subfile.");
+				}
+				baseStream.Skip(remaining);
+				for(int i = CurrentSubfile+1; i < index; i++)
+					baseStream.Skip(entriesLengths[i]);
+				
+			}
+			CurrentSubfile = index;
+			remaining = entriesLengths[index];
+			return this;
+		}
+		
+		public XLDSubfile ReadSubfile(short index)
+		{
+			return new XLDSubfile(GoToSubfile(index), entriesLengths[CurrentSubfile], CurrentSubfile);
+		}
+		
+		public XLDSubfile ReadSubfile()
+		{
+			return new XLDSubfile(this, entriesLengths[CurrentSubfile], CurrentSubfile);
+		}
+		
+		public int GetSubfileLength(short index)
+		{
+			if(0 > index || index > nEntries)throw new ArgumentOutOfRangeException("index");
+			return entriesLengths[index];
+		}
+		
+		public void Finish()
+		{
+			if(baseStream.CanSeek)
+			{
+				baseStream.Position = streamStart+entriesPos[nEntries-1]+entriesLengths[nEntries-1];
+			}else{
+				baseStream.Skip(remaining);
+				for(int i = CurrentSubfile+1; i < nEntries; i++)
+					baseStream.Skip(entriesLengths[i]);
+			}
+		}
+		
+		public override void Close()
+		{
+			baseStream.Close();
+		}
+		
+		public static XLDNavigator ReadToIndex(string file, short index)
+		{
+			XLDNavigator nav = new XLDNavigator(file);
+			return nav.GoToSubfile(index);
+		}
+		
+		public static XLDNavigator ReadToIndex(Stream stream, short index)
+		{
+			XLDNavigator nav = new XLDNavigator(stream);
+			return nav.GoToSubfile(index);
+		}
+		
+		#pragma warning disable 1591
 		public override int Read(byte[] buffer, int offset, int count)
 		{
 			int read;
@@ -143,85 +225,6 @@ namespace AlbLib.XLD
 			get{
 				throw new NotSupportedException();
 			}
-		}
-		
-		public int SubfileLength{
-			get{
-				return GetSubfileLength(CurrentSubfile);
-			}
-		}
-		
-		public XLDNavigator GoToSubfile(short index)
-		{
-			if(0 > index || index > nEntries)throw new ArgumentOutOfRangeException("index");
-			if(index == CurrentSubfile)return this;
-			
-			if(baseStream.CanSeek)
-			{
-				baseStream.Position = streamStart+entriesPos[index];
-			}else{
-				if(CurrentSubfile > index)
-				{
-					throw new NotSupportedException("Can't return to previous subfile.");
-				}
-				baseStream.Skip(remaining);
-				for(int i = CurrentSubfile+1; i < index; i++)
-					baseStream.Skip(entriesLengths[i]);
-				
-			}
-			CurrentSubfile = index;
-			remaining = entriesLengths[index];
-			return this;
-		}
-		
-		public XLDSubfile ReadSubfile(short index)
-		{
-			return new XLDSubfile(GoToSubfile(index), entriesLengths[CurrentSubfile], CurrentSubfile);
-		}
-		
-		public XLDSubfile ReadSubfile()
-		{
-			return new XLDSubfile(this, entriesLengths[CurrentSubfile], CurrentSubfile);
-		}
-		
-		public int GetSubfileLength(short index)
-		{
-			if(0 > index || index > nEntries)throw new ArgumentOutOfRangeException("index");
-			return entriesLengths[index];
-		}
-		
-		public void Finish()
-		{
-			if(baseStream.CanSeek)
-			{
-				baseStream.Position = streamStart+entriesPos[nEntries-1]+entriesLengths[nEntries-1];
-			}else{
-				baseStream.Skip(remaining);
-				for(int i = CurrentSubfile+1; i < nEntries; i++)
-					baseStream.Skip(entriesLengths[i]);
-			}
-		}
-		
-		public override void Close()
-		{
-			baseStream.Close();
-		}
-		
-		public void Dispose()
-		{
-			baseStream.Dispose();
-		}
-		
-		public static XLDNavigator ReadToIndex(string file, short index)
-		{
-			XLDNavigator nav = new XLDNavigator(file);
-			return nav.GoToSubfile(index);
-		}
-		
-		public static XLDNavigator ReadToIndex(Stream stream, short index)
-		{
-			XLDNavigator nav = new XLDNavigator(stream);
-			return nav.GoToSubfile(index);
 		}
 	}
 }

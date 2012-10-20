@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using AlbLib.Caching;
 using AlbLib.XLD;
 
 namespace AlbLib.Mapping
@@ -8,41 +9,42 @@ namespace AlbLib.Mapping
 	/// </summary>
 	public static class IconData
 	{
-		private static readonly TileData[][] tilesets = new TileData[4096][];
+		private static readonly IndexedCache<TileData[]> cache = new IndexedCache<TileData[]>(LoadTileset, Cache.ZeroNull);
 		
 		/// <summary>
 		/// Returns data array for tileset.
 		/// </summary>
 		/// <param name="index">
-		/// Zero-based tileset index
+		/// One-based tileset index.
 		/// </param>
 		public static TileData[] GetTileset(int index)
 		{
-			if(tilesets[index] == null)
+			return cache.Get(index);
+		}
+		
+		private static TileData[] LoadTileset(int index)
+		{
+			int fx, tx;
+			if(!Common.E(index, out fx, out tx))return null;
+			
+			using(FileStream stream = new FileStream(Paths.IconDataN.Format(fx), FileMode.Open))
 			{
-				int fx, tx;
-				if(!Common.E(index, out fx, out tx))return null;
-				
-				using(FileStream stream = new FileStream(Paths.IconDataN.Format(fx), FileMode.Open))
+				XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)tx);
+				int len = nav.SubfileLength;
+				TileData[] tileset = new TileData[len/8];
+				for(int i = 0; i < len/8; i++)
 				{
-					XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)tx);
-					int len = nav.SubfileLength;
-					tilesets[index] = new TileData[len/8];
-					for(int i = 0; i < len/8; i++)
-					{
-						var data = new TileData(i, nav);
-						tilesets[index][i] = data;
-					}
+					tileset[i] = new TileData(i, nav);
 				}
+				return tileset;
 			}
-			return tilesets[index];
 		}
 		
 		/// <summary>
 		/// Returns tile data from tileset.
 		/// </summary>
 		/// <param name="tileset">
-		/// Zero-based tileset index
+		/// One-based tileset index.
 		/// </param>
 		/// <param name="index">
 		/// Tile index.

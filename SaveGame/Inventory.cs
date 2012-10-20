@@ -7,6 +7,7 @@ namespace AlbLib.SaveGame
 	/// <summary>
 	/// Inventory holding items.
 	/// </summary>
+	[Serializable]
 	public abstract class Inventory : IList<ItemStack>
 	{
 		/// <summary>

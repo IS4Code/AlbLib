@@ -1,8 +1,10 @@
-﻿namespace AlbLib.Items
+﻿using System;
+namespace AlbLib.Items
 {
 	/// <summary>
 	/// Item slot.
 	/// </summary>
+	[Serializable]
 	public enum ItemSlot : byte
 	{
 		/// <summary>Inventory item only.</summary>

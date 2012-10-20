@@ -7,6 +7,7 @@ namespace AlbLib.SaveGame
 	/// <summary>
 	/// Information about saved game.
 	/// </summary>
+	[Serializable]
 	public class SaveGameInfo
 	{
 		private short unknown1;

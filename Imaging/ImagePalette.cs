@@ -10,7 +10,8 @@ namespace AlbLib.Imaging
 	/// <summary>
 	/// Color palette used when drawing images.
 	/// </summary>
-	public abstract class ImagePalette : IList<Color>
+	[Serializable]
+	public abstract partial class ImagePalette : IList<Color>
 	{
 		/// <summary>
 		/// Returns Color at index in palette.
@@ -425,89 +426,6 @@ namespace AlbLib.Imaging
 		public static ImagePalette Grayscale{
 			get{
 				return new GrayscalePalette();
-			}
-		}
-		
-		private sealed class GrayscalePalette : ImagePalette
-		{
-			public override int Length{
-				get{
-					return 256;
-				}
-			}
-			
-			public override Color this[int index]{
-				get{
-					return Color.FromArgb(index,index,index);
-				}
-			}
-		}
-		
-		private sealed class JoinPalette : ImagePalette
-		{
-			private readonly ImagePalette left;
-			private readonly ImagePalette right;
-			
-			public JoinPalette(ImagePalette a, ImagePalette b)
-			{
-				left = a;
-				right = b;
-			}
-			
-			public override int Length{
-				get{
-					return left.Length+right.Length;
-				}
-			}
-			
-			public override Color this[int index]{
-				get{
-					if(index<left.Length)
-					{
-						return left[index];
-					}else{
-						return right[index-left.Length];
-					}
-				}
-			}
-			
-			public override IEnumerator<Color> GetEnumerator()
-			{
-				foreach(Color c in left)
-					yield return c;
-				foreach(Color c in right)
-					yield return c;
-			}
-		}
-		
-		private sealed class ListPalette : ImagePalette
-		{
-			private readonly IList<Color> list;
-			public ListPalette(IList<Color> list)
-			{
-				this.list = list;
-			}
-			
-			public override int Length{
-				get{
-					return list.Count;
-				}
-			}
-			
-			public override Color this[int index]{
-				get{
-					return list[index];
-				}
-			}
-			
-			public override void CopyTo(Color[] array, int index)
-			{
-				list.CopyTo(array, index);
-			}
-			
-			public override IEnumerator<Color> GetEnumerator()
-			{
-				return list.GetEnumerator();
 			}
 		}
 	}

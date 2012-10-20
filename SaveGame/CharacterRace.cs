@@ -1,8 +1,10 @@
-﻿namespace AlbLib.SaveGame
+﻿using System;
+namespace AlbLib.SaveGame
 {
 	/// <summary>
 	/// Race of character.
 	/// </summary>
+	[Serializable]
 	public enum CharacterRace : byte
 	{
 		/// <summary>

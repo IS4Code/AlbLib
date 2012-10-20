@@ -8,6 +8,7 @@ namespace AlbLib.Imaging
 	/// <summary>
 	/// Thumbnail variation of ILBM image.
 	/// </summary>
+	[Serializable]
 	public sealed class TinyImage : ImageBase
 	{
 		/// <summary>

@@ -1,8 +1,10 @@
-﻿namespace AlbLib.SaveGame
+﻿using System;
+namespace AlbLib.SaveGame
 {
 	/// <summary>
 	/// Class of character.
 	/// </summary>
+	[Serializable]
 	public enum CharacterClass : byte
 	{
 		/// <summary>
