@@ -13,11 +13,10 @@ namespace AlbLib.INI
 		[INIPropertyName("ALBION")]
 		public AlbionConfig Albion{get;set;}
 		
-		public static GameConfig Default{get;set;}
-		
-		static GameConfig()
-		{
-			Default = new GameConfig(Paths.Setup);
+		public static GameConfig Default{
+			get{
+				return new GameConfig(Paths.Setup);
+			}
 		}
 		
 		public GameConfig()
