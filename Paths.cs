@@ -94,9 +94,16 @@ namespace AlbLib
 		public static PathInfo Main;
 		
 		/// <summary>
-		/// Sets all paths.
+		/// Absolute path to SETUP.INI.
 		/// </summary>
-		/// <param name="path">Absolute path to XLDLIBS folder.</param>
+		public static PathInfo Setup;
+		
+		/// <summary>
+		/// Sets all XLD paths.
+		/// </summary>
+		/// <param name="path">
+		/// Absolute path to XLDLIBS folder.
+		/// </param>
 		public static void SetXLDLIBS(string path)
 		{
 			PaletteN = Path.Combine(path, "PALETTE{0}.XLD");
@@ -115,6 +122,19 @@ namespace AlbLib
 			_3DOverlaysN = Path.Combine(path, "3DOVERL{0}.XLD");
 			AutoGFXN = Path.Combine(path, "AUTOGFX{0}.XLD");
 			TransparencyTablesN =  Path.Combine(path, "TRANSTB{0}.XLD");
+		}
+		
+		/// <summary>
+		/// Sets all paths.
+		/// </summary>
+		/// <param name="path">
+		/// Absolute path to game root folder.
+		/// </param>
+		public static void SetGameDir(string path)
+		{
+			Main = Path.Combine(path, "MAIN.EXE");
+			Setup = Path.Combine(path, "SETUP.INI");
+			SetXLDLIBS(Path.Combine(path, "XLDLIBS"));
 		}
 	}
 }

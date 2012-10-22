@@ -109,10 +109,22 @@
     <Compile Include="Imaging\TinyImage.cs" />
     <Compile Include="Imaging\TransparencyTable.cs" />
     <Compile Include="Imaging\TransparencyType.cs" />
+    <Compile Include="INI\Albion.cs">
+      <DependentUpon>GameConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="INI\Config.cs" />
+    <Compile Include="INI\GameConfig.cs" />
     <Compile Include="INI\INIFile.cs" />
     <Compile Include="INI\INIObject.cs" />
     <Compile Include="INI\INIProperty.cs" />
+    <Compile Include="INI\INIPropertyNameAttribute.cs" />
     <Compile Include="INI\INISection.cs" />
+    <Compile Include="INI\System.cs">
+      <DependentUpon>GameConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="INI\VESA.cs">
+      <DependentUpon>GameConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="Items\AttributeType.cs" />
     <Compile Include="Items\Class.cs" />
     <Compile Include="Items\Gender.cs" />
@@ -187,6 +199,7 @@
     <Compile Include="Sounds\XMidiMusic.cs" />
     <Compile Include="Texts\FontStyle.cs" />
     <Compile Include="Texts\Language.cs" />
+    <Compile Include="Texts\LanguageTerm.cs" />
     <Compile Include="Texts\TextColor.cs" />
     <Compile Include="Texts\TextCore.cs" />
     <Compile Include="Texts\VisualEncoding.cs" />

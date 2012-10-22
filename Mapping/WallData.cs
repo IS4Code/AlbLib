@@ -31,8 +31,8 @@ namespace AlbLib.Mapping
 			MinimapType = reader.ReadByte();
 			TransparentColor = reader.ReadByte();
 			reader.ReadByte();
-			TextureWidth = reader.ReadInt16();
 			TextureHeight = reader.ReadInt16();
+			TextureWidth = reader.ReadInt16();
 			
 			short numoverlays = reader.ReadInt16();
 			Overlays = new Overlay[numoverlays];

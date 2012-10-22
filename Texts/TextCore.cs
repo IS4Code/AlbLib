@@ -11,13 +11,28 @@ namespace AlbLib.Texts
 	public static class TextCore
 	{
 		//private static string[][] ItemNames;
-		private static IndexedCache<string[], RefEq<Encoding>> NameCache = new IndexedCache<string[], RefEq<Encoding>>(LoadItemName);
+		private static IndexedCache<LanguageTerm, RefEq<Encoding>> NameCache = new IndexedCache<LanguageTerm, RefEq<Encoding>>(LoadItemName);
+		
+		
+		private static Language _defaultLanguage;
 		
 		/// <summary>
 		/// Default language in common localization operations.
 		/// </summary>
 		public static Language DefaultLanguage{
-			get;set;
+			get{
+				return _defaultLanguage;
+			}
+			set{
+				switch(value)
+				{
+					case Language.German:case Language.English:case Language.French:
+						_defaultLanguage = value;
+						return;
+					default:
+						throw new ArgumentException("Default language cannot be undefined or invariant.", "value");
+				}
+			}
 		}
 		
 		/// <summary>
@@ -38,15 +53,15 @@ namespace AlbLib.Texts
 			return TrimNull(reader.ReadChars(20));
 		}
 		
-		private static string[] LoadItemName(int index, RefEq<Encoding> encoding)
+		private static LanguageTerm LoadItemName(int index, RefEq<Encoding> encoding)
 		{
-			if(index == 0)return new[]{"","",""};
+			if(index == 0)return LanguageTerm.Empty;
 			index -= 1;
 			using(FileStream stream = new FileStream(Paths.ItemName, FileMode.Open))
 			{
 				stream.Seek(index*60, SeekOrigin.Begin);
 				BinaryReader reader = new BinaryReader(stream, encoding.Value);
-				return new string[]{ReadString(reader), ReadString(reader), ReadString(reader)};
+				return new LanguageTerm(ReadString(reader), ReadString(reader), ReadString(reader));
 			}
 		}
 		
@@ -79,7 +94,7 @@ namespace AlbLib.Texts
 		public static string GetItemName(short type, Language language)
 		{
 			if(type == 0)return String.Empty;
-			return NameCache[type][(int)language];
+			return NameCache[type][language];
 		}
 		
 		/// <summary>

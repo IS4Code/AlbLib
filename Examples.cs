@@ -744,3 +744,232 @@ using(FileStream stream = new FileStream("res/WAVELIB0.XLD", FileMode.Open))
 		}
 	}
 		
+		
+		/*XDocument doc = new XDocument(new XElement("textures"));
+		XElement labdatas = new XElement("labdatas");
+		XElement icondatas = new XElement("icondatas");
+		doc.Root.Add(labdatas);
+		doc.Root.Add(icondatas);
+		
+		foreach(var pair in Paths.MapDataN.EnumerateAllSubfiles(1))
+		{
+			if(pair.Value.Length == 0)continue;
+			Map m = new Map(pair.Key, pair.Value.GetInputStream());
+			if(m.Type == MapType.Map3D)
+			{
+				XElement labdata = labdatas.Elements("labdata").FirstOrDefault(el=>el.Attribute("id").Value == m.Labdata.ToString());
+				if(labdata == null)
+				{
+					labdata = new XElement("labdata", new XAttribute("id", m.Labdata));
+					labdatas.Add(labdata);
+				}
+				labdata.Add(new XElement("map", m.Id));
+				if(!labdata.Elements("palette").Any(el=>el.Value == m.Palette.ToString()))
+					labdata.Add(new XElement("palette", m.Palette));
+			}else if(m.Type == MapType.Map2D)
+			{
+				
+			}
+		}
+		
+		foreach(var pair in Paths.LabDataN.EnumerateAllSubfiles())
+		{
+			if(pair.Value.Length == 0)continue;
+			var lab = new LabData(pair.Value.GetInputStream());
+			XElement labdata = labdatas.Elements("labdata").FirstOrDefault(el=>el.Attribute("id").Value == pair.Key.ToString());
+			if(labdata == null)
+			{
+				labdatas.Add(labdata = new XElement("labdata", new XAttribute("id", pair.Key)));
+			}
+			foreach(WallData wall in lab.Walls)
+			{
+				labdata.Add(
+					new XElement(
+						"wall",
+						new XAttribute("texture", wall.Texture),
+						new XAttribute("width", wall.TextureWidth),
+						new XAttribute("height", wall.TextureHeight),
+						new XAttribute("frames", wall.AnimationsCount)
+					)
+				);
+				foreach(Overlay overlay in wall.Overlays)
+				{
+					labdata.Add(
+						new XElement(
+							"overlay",
+							new XAttribute("texture", overlay.Texture),
+							new XAttribute("width", overlay.TextureWidth),
+							new XAttribute("height", overlay.TextureHeight),
+							new XAttribute("frames", overlay.AnimationsCount)
+						)
+					);
+				}
+			}
+			foreach(FloorData floor in lab.Floors)
+			{
+				labdata.Add(
+					new XElement(
+						"floor",
+						new XAttribute("texture", floor.Texture),
+						new XAttribute("width", 64),
+						new XAttribute("height", 64),
+						new XAttribute("frames", floor.AnimationsCount)
+					)
+				);
+			}
+			foreach(ObjectInfo obj in lab.ObjectInfos)
+			{
+				labdata.Add(
+					new XElement(
+						"object",
+						new XAttribute("texture", obj.Texture),
+						new XAttribute("width", obj.TextureWidth),
+						new XAttribute("height", obj.TextureHeight),
+						new XAttribute("frames", obj.AnimationsCount)
+					)
+				);
+			}
+		}
+		
+		doc.Save("textures.xml");*/
+		
+		XDocument doc = XDocument.Load("textures.xml");
+		foreach(XElement labdata in doc.Root.Element("labdatas").Elements("labdata"))
+		{
+			string basename = "obj/"+labdata.Attribute("id").Value+"/";
+			foreach(XElement palette in labdata.Elements("palette"))
+			{
+				bool created = false;
+				string palname = basename+palette.Value;
+				ImagePalette pal = ImagePalette.GetFullPalette(Int32.Parse(palette.Value));
+				ImagePalette.TransparentIndex = 0;
+				foreach(XElement wall in labdata.Elements("wall"))
+				{
+					if(!created)
+					{
+						Directory.CreateDirectory(basename);
+						Directory.CreateDirectory(palname);
+						created = true;
+					}
+					string wallname = palname+"/walls";
+					Directory.CreateDirectory(wallname);
+					int id = Int32.Parse(wall.Attribute("texture").Value);
+					int fx,sx;
+					int width = Int32.Parse(wall.Attribute("width").Value);
+					int height = Int32.Parse(wall.Attribute("height").Value);
+					int frames = Int32.Parse(wall.Attribute("frames").Value);
+					if(!Common.E(id, out fx, out sx))continue;
+					using(XLDNavigator nav = XLDNavigator.ReadToIndex(Paths._3DWallsN.Format(fx), (short)sx))
+					{
+						if(frames > 1)
+						{
+							Directory.CreateDirectory(wallname+"/"+id);
+							for(int i = 0; i < frames; i++)
+							{
+								Image img = new RawImage(nav, width, height).Render(pal);
+								img.Save(wallname+"/"+id+"/"+i+".png");
+							}
+						}else{
+							Image img = new RawImage(nav, width, height).Render(pal);
+							img.Save(wallname+"/"+id+".png");
+						}
+					}
+				}
+				foreach(XElement wall in labdata.Elements("overlay"))
+				{
+					if(!created)
+					{
+						Directory.CreateDirectory(basename);
+						Directory.CreateDirectory(palname);
+						created = true;
+					}
+					string wallname = palname+"/overlays";
+					Directory.CreateDirectory(wallname);
+					int id = Int32.Parse(wall.Attribute("texture").Value);
+					int fx,sx;
+					int width = Int32.Parse(wall.Attribute("width").Value);
+					int height = Int32.Parse(wall.Attribute("height").Value);
+					int frames = Int32.Parse(wall.Attribute("frames").Value);
+					if(!Common.E(id, out fx, out sx))continue;
+					using(XLDNavigator nav = XLDNavigator.ReadToIndex(Paths._3DOverlaysN.Format(fx), (short)sx))
+					{
+						if(frames > 1)
+						{
+							Directory.CreateDirectory(wallname+"/"+id);
+							for(int i = 0; i < frames; i++)
+							{
+								Image img = new RawImage(nav, width, height).Render(pal);
+								img.Save(wallname+"/"+id+"/"+i+".png");
+							}
+						}else{
+							Image img = new RawImage(nav, width, height).Render(pal);
+							img.Save(wallname+"/"+id+".png");
+						}
+					}
+				}
+				foreach(XElement wall in labdata.Elements("object"))
+				{
+					if(!created)
+					{
+						Directory.CreateDirectory(basename);
+						Directory.CreateDirectory(palname);
+						created = true;
+					}
+					string wallname = palname+"/objects";
+					Directory.CreateDirectory(wallname);
+					int id = Int32.Parse(wall.Attribute("texture").Value);
+					int fx,sx;
+					int width = Int32.Parse(wall.Attribute("width").Value);
+					int height = Int32.Parse(wall.Attribute("height").Value);
+					int frames = Int32.Parse(wall.Attribute("frames").Value);
+					if(!Common.E(id, out fx, out sx))continue;
+					using(XLDNavigator nav = XLDNavigator.ReadToIndex(Paths._3DObjectsN.Format(fx), (short)sx))
+					{
+						if(frames > 1)
+						{
+							Directory.CreateDirectory(wallname+"/"+id);
+							for(int i = 0; i < frames; i++)
+							{
+								Image img = new RawImage(nav, width, height).Render(pal);
+								img.Save(wallname+"/"+id+"/"+i+".png");
+							}
+						}else{
+							Image img = new RawImage(nav, width, height).Render(pal);
+							img.Save(wallname+"/"+id+".png");
+						}
+					}
+				}
+				foreach(XElement wall in labdata.Elements("floor"))
+				{
+					if(!created)
+					{
+						Directory.CreateDirectory(basename);
+						Directory.CreateDirectory(palname);
+						created = true;
+					}
+					string wallname = palname+"/floors";
+					Directory.CreateDirectory(wallname);
+					int id = Int32.Parse(wall.Attribute("texture").Value);
+					int fx,sx;
+					int width = Int32.Parse(wall.Attribute("width").Value);
+					int height = Int32.Parse(wall.Attribute("height").Value);
+					int frames = Int32.Parse(wall.Attribute("frames").Value);
+					if(!Common.E(id, out fx, out sx))continue;
+					using(XLDNavigator nav = XLDNavigator.ReadToIndex(Paths._3DFloorN.Format(fx), (short)sx))
+					{
+						if(frames > 1)
+						{
+							Directory.CreateDirectory(wallname+"/"+id);
+							for(int i = 0; i < frames; i++)
+							{
+								Image img = new RawImage(nav, width, height).Render(pal);
+								img.Save(wallname+"/"+id+"/"+i+".png");
+							}
+						}else{
+							Image img = new RawImage(nav, width, height).Render(pal);
+							img.Save(wallname+"/"+id+".png");
+						}
+					}
+				}
+			}
+		}

@@ -24,6 +24,11 @@ namespace AlbLib.INI
 			Value = value;
 		}
 		
+		public INIProperty(string name, object value) : base(name)
+		{
+			ObjectValue = value;
+		}
+		
 		public override string ToString()
 		{
 			return Name+"="+Value;
@@ -48,7 +53,10 @@ namespace AlbLib.INI
 				}
 			}
 			set{
-				if(value is bool)
+				if(value == null)
+				{
+					Value = "";
+				}else if(value is bool)
 				{
 					if(value.Equals(true))
 					{
@@ -62,6 +70,30 @@ namespace AlbLib.INI
 				}else{
 					Value = value.ToString();
 				}
+			}
+		}
+		
+		public bool ToBoolean()
+		{
+			if(Value.Equals("Y", StringComparison.CurrentCultureIgnoreCase))
+			{
+				return true;
+			}else if(Value.Equals("N", StringComparison.CurrentCultureIgnoreCase))
+			{
+				return false;
+			}else{
+				throw new NotSupportedException("Value is not boolean.");
+			}
+		}
+		
+		public int ToInt32()
+		{
+			int output;
+			if(Int32.TryParse(Value, out output))
+			{
+				return output;
+			}else{
+				throw new NotSupportedException("Value is not integer.");
 			}
 		}
 	}

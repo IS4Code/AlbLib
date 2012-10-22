@@ -7,11 +7,13 @@ namespace AlbLib.Texts
 	[Serializable]
 	public enum Language
 	{
+		/// <summary>Invariant.</summary>
+		Invariant = 0,
 		/// <summary>German.</summary>
-		German = 0,
+		German = 1,
 		/// <summary>English.</summary>
-		English = 1,
+		English = 2,
 		/// <summary>French.</summary>
-		French = 2
+		French = 3
 	}
 }

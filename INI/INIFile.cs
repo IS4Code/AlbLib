@@ -38,11 +38,18 @@ namespace AlbLib.INI
 			}
 		}
 		
+		public INIFile() : base(null)
+		{
+			this.sections = new List<INISection>();
+		}
+		
 		public INIFile(IList<INISection> sections) : base(null)
 		{
 			if(sections != null)
 			{
 				this.sections = sections;
+			}else{
+				this.sections = new List<INISection>();
 			}
 		}
 		

@@ -23,8 +23,8 @@ namespace AlbLib.Mapping
 			IsTransparent = reader.ReadByte()!=0;
 			X = reader.ReadInt16();
 			Y = reader.ReadInt16();
-			TextureWidth = reader.ReadInt16();
 			TextureHeight = reader.ReadInt16();
+			TextureWidth = reader.ReadInt16();
 		}
 	}
 }

@@ -226,5 +226,17 @@ namespace AlbLib.INI
 		{
 			return "["+Name+"]";
 		}
+		
+		public INIProperty GetProperty(string name)
+		{
+			foreach(INIProperty prop in props)
+			{
+				if(prop.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
+				{
+					return prop;
+				}
+			}
+			return null;
+		}
 	}
 }
