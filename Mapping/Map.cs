@@ -13,7 +13,7 @@ namespace AlbLib.Mapping
 	/// Class representing game map.
 	/// </summary>
 	[Serializable]
-	public class Map
+	public class Map : IGameResource
 	{
 		/// <summary>
 		/// Id of map.
@@ -127,9 +127,7 @@ namespace AlbLib.Mapping
 		
 		public EventHeader[] AutoEvents{get;set;}
 		
-		public EventHeader[][] TileEvents{get;set;}
-		
-		public Event[] Events{get;set;}
+		public MapEvent[] Events{get;set;}
 		
 		/// <summary>
 		/// NPC/monster data.
@@ -244,15 +242,17 @@ namespace AlbLib.Mapping
 			}
 		}
 		
-		private readonly bool corrupted;
-		
 		/// <summary>
 		/// True if an exception occured while loading map.
 		/// </summary>
 		public bool Corrupted{
 			get{
-				return corrupted;
+				return Error != null;
 			}
+		}
+		
+		public Exception Error{
+			get; private set;
 		}
 		
 		public short[] ActiveEvents{get;set;}
@@ -341,14 +341,14 @@ namespace AlbLib.Mapping
 					AutoEvents[i] = new EventHeader(reader);
 				}
 				
-				TileEvents = new EventHeader[height][];
+				//EventHeader[][] tileEvents = new EventHeader[height][];
 				for(int y = 0; y < height; y++)
 				{
 					short events = reader.ReadInt16();
-					TileEvents[y] = new EventHeader[events];
+					//tileEvents[y] = new EventHeader[events];
 					for(int i = 0; i < events; i++)
 					{
-						EventHeader e = TileEvents[y][i] = new EventHeader(reader);
+						EventHeader e = new EventHeader(reader);
 						if(Type == MapType.Map2D)
 							TileData[e.XPos,y].Event = e;
 						else if(Type == MapType.Map3D)
@@ -357,10 +357,10 @@ namespace AlbLib.Mapping
 				}
 				
 				short numevents = reader.ReadInt16();
-				Events = new Event[numevents];
+				Events = new MapEvent[numevents];
 				for(int i = 0; i < numevents; i++)
 				{
-					Events[i] = new Event(reader);
+					Events[i] = new MapEvent(i, reader);
 				}
 				
 				//NPC positions
@@ -404,9 +404,9 @@ namespace AlbLib.Mapping
 				{
 					ActiveEvents[i] = reader.ReadInt16();
 				}
-			}catch(EndOfStreamException)
+			}catch(EndOfStreamException e)
 			{
-				corrupted = true;
+				Error = e;
 			}
 		}
 		
@@ -417,10 +417,11 @@ namespace AlbLib.Mapping
 		{
 			int fid, sid;
 			if(!Common.E(id, out fid, out sid))return null;
-			using(FileStream stream = new FileStream(Paths.MapDataN.Format(fid), FileMode.Open))
+			using(FileStream stream = new FileStream(Paths.MapData.Format(fid), FileMode.Open))
 			{
 				XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)sid);
 				int size = nav.SubfileLength;
+				if(size == 0) return null;
 				return new Map(id, nav);
 			}
 		}
@@ -447,14 +448,23 @@ namespace AlbLib.Mapping
 					Point loc = new Point(t.X*16, t.Y*16);
 					if(args.ShowUnderlays)
 					{
-						RawImage ul = IconGraphics.GetTileUnderlay(this.Tileset, t);
+						RawImage ul = MapIcons.GetTileUnderlay(this.Tileset, t);
 						plane.Objects.Add(new GraphicObject(ul, loc));
 					}
 					if(!args.ShowHelpers&&IsHelperTile(tilesid, t.Overlay))continue;
 					if(args.ShowOverlays)
 					{
-						RawImage ol = IconGraphics.GetTileOverlay(this.Tileset, t);
+						RawImage ol = MapIcons.GetTileOverlay(this.Tileset, t);
 						plane.Objects.Add(new GraphicObject(ol, loc));
+					}
+				}
+				if(args.ShowNPCs2D)
+				{
+					foreach(NPC npc in UsedNPCs)
+					{
+						ImageBase img = NPCGraphics.GetNPCBig(npc.ObjectID)[6];
+						Point loc = new Point(npc.X*16, npc.Y*16-img.GetHeight()+16);
+						plane.Objects.Add(new GraphicObject(img, loc));
 					}
 				}
 				return plane;
@@ -505,7 +515,7 @@ namespace AlbLib.Mapping
 				foreach(Block b in this.BlockData)
 				{
 					Point loc = new Point(b.X*8, (b.Y-1)*8);
-					if(args.ShowNPCs)
+					if(args.ShowNPCs3D)
 					{
 						//NPCs
 						foreach(NPC npc in UsedNPCs)
@@ -516,7 +526,7 @@ namespace AlbLib.Mapping
 								if(npc.Interaction == 2)type = 8;
 								else type = 17;
 								if(type != 0)
-									plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(type, mt), loc));
+									plane.Objects.Add(new GraphicObject(AutoGFX.GetIcon(type, mt), loc));
 							}
 						}
 					}
@@ -529,7 +539,7 @@ namespace AlbLib.Mapping
 							if(!b.IsEmpty)
 							{
 								byte type = ld.GetMinimapForm(b).MinimapType;
-								plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(type, mt), loc));
+								plane.Objects.Add(new GraphicObject(AutoGFX.GetIcon(type, mt), loc));
 							}
 						}
 					}
@@ -539,7 +549,7 @@ namespace AlbLib.Mapping
 						//Goto-points
 						if(b.GotoPoint!=null)
 						{
-							plane.Objects.Add(new GraphicObject(AutoGFX.GetMapObject(18, mt), loc));
+							plane.Objects.Add(new GraphicObject(AutoGFX.GetIcon(18, mt), loc));
 						}
 					}
 				}
@@ -558,6 +568,47 @@ namespace AlbLib.Mapping
 				foreach(Block b in BlockData)yield return b;
 			}
 		}
+		
+		public int Save(Stream output)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public bool Equals(IGameResource obj)
+		{
+			return this.Equals((object)obj);
+		}
+		
+		public override bool Equals(object obj)
+		{
+			if(obj is Map)
+			{
+				Map map = (Map)obj;
+				throw new NotImplementedException();
+			}else{
+				return false;
+			}
+		}
+
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public static bool operator ==(Map lhs, Map rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+		
+		public static bool operator !=(Map lhs, Map rhs)
+		{
+			return !(lhs == rhs);
+		}
+
 		
 		private static RawImage Minimize(ImageBase source, ImagePalette src, ImagePalette dest)
 		{

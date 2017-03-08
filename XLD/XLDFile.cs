@@ -84,7 +84,7 @@ namespace AlbLib.XLD
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown when <see cref="Count"/> is not in range between <see cref="UInt16.MinValue"/> and <see cref="UInt16.MaxValue"/>.
 		/// </exception>
-		public int WriteTo(Stream output)
+		public int Save(Stream output)
 		{
 			if(Count > ushort.MaxValue || Count < ushort.MinValue)
 			{
@@ -120,11 +120,11 @@ namespace AlbLib.XLD
 		/// <returns>
 		/// Byte array containing XLD.
 		/// </returns>
-		/// <seealso cref="WriteTo"/>
+		/// <seealso cref="Save"/>
 		public byte[] ToByteArray()
 		{
 			MemoryStream stream = new MemoryStream();
-			WriteTo(stream);
+			Save(stream);
 			return stream.ToArray();
 		}
 		
@@ -349,7 +349,7 @@ namespace AlbLib.XLD
 			for(int i = 0; i < nentries; i++)
 			{
 				lastEntry = i;
-				entries[i] = new XLDSubfile(stream, entrylen[i]);
+				entries[i] = new XLDSubfile(stream, entrylen[i], (short)i);
 			}
 			return new XLDFile(entries);
 		}

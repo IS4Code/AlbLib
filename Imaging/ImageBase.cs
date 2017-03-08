@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 
 namespace AlbLib.Imaging
 {
@@ -7,7 +9,7 @@ namespace AlbLib.Imaging
 	/// Base image class.
 	/// </summary>
 	[Serializable]
-	public abstract class ImageBase : IRenderable
+	public abstract class ImageBase : IRenderable, IGameResource
 	{
 		/// <returns>Width</returns>
 		public abstract int GetWidth();
@@ -17,7 +19,7 @@ namespace AlbLib.Imaging
 		/// <summary>
 		/// Byte array containing actual pixels of image.
 		/// </summary>
-		public byte[] ImageData{get;protected set;}
+		public virtual byte[] ImageData{get;protected set;}
 		
 		/// <summary>
 		/// Converts entire image to format-influenced byte array.
@@ -26,6 +28,49 @@ namespace AlbLib.Imaging
 		/// Byte array containing image.
 		/// </returns>
 		public abstract byte[] ToRawData();
+		
+		public int Save(Stream output)
+		{
+			byte[] data = this.ToRawData();
+			output.Write(data, 0, data.Length);
+			return data.Length;
+		}
+		
+		public bool Equals(IGameResource obj)
+		{
+			return this.Equals((object)obj);
+		}
+		
+		public override bool Equals(object obj)
+		{
+			if(obj is ImageBase)
+			{
+				return ((ImageBase)obj).ImageData.SequenceEqual(this.ImageData);
+			}else{
+				return false;
+			}
+		}
+		
+		public override int GetHashCode()
+		{
+			return ImageData.GetHashCode();
+		}
+		
+		public static bool operator ==(ImageBase lhs, ImageBase rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+		
+		public static bool operator !=(ImageBase lhs, ImageBase rhs)
+		{
+			return !(lhs == rhs);
+		}
+
+
 		
 		/// <summary>
 		/// Draws the image to bitmap.

@@ -18,7 +18,7 @@ namespace AlbLib.SaveGame
 		/// <summary>
 		/// Warrior.
 		/// </summary>
-		Warrior = 2,
+		IskaiWarrior = 2,
 		/// <summary>
 		/// Dji Kas mage.
 		/// </summary>
@@ -38,10 +38,14 @@ namespace AlbLib.SaveGame
 		/// <summary>
 		/// Oqulo Kamulos.
 		/// </summary>
-		OquloWarrior = 7,
+		OquloKamulos = 8,
 		/// <summary>
-		/// Warrior 2.
+		/// Warrior.
 		/// </summary>
-		Warrior2 = 8
+		HumanWarrior = 9,
+		/// <summary>
+		/// Monster.
+		/// </summary>
+		Monster = 31
 	}
 }

@@ -9,7 +9,7 @@ namespace AlbLib
 		/// <summary>
 		/// Class for accessing embedded XML resources.
 		/// </summary>
-		public static class Resources
+		internal static class Resources
 		{
 			/// <summary>
 			/// When this set on, this class will load resources only from this assembly.

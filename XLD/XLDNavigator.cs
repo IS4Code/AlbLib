@@ -160,7 +160,11 @@ namespace AlbLib.XLD
 		
 		public override int ReadByte()
 		{
-			return remaining>0?baseStream.ReadByte():-1;
+			if(remaining > 0)
+			{
+				remaining -= 1;
+				return baseStream.ReadByte();
+			}else return -1;
 		}
 		
 		public override bool CanTimeout{
@@ -204,7 +208,7 @@ namespace AlbLib.XLD
 		
 		public override long Position{
 			get{
-				throw new NotSupportedException();
+				return SubfileLength-remaining;
 			}
 			set{
 				throw new NotSupportedException();
@@ -223,7 +227,7 @@ namespace AlbLib.XLD
 		
 		public override long Length{
 			get{
-				throw new NotSupportedException();
+				return SubfileLength;
 			}
 		}
 	}

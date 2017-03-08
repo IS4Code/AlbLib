@@ -9,16 +9,16 @@ namespace AlbLib.Items
 	/// Structure representing static information about item type.
 	/// </summary>
 	[Serializable]
-	public struct ItemState
+	public class ItemType : GameResource, IGameResource
 	{
-		private static ItemState[] ItemStates;
+		private static ItemType[] ItemStates;
 		
-		public ItemState(Stream stream, short type) : this(new BinaryReader(stream), type){}
+		public ItemType(Stream stream, int type) : this(new BinaryReader(stream), type){}
 		
-		public ItemState(BinaryReader reader, short type) : this()
+		public ItemType(BinaryReader reader, int type)
 		{
 			Type = type;
-			reader.ReadByte();
+			unknown1 = reader.ReadByte();
 			Class = (ItemClass)reader.ReadByte();
 			Slot = (ItemSlot)reader.ReadByte();
 			BreakRate = reader.ReadByte();
@@ -49,10 +49,15 @@ namespace AlbLib.Items
 			Count2 = reader.ReadByte();
 			IconAnim = reader.ReadByte();
 			Weight = reader.ReadInt16();
-			Value = reader.ReadInt16()/10f;
+			FixedValue = reader.ReadInt16();
 			Icon = reader.ReadInt16();
 			UsingClass = reader.ReadInt16();
 			UsingRace = reader.ReadInt16();
+		}
+		
+		public int Save(Stream output)
+		{
+			throw new NotImplementedException();
 		}
 		
 		private static void LoadItemStates()
@@ -61,10 +66,10 @@ namespace AlbLib.Items
 			{
 				BinaryReader reader = new BinaryReader(stream);
 				int count = (int)(stream.Length/40);
-				ItemState[] itemStates = new ItemState[count];
+				ItemType[] itemStates = new ItemType[count];
 				for(int i = 0; i < count; i++)
 				{
-					itemStates[i] = new ItemState(reader, (short)(i+1));
+					itemStates[i] = new ItemType(reader, (short)(i+1));
 				}
 				ItemStates = itemStates;
 			}
@@ -79,9 +84,9 @@ namespace AlbLib.Items
 		/// <returns>
 		/// Item state bound to the <paramref name="type"/>.
 		/// </returns>
-		public static ItemState GetItemState(short type)
+		public static ItemType GetItemType(int type)
 		{
-			if(type == 0)return default(ItemState);
+			if(type == 0)return default(ItemType);
 			if(ItemStates == null)
 			{
 				LoadItemStates();
@@ -89,10 +94,22 @@ namespace AlbLib.Items
 			return ItemStates[type-1];
 		}
 		
+		public static ItemType[] GetItemTypes()
+		{
+			if(ItemStates == null)
+			{
+				LoadItemStates();
+			}
+			return (ItemType[])(ItemStates.Clone());
+		}
+		
 		/// <summary>
 		/// Type ID.
 		/// </summary>
-		public short Type{get; set;}
+		[Skip]
+		public int Type{get; set;}
+		
+		private byte unknown1;
 		
 		/// <summary>
 		/// Item class.
@@ -255,10 +272,20 @@ namespace AlbLib.Items
 		/// </summary>
 		public short Weight{get; set;}
 		
+		private short FixedValue{get; set;}
+		
 		/// <summary>
 		/// Item sell value.
 		/// </summary>
-		public float Value{get; set;}
+		[Skip]
+		public float Value{
+			get{
+				return FixedValue/10f;
+			}
+			set{
+				FixedValue = (short)(value*10);
+			}
+		}
 		
 		/// <summary>
 		/// Icon ID.
@@ -283,5 +310,76 @@ namespace AlbLib.Items
 				return TextCore.GetItemName(Type);
 			}
 		}
+		
+		public bool Equals(IGameResource obj)
+		{
+			return Equals((object)obj);
+		}
+		
+		public override bool Equals(object obj)
+		{
+			ItemType other = obj as ItemType;
+			if (other == null)
+				return false;
+			return this.Type == other.Type && this.Class == other.Class && this.Slot == other.Slot && this.BreakRate == other.BreakRate && this.Gender == other.Gender && this.FreeHands == other.FreeHands && this.LifePointsBonus == other.LifePointsBonus && this.SpellPointsBonus == other.SpellPointsBonus && this.AttributeType == other.AttributeType && this.AttributeBonus == other.AttributeBonus && this.SkillTypeBonus == other.SkillTypeBonus && this.SkillBonus == other.SkillBonus && this.PhysicalDamageProtection == other.PhysicalDamageProtection && this.PhysicalDamageCaused == other.PhysicalDamageCaused && this.AmmunitionType == other.AmmunitionType && this.SkillType1Tax == other.SkillType1Tax && this.SkillType2Tax == other.SkillType2Tax && this.Skill1Tax == other.Skill1Tax && this.Skill2Tax == other.Skill2Tax && this.TorchIntensity == other.TorchIntensity && this.AmmoAnimation == other.AmmoAnimation && this.Spell == other.Spell && this.SpellID == other.SpellID && this.Charges == other.Charges && this.NumRecharged == other.NumRecharged && this.MaxNumRecharged == other.MaxNumRecharged && this.MaxCharges == other.MaxCharges && this.Count1 == other.Count1 && this.Count2 == other.Count2 && this.IconAnim == other.IconAnim && this.Weight == other.Weight && object.Equals(this.Value, other.Value) && this.Icon == other.Icon && this.UsingClass == other.UsingClass && this.UsingRace == other.UsingRace;
+		}
+		
+		public override int GetHashCode()
+		{
+			int hashCode = 0;
+			unchecked {
+				hashCode += 1000000007 * Type.GetHashCode();
+				hashCode += 1000000009 * Class.GetHashCode();
+				hashCode += 1000000021 * Slot.GetHashCode();
+				hashCode += 1000000033 * BreakRate.GetHashCode();
+				hashCode += 1000000087 * Gender.GetHashCode();
+				hashCode += 1000000093 * FreeHands.GetHashCode();
+				hashCode += 1000000097 * LifePointsBonus.GetHashCode();
+				hashCode += 1000000103 * SpellPointsBonus.GetHashCode();
+				hashCode += 1000000123 * AttributeType.GetHashCode();
+				hashCode += 1000000181 * AttributeBonus.GetHashCode();
+				hashCode += 1000000207 * SkillTypeBonus.GetHashCode();
+				hashCode += 1000000223 * SkillBonus.GetHashCode();
+				hashCode += 1000000241 * PhysicalDamageProtection.GetHashCode();
+				hashCode += 1000000271 * PhysicalDamageCaused.GetHashCode();
+				hashCode += 1000000289 * AmmunitionType.GetHashCode();
+				hashCode += 1000000297 * SkillType1Tax.GetHashCode();
+				hashCode += 1000000321 * SkillType2Tax.GetHashCode();
+				hashCode += 1000000349 * Skill1Tax.GetHashCode();
+				hashCode += 1000000363 * Skill2Tax.GetHashCode();
+				hashCode += 1000000403 * TorchIntensity.GetHashCode();
+				hashCode += 1000000409 * AmmoAnimation.GetHashCode();
+				hashCode += 1000000411 * Spell.GetHashCode();
+				hashCode += 1000000427 * SpellID.GetHashCode();
+				hashCode += 1000000433 * Charges.GetHashCode();
+				hashCode += 1000000439 * NumRecharged.GetHashCode();
+				hashCode += 1000000447 * MaxNumRecharged.GetHashCode();
+				hashCode += 1000000453 * MaxCharges.GetHashCode();
+				hashCode += 1000000459 * Count1.GetHashCode();
+				hashCode += 1000000483 * Count2.GetHashCode();
+				hashCode += 1000000513 * IconAnim.GetHashCode();
+				hashCode += 1000000531 * Weight.GetHashCode();
+				hashCode += 1000000579 * Value.GetHashCode();
+				hashCode += 1000000007 * Icon.GetHashCode();
+				hashCode += 1000000009 * UsingClass.GetHashCode();
+				hashCode += 1000000021 * UsingRace.GetHashCode();
+			}
+			return hashCode;
+		}
+		
+		public static bool operator ==(ItemType lhs, ItemType rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+		
+		public static bool operator !=(ItemType lhs, ItemType rhs)
+		{
+			return !(lhs == rhs);
+		}
+
 	}
 }

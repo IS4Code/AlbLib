@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Examples.cs" />
+    <Compile Include="ArrayXLDRepository.cs" />
     <Compile Include="Caching\Cache.cs" />
     <Compile Include="Caching\Cache2.cs" />
     <Compile Include="Caching\Cache3.cs" />
@@ -70,14 +71,13 @@
       <DependentUpon>IndexedCache2.cs</DependentUpon>
     </Compile>
     <Compile Include="Common.cs" />
+    <Compile Include="GameResource.cs" />
     <Compile Include="IFF\IFFChunk.cs" />
     <Compile Include="IFF\IFFContentNode.cs" />
     <Compile Include="IFF\IFFFile.cs" />
     <Compile Include="IFF\IFFFileNode.cs" />
     <Compile Include="IFF\IFFNode.cs" />
     <Compile Include="IFF\IFFReader.cs" />
-    <Compile Include="Imaging\AnimatedHeaderedImage.cs" />
-    <Compile Include="Imaging\AutoGFX.cs" />
     <Compile Include="Imaging\BlockModifier.cs" />
     <Compile Include="Imaging\Drawing.cs" />
     <Compile Include="Imaging\GraphicObject.cs" />
@@ -86,7 +86,6 @@
       <DependentUpon>ImagePalette.cs</DependentUpon>
     </Compile>
     <Compile Include="Imaging\HeaderedImage.cs" />
-    <Compile Include="Imaging\IAnimatedRenderable.cs" />
     <Compile Include="Imaging\ILBMImage.cs" />
     <Compile Include="Imaging\ImageBase.cs" />
     <Compile Include="Imaging\ImageLocationInfo.cs">
@@ -125,6 +124,7 @@
     <Compile Include="INI\VESA.cs">
       <DependentUpon>GameConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="IRepository.cs" />
     <Compile Include="Items\AttributeType.cs" />
     <Compile Include="Items\Class.cs" />
     <Compile Include="Items\Gender.cs" />
@@ -132,31 +132,34 @@
     <Compile Include="Items\ItemClass.cs" />
     <Compile Include="Items\ItemSlot.cs" />
     <Compile Include="Items\ItemSpellType.cs" />
-    <Compile Include="Items\ItemState.cs" />
-    <Compile Include="Items\Race.cs" />
+    <Compile Include="Items\ItemType.cs" />
     <Compile Include="Items\SkillType.cs" />
-    <Compile Include="IWritable.cs" />
+    <Compile Include="IGameResource.cs" />
     <Compile Include="LimitedInputStream.cs" />
+    <Compile Include="Mapping\AutoGFX.cs" />
     <Compile Include="Mapping\Block.cs" />
     <Compile Include="Mapping\Block2D.cs" />
     <Compile Include="Mapping\CombineArgs.cs" />
-    <Compile Include="Mapping\Event.cs" />
+    <Compile Include="Mapping\MapEvent.cs" />
     <Compile Include="Mapping\EventHeader.cs" />
+    <Compile Include="Mapping\EventTrigger.cs" />
+    <Compile Include="Mapping\EventType.cs" />
     <Compile Include="Mapping\FloorData.cs" />
     <Compile Include="Mapping\GotoPoint.cs" />
     <Compile Include="Mapping\ICollidable.cs" />
-    <Compile Include="Mapping\IconData.cs" />
-    <Compile Include="Mapping\IconGraphics.cs" />
+    <Compile Include="Mapping\MapIcons.cs" />
     <Compile Include="Mapping\IMapSquare.cs" />
     <Compile Include="Mapping\IMinimapVisible.cs" />
     <Compile Include="Mapping\ITextured.cs" />
     <Compile Include="Mapping\LabData.cs" />
     <Compile Include="Mapping\LabGraphics.cs" />
     <Compile Include="Mapping\Map.cs" />
+    <Compile Include="Mapping\MapIcon.cs" />
     <Compile Include="Mapping\MapSquareType.cs" />
     <Compile Include="Mapping\MapType.cs" />
     <Compile Include="Mapping\MinimapType.cs" />
     <Compile Include="Mapping\NPC.cs" />
+    <Compile Include="Mapping\NPCGraphics.cs" />
     <Compile Include="Mapping\ObjectData.cs" />
     <Compile Include="Mapping\ObjectInfo.cs" />
     <Compile Include="Mapping\Overlay.cs" />
@@ -170,55 +173,73 @@
     <Compile Include="Mapping\WallData.cs" />
     <Compile Include="PathInfo.cs" />
     <Compile Include="Paths.cs" />
+    <Compile Include="GameData.cs" />
+    <Compile Include="Repository.cs" />
     <Compile Include="Resources\Resources.cs" />
-    <Compile Include="SaveGame\Backpack.cs" />
     <Compile Include="SaveGame\Character.cs" />
     <Compile Include="SaveGame\CharacterAttribute.cs" />
     <Compile Include="SaveGame\CharacterClass.cs" />
-    <Compile Include="SaveGame\CharacterConditions.cs" />
-    <Compile Include="SaveGame\CharacterGender.cs" />
-    <Compile Include="SaveGame\CharacterLanguage.cs" />
-    <Compile Include="SaveGame\CharacterMagic.cs" />
-    <Compile Include="SaveGame\CharacterPerson.cs" />
-    <Compile Include="SaveGame\CharacterRace.cs" />
+    <Compile Include="SaveGame\ConditionFlags.cs" />
+    <Compile Include="SaveGame\Gender.cs" />
+    <Compile Include="SaveGame\Language.cs" />
+    <Compile Include="SaveGame\LanguageFlags.cs" />
+    <Compile Include="SaveGame\Magic.cs" />
+    <Compile Include="SaveGame\MagicFlags.cs" />
+    <Compile Include="SaveGame\PlayableCharacter.cs" />
+    <Compile Include="SaveGame\Race.cs" />
     <Compile Include="SaveGame\Equipment.cs" />
     <Compile Include="SaveGame\Inventory.cs" />
     <Compile Include="SaveGame\ItemFlags.cs" />
     <Compile Include="SaveGame\ItemStack.cs" />
+    <Compile Include="SaveGame\Monster.cs" />
+    <Compile Include="SaveGame\NPC.cs" />
+    <Compile Include="SaveGame\NPCType.cs" />
+    <Compile Include="SaveGame\RaceFlags.cs" />
     <Compile Include="SaveGame\SaveGameInfo.cs" />
+    <Compile Include="SaveGame\Spell.cs" />
+    <Compile Include="SaveGame\SpellType.cs" />
     <Compile Include="Scripting\DebugExecutor.cs" />
     <Compile Include="Scripting\ExecuteHandler.cs" />
     <Compile Include="Scripting\IScriptExecutor.cs" />
     <Compile Include="Scripting\ScriptExecutionException.cs" />
     <Compile Include="Scripting\ScriptExecutionMachine.cs" />
     <Compile Include="Scripting\Scripts.cs" />
+    <Compile Include="SimpleRepository.cs" />
     <Compile Include="Sounds\HeaderedPCMSound.cs" />
     <Compile Include="Sounds\RawPCMSound.cs" />
     <Compile Include="Sounds\Sample.cs" />
     <Compile Include="Sounds\SoundBase.cs" />
+    <Compile Include="Sounds\WaveLib.cs" />
     <Compile Include="Sounds\XMidiMusic.cs" />
+    <Compile Include="StringRepository.cs" />
+    <Compile Include="SysTextRepository.cs" />
     <Compile Include="Texts\FontStyle.cs" />
     <Compile Include="Texts\Language.cs" />
     <Compile Include="Texts\LanguageTerm.cs" />
     <Compile Include="Texts\TextColor.cs" />
     <Compile Include="Texts\TextCore.cs" />
+    <Compile Include="Texts\TextLibrary.cs" />
+    <Compile Include="Texts\TextProcessor.cs" />
+    <Compile Include="Texts\TextValueExtensions.cs" />
     <Compile Include="Texts\VisualEncoding.cs" />
+    <Compile Include="XLDPathInfo.cs" />
+    <Compile Include="XLDRepository.cs" />
     <Compile Include="XLD\XLDFile.cs" />
     <Compile Include="XLD\XLDNavigator.cs" />
     <Compile Include="XLD\XLDSubfile.cs" />
     <EmbeddedResource Include="CharTable.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <LogicalName>CharTable.xml</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Data.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <LogicalName>Data.xml</LogicalName>
     </EmbeddedResource>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Functions.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <LogicalName>Functions.xml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>

@@ -5,7 +5,7 @@ namespace AlbLib.SaveGame
 	/// Gender of character.
 	/// </summary>
 	[Serializable]
-	public enum CharacterGender : byte
+	public enum Gender : byte
 	{
 		/// <summary>
 		/// Male.
@@ -14,6 +14,10 @@ namespace AlbLib.SaveGame
 		/// <summary>
 		/// Female.
 		/// </summary>
-		Female = 1
+		Female = 1,
+		/// <summary>
+		/// Asexual.
+		/// </summary>
+		Asexual = 2
 	}
 }

@@ -11,7 +11,7 @@ namespace AlbLib
 		/// <summary>
 		/// 63×ColorConversion = 255
 		/// </summary>
-		public const double ColorConversion = 4.047619047619047619047619047619;
+		public const double ColorConversion = 255.0/63.0;
 		
 		/// <summary>
 		/// Converts nullable index to file index and subfile index

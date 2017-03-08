@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using AlbLib.Texts;
 using AlbLib.XLD;
 
 namespace AlbLib
@@ -14,21 +16,14 @@ namespace AlbLib
 		/// Absolute file path.
 		/// </summary>
 		public string FileName{
-			get;set;
+			get;private set;
 		}
 		
 		/// <summary>
 		/// Directory containing resource.
 		/// </summary>
 		public string Directory{
-			get;set;
-		}
-		
-		/// <summary>
-		/// File name formatted with *.
-		/// </summary>
-		public string SearchPattern{
-			get;set;
+			get;private set;
 		}
 		
 		/// <summary></summary>
@@ -36,101 +31,6 @@ namespace AlbLib
 		{
 			FileName = Path.GetFullPath(path);
 			Directory = Path.GetDirectoryName(FileName);
-			SearchPattern = String.Format(Path.GetFileName(path), '*');
-		}
-		
-		/// <summary>
-		/// Opens XLD navigator at index 0.
-		/// </summary>
-		/// <returns>
-		/// XLD navigator at start of data.
-		/// </returns>
-		public XLDNavigator OpenXLD()
-		{
-			return OpenXLD(0);
-		}
-		
-		/// <summary>
-		/// Opens XLD navigator at <paramref name="index"/>.
-		/// </summary>
-		/// <param name="index">
-		/// Start index.
-		/// </param>
-		/// <returns>
-		/// XLD navigator at start of data.
-		/// </returns>
-		public XLDNavigator OpenXLD(int index)
-		{
-			return new XLDNavigator(String.Format(FileName, index));
-		}
-		
-		/// <summary>
-		/// Enumerates through all file sequences.
-		/// </summary>
-		public IEnumerable<string> EnumerateList()
-		{
-			return EnumerateList(0);
-		}
-		
-		/// <summary>
-		/// Enumerates through all file sequences.
-		/// </summary>
-		public IEnumerable<string> EnumerateList(int start)
-		{
-			int i = start;
-			string path;
-			while(File.Exists(path = String.Format(this.FileName, i)))
-			{
-				yield return path;
-				i += 1;
-			}
-		}
-		
-		/// <summary>
-		/// Enumerates through all file sequences.
-		/// </summary>
-		public IEnumerable<KeyValuePair<int,string>> EnumeratePairList()
-		{
-			return EnumeratePairList(0);
-		}
-		
-		/// <summary>
-		/// Enumerates through all file sequences.
-		/// </summary>
-		public IEnumerable<KeyValuePair<int,string>> EnumeratePairList(int start)
-		{
-			int i = start;
-			string path;
-			while(File.Exists(path = String.Format(this.FileName, i)))
-			{
-				yield return new KeyValuePair<int,string>(i, path);
-				i += 1;
-			}
-		}
-		
-		/// <summary>
-		/// Enumerates through all file and subfile sequences.
-		/// </summary>
-		public IEnumerable<KeyValuePair<int,XLDSubfile>> EnumerateAllSubfiles()
-		{
-			return EnumerateAllSubfiles(0);
-		}
-		
-		/// <summary>
-		/// Enumerates through all file and subfile sequences.
-		/// </summary>
-		public IEnumerable<KeyValuePair<int,XLDSubfile>> EnumerateAllSubfiles(int start)
-		{
-			int i = start;
-			string path;
-			while(File.Exists(path = String.Format(this.FileName, i)))
-			{
-				foreach(XLDSubfile sub in XLDFile.EnumerateSubfiles(path))
-				{
-					yield return new KeyValuePair<int,XLDSubfile>(Common.E(i, sub.Index), sub);
-				}
-				i += 1;
-			}
 		}
 		
 		/// <summary>
@@ -147,6 +47,31 @@ namespace AlbLib
 		public string Format(int arg1)
 		{
 			return String.Format(this.FileName, arg1);
+		}
+		
+		public virtual bool Match(string path)
+		{
+			return Path.GetFileName(path) == Path.GetFileName(FileName);
+		}
+		
+		public PathInfo WithDefaultLanguage()
+		{
+			return Specify(TextCore.DefaultLanguageFolder);
+		}
+		
+		protected string SpecifyFormat(params string[] args)
+		{
+			return Format((new[]{"{0}"}).Concat(args).ToArray());
+		}
+		
+		protected virtual PathInfo SpecifyImpl(params string[] args)
+		{
+			return new PathInfo(SpecifyFormat(args));
+		}
+		
+		public PathInfo Specify(params string[] args)
+		{
+			return SpecifyImpl(args);
 		}
 		
 		/// <summary></summary>

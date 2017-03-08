@@ -5,7 +5,7 @@ namespace AlbLib.SaveGame
 	/// Race of character.
 	/// </summary>
 	[Serializable]
-	public enum CharacterRace : byte
+	public enum Race : byte
 	{
 		/// <summary>
 		/// Terran.
@@ -42,6 +42,6 @@ namespace AlbLib.SaveGame
 		/// <summary>
 		/// Monster.
 		/// </summary>
-		Monster = 15
+		Monster = 14
 	}
 }

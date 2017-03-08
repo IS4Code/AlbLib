@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace AlbLib.Imaging
@@ -67,12 +69,18 @@ namespace AlbLib.Imaging
 			}else{
 				for(int y = 0; y < height; y++)
 				{
-					if(y == height-1)
+					if(width*y < data.Length)
 					{
-						Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, data.Length-width*y);
+						Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, Math.Min(width, data.Length-width*y));
+					}else{
+						break;
+					}
+					/*if(y == height-1)
+					{
+						Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, Math.Min(width, data.Length-width*y));
 					}else{
 						Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, width);
-					}
+					}*/
 				}
 			}
 			bmp.UnlockBits(bmpdata);
@@ -101,21 +109,69 @@ namespace AlbLib.Imaging
 		}
 		
 		/// <summary>
+		/// Converts bitmap to byte array using internal palette.
+		/// </summary>
+		public static byte[] LoadBitmap(Bitmap bmp)
+		{
+			byte[] result = new byte[bmp.Width*bmp.Height];
+			BitmapData data = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size), ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+			for(int y = 0; y < bmp.Height; y++)
+			for(int x = 0; x < bmp.Width; x++)
+			{
+				byte b = Marshal.ReadByte(data.Scan0, y*data.Stride+x);
+				result[y*bmp.Width+x] = b;
+			}
+			return result;
+		}
+		
+		/// <summary>
 		/// Converts bitmap to byte array using external palette.
 		/// </summary>
 		public static byte[] LoadBitmap(Bitmap bmp, ImagePalette palette)
 		{
 			byte[] result = new byte[bmp.Width*bmp.Height];
-			BitmapData data = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-			for(int y = 0; y < bmp.Height; y++)
-			for(int x = 0; x < bmp.Width; x++)
+			var rect = new Rectangle(Point.Empty, bmp.Size);
+			if(bmp.Palette.Entries.SequenceEqual(palette, ColorComparer.Instance))
 			{
-				byte r = Marshal.ReadByte(data.Scan0, y*data.Stride+x*3);
-				byte g = Marshal.ReadByte(data.Scan0, y*data.Stride+x*3+1);
-				byte b = Marshal.ReadByte(data.Scan0, y*data.Stride+x*3+2);
-				result[y*bmp.Width+x] = (byte)palette.GetNearestColorIndex(Color.FromArgb(r,g,b));
+				BitmapData data = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+				for(int y = 0; y < bmp.Height; y++)
+				{
+					Marshal.Copy(data.Scan0+data.Stride*y, result, y*bmp.Width, bmp.Width);
+				}
+				bmp.UnlockBits(data);
+			}else{
+				BitmapData data = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+				for(int y = 0; y < bmp.Height; y++)
+				for(int x = 0; x < bmp.Width; x++)
+				{
+					byte b = Marshal.ReadByte(data.Scan0, y*data.Stride+x*3);
+					byte g = Marshal.ReadByte(data.Scan0, y*data.Stride+x*3+1);
+					byte r = Marshal.ReadByte(data.Scan0, y*data.Stride+x*3+2);
+					result[y*bmp.Width+x] = (byte)palette.GetNearestColorIndex(Color.FromArgb(r,g,b));
+				}
+				bmp.UnlockBits(data);
 			}
 			return result;
+		}
+		
+		private class ColorComparer : IEqualityComparer<Color>
+		{
+			public static readonly ColorComparer Instance = new ColorComparer();
+			
+			private ColorComparer()
+			{
+				
+			}
+			
+			public bool Equals(Color x, Color y)
+			{
+				return x.ToArgb() == y.ToArgb();
+			}
+			
+			public int GetHashCode(Color obj)
+			{
+				return obj.ToArgb().GetHashCode();
+			}
 		}
 	}
 }

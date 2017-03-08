@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace AlbLib
 {
@@ -8,95 +10,108 @@ namespace AlbLib
 	/// </summary>
 	public static class Paths
 	{
-		/// <summary>
-		/// Absolute path to any XLDLIBS/PALETTE{0}.XLD.
-		/// </summary>
-		public static PathInfo PaletteN;
+		[Path("PALETTE{0}.XLD")]
+		public static XLDPathInfo PaletteN;
 		
-		/// <summary>
-		/// Absolute path to XLDLIBS/PALETTE.000.
-		/// </summary>
+		[Path("PALETTE.000")]
 		public static PathInfo GlobalPalette;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/SCRIPT{0}.XLD.
-		/// </summary>
-		public static PathInfo ScriptsN;
+		[Path("SCRIPT{0}.XLD")]
+		public static XLDPathInfo ScriptsN;
 		
-		/// <summary>
-		/// Absolute path to XLDLIBS/ITEMNAME.DAT.
-		/// </summary>
+		[Path("ITEMNAME.DAT")]
 		public static PathInfo ItemName;
 		
-		/// <summary>
-		/// Absolute path to XLDLIBS/ITEMLIST.DAT.
-		/// </summary>
+		[Path("ITEMLIST.DAT")]
 		public static PathInfo ItemList;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/SAMPLES{0}.XLD.
-		/// </summary>
-		public static PathInfo SamplesN;
+		[Path("SAMPLES{0}.XLD")]
+		public static XLDPathInfo Samples;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/ICONGFX{0}.XLD.
-		/// </summary>
-		public static PathInfo IconGraphicsN;
+		[Path("ICONGFX{0}.XLD")]
+		public static XLDPathInfo IconGraphics;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/ICONDAT{0}.XLD.
-		/// </summary>
-		public static PathInfo IconDataN;
+		[Path("ICONDAT{0}.XLD")]
+		public static XLDPathInfo IconData;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/MAPDATA{0}.XLD.
-		/// </summary>
-		public static PathInfo MapDataN;
+		[Path("MAPDATA{0}.XLD")]
+		public static XLDPathInfo MapData;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/TRANSTB{0}.XLD.
-		/// </summary>
-		public static PathInfo TransparencyTablesN;
+		[Path("TRANSTB{0}.XLD")]
+		public static XLDPathInfo TransparencyTables;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/LABDATA{0}.XLD.
-		/// </summary>
-		public static PathInfo LabDataN;
+		[Path("LABDATA{0}.XLD")]
+		public static XLDPathInfo LabData;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/3DFLOOR{0}.XLD.
-		/// </summary>
-		public static PathInfo _3DFloorN;
+		[Path("3DFLOOR{0}.XLD")]
+		public static XLDPathInfo Floors3D;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/3DWALLS{0}.XLD.
-		/// </summary>
-		public static PathInfo _3DWallsN;
+		[Path("3DWALLS{0}.XLD")]
+		public static XLDPathInfo Walls3D;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/3DOBJEC{0}.XLD.
-		/// </summary>
-		public static PathInfo _3DObjectsN;
+		[Path("3DOBJEC{0}.XLD")]
+		public static XLDPathInfo Objects3D;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/3DOVERL{0}.XLD.
-		/// </summary>
-		public static PathInfo _3DOverlaysN;
+		[Path("3DOVERL{0}.XLD")]
+		public static XLDPathInfo Overlays3D;
 		
-		/// <summary>
-		/// Absolute path to any XLDLIBS/AUTOGFX{0}.XLD.
-		/// </summary>
-		public static PathInfo AutoGFXN;
+		[Path("3DBCKGR{0}.XLD")]
+		public static XLDPathInfo Backgrounds3D;
 		
-		/// <summary>
-		/// Absolute path to MAIN.EXE.
-		/// </summary>
-		public static PathInfo Main;
+		[Path("AUTOGFX{0}.XLD")]
+		public static XLDPathInfo AutomapGraphics;
 		
-		/// <summary>
-		/// Absolute path to SETUP.INI.
-		/// </summary>
-		public static PathInfo Setup;
+		[Path("NPCGR{0}.XLD")]
+		public static XLDPathInfo NPCBig;
+		
+		[Path("NPCKL{0}.XLD")]
+		public static XLDPathInfo NPCSmall;
+		
+		[Path("PARTGR{0}.XLD")]
+		public static XLDPathInfo PartyBig;
+		
+		[Path("PARTKL{0}.XLD")]
+		public static XLDPathInfo PartySmall;
+		
+		[Path("PICTURE{0}.XLD")]
+		public static XLDPathInfo Pictures;
+		
+		[Path("FBODPIX{0}.XLD")]
+		public static XLDPathInfo BodyImages;
+		
+		[Path("COMBACK{0}.XLD")]
+		public static XLDPathInfo CombatBackgrounds;
+		
+		[Path("{1}/EVNTTXT{0}.XLD")]
+		public static XLDPathInfo EventTexts;
+		
+		[Path("FLICS{0}.XLD")]
+		[Path("{1}/FLICS{0}.XLD")]
+		public static XLDPathInfo Flics;
+		
+		[Path("{1}/MAPTEXT{0}.XLD")]
+		public static XLDPathInfo MapTexts;
+		
+		[Path("{1}/SYSTEXTS")]
+		public static PathInfo SystemTexts;
+		
+		[Path("{1}/WORDLIS{0}.XLD")]
+		public static XLDPathInfo WordLists;
+		
+		[Path("MONCHAR{0}.XLD")]
+		public static XLDPathInfo MonsterChars;
+		
+		[Path("WAVELIB{0}.XLD")]
+		public static XLDPathInfo WaveLibs;
+		
+		[Path("MAIN.EXE")]
+		public static string Main;
+		
+		[Path("SETUP.INI")]
+		public static string Setup;
+		
+		[Path("XLDLIBS")]
+		public static string XLDLibs;
 		
 		/// <summary>
 		/// Sets all XLD paths.
@@ -106,22 +121,49 @@ namespace AlbLib
 		/// </param>
 		public static void SetXLDLIBS(string path)
 		{
-			PaletteN = Path.Combine(path, "PALETTE{0}.XLD");
-			GlobalPalette = Path.Combine(path, "PALETTE.000");
-			ScriptsN = Path.Combine(path, "SCRIPT{0}.XLD");
-			ItemName =  Path.Combine(path, "ITEMNAME.DAT");
-			ItemList =  Path.Combine(path, "ITEMLIST.DAT");
-			SamplesN =  Path.Combine(path, "SAMPLES{0}.XLD");
-			IconGraphicsN =  Path.Combine(path, "ICONGFX{0}.XLD");
-			IconDataN =  Path.Combine(path, "ICONDAT{0}.XLD");
-			LabDataN = Path.Combine(path, "LABDATA{0}.XLD");
-			MapDataN =  Path.Combine(path, "MAPDATA{0}.XLD");
-			_3DFloorN = Path.Combine(path, "3DFLOOR{0}.XLD");
-			_3DWallsN = Path.Combine(path, "3DWALLS{0}.XLD");
-			_3DObjectsN = Path.Combine(path, "3DOBJEC{0}.XLD");
-			_3DOverlaysN = Path.Combine(path, "3DOVERL{0}.XLD");
-			AutoGFXN = Path.Combine(path, "AUTOGFX{0}.XLD");
-			TransparencyTablesN =  Path.Combine(path, "TRANSTB{0}.XLD");
+			foreach(FieldInfo fi in typeof(Paths).GetFields(BindingFlags.Public | BindingFlags.Static))
+			{
+				if(typeof(PathInfo).IsAssignableFrom(fi.FieldType))
+				{
+					PathAttribute[] paths = (PathAttribute[])fi.GetCustomAttributes(typeof(PathAttribute), true);
+					foreach(var attr in paths)
+					{
+						string fullpath = Path.Combine(path, attr.Path);
+						/*if(TestPath(fullpath))
+						{
+							if(fi.FieldType == typeof(XLDPathInfo))
+							{
+								fi.SetValue(null, new XLDPathInfo(fullpath));
+							}else{
+								fi.SetValue(null, new PathInfo(fullpath));
+							}
+							break;
+						}else{
+							continue;
+						}*/
+						if(fi.FieldType == typeof(XLDPathInfo))
+						{
+							fi.SetValue(null, new XLDPathInfo(fullpath));
+						}else{
+							fi.SetValue(null, new PathInfo(fullpath));
+						}
+					}
+				}
+			}
+		}
+		
+		private static bool TestPath(string path)
+		{
+			if(File.Exists(path)) return true;
+			path = String.Format(path, "*", "ENGLISH", "INITIAL");
+			string file = Path.GetFileName(path);
+			string dir = Path.GetDirectoryName(path);
+			try{
+				return Directory.EnumerateFiles(dir, file).Any();
+			}catch(DirectoryNotFoundException)
+			{
+				return false;
+			}
 		}
 		
 		/// <summary>
@@ -134,7 +176,19 @@ namespace AlbLib
 		{
 			Main = Path.Combine(path, "MAIN.EXE");
 			Setup = Path.Combine(path, "SETUP.INI");
-			SetXLDLIBS(Path.Combine(path, "XLDLIBS"));
+			XLDLibs = Path.Combine(path, "XLDLIBS");
+			SetXLDLIBS(XLDLibs);
+		}
+		
+		[AttributeUsage(AttributeTargets.Field, AllowMultiple=true)]
+		private class PathAttribute : Attribute
+		{
+			public string Path{get;private set;}
+			
+			public PathAttribute(string path)
+			{
+				Path = path;
+			}
 		}
 	}
 }

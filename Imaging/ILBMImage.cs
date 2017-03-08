@@ -230,6 +230,7 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public override Image Render(RenderOptions options)
 		{
+			if(options == null) return this.Render();
 			return Drawing.DrawBitmap(ImageData, Width, Height, new RenderOptions(options){Palette = options.Palette??Palette});
 		}
 		

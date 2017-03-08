@@ -6,7 +6,7 @@ namespace AlbLib
 	/// <summary>
 	/// Writes data to stream.
 	/// </summary>
-	public interface IWritable
+	public interface IGameResource
 	{
 		/// <summary>
 		/// Writes data to <paramref name="output"/> stream.
@@ -17,6 +17,6 @@ namespace AlbLib
 		/// <returns>
 		/// Number of written bytes.
 		/// </returns>
-		int WriteTo(Stream output);
+		int Save(Stream output);
 	}
 }

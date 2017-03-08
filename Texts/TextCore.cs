@@ -35,6 +35,17 @@ namespace AlbLib.Texts
 			}
 		}
 		
+		private static string deflang;
+		public static string DefaultLanguageFolder{
+			get{
+				return deflang??"ENGLISH";
+			}
+			set{
+				if(value == null) throw new ArgumentNullException("value");
+				deflang = value;
+			}
+		}
+		
 		/// <summary>
 		/// Encoding used in all text-related readings.
 		/// </summary>
@@ -74,7 +85,7 @@ namespace AlbLib.Texts
 		/// <returns>
 		/// The localized name.
 		/// </returns>
-		public static string GetItemName(short type)
+		public static string GetItemName(int type)
 		{
 			return GetItemName(type, DefaultLanguage);
 		}
@@ -91,10 +102,10 @@ namespace AlbLib.Texts
 		/// <returns>
 		/// The localized name.
 		/// </returns>
-		public static string GetItemName(short type, Language language)
+		public static string GetItemName(int type, Language language)
 		{
 			if(type == 0)return String.Empty;
-			return NameCache[type][language];
+			return NameCache[type,TextCore.DefaultEncoding][language];
 		}
 		
 		/// <summary>
@@ -129,6 +140,22 @@ namespace AlbLib.Texts
 				str.Append(ch);
 			}
 			return str.ToString();
+		}
+		
+		public static string ReadNullTerminatedString(this BinaryReader reader, int length)
+		{
+			StringBuilder builder = new StringBuilder(length);
+			for(int i = 0; i < length; i++)
+			{
+				char ch = reader.ReadChar();
+				if(ch == '\0')
+				{
+					reader.ReadBytes(length-i-1);
+					break;
+				}
+				builder.Append(ch);
+			}
+			return builder.ToString();
 		}
 	}
 }

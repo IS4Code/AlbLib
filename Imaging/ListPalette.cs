@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace AlbLib.Imaging
 {
-	public abstract partial class ImagePalette : IList<Color>
+	public abstract partial class ImagePalette : IList<Color>, IGameResource
 	{
 		private sealed class ListPalette : ImagePalette
 		{

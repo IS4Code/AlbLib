@@ -5,10 +5,11 @@ namespace AlbLib.Imaging
 	[Serializable]
 	public class RenderOptions : IEquatable<RenderOptions>, ICloneable
 	{
-		public static readonly RenderOptions Empty = new RenderOptions();
+		public static RenderOptions Empty{get{return new RenderOptions();}}
 		
 		public virtual int TransparentIndex{get;set;}
 		public virtual ImagePalette Palette{get;set;}
+		public virtual int Frame{get;set;}
 		
 		public RenderOptions()
 		{
@@ -24,6 +25,7 @@ namespace AlbLib.Imaging
 		{
 			TransparentIndex = source.TransparentIndex;
 			Palette = source.Palette;
+			Frame = source.Frame;
 		}
 		
 		public static implicit operator RenderOptions(ImagePalette pal)
@@ -35,13 +37,19 @@ namespace AlbLib.Imaging
 		{
 			return
 				this.TransparentIndex == other.TransparentIndex &&
-				this.Palette == other.Palette;
+				this.Palette == other.Palette &&
+				this.Frame == other.Frame;
 		}
 
 		
 		public virtual object Clone()
 		{
 			return new RenderOptions(this);
+		}
+		
+		public static RenderOptions Transparent(int palette)
+		{
+			return new RenderOptions(ImagePalette.GetFullPalette(palette)){TransparentIndex = 0};
 		}
 	}
 }

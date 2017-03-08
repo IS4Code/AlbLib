@@ -1,11 +1,13 @@
 ﻿using System;
+using System.IO;
+
 namespace AlbLib.SaveGame
 {
 	/// <summary>
 	/// Character attribute stat.
 	/// </summary>
 	[Serializable]
-	public struct CharacterAttribute
+	public struct CharacterAttribute : IEquatable<CharacterAttribute>
 	{
 		/// <summary>
 		/// Current value.
@@ -47,6 +49,15 @@ namespace AlbLib.SaveGame
 			MaximumValue = BitConverter.ToInt16(data, startIndex+2);
 		}
 		
+		public CharacterAttribute(Stream stream) : this(new BinaryReader(stream))
+		{}
+		
+		public CharacterAttribute(BinaryReader reader) : this()
+		{
+			Value = reader.ReadInt16();
+			MaximumValue = reader.ReadInt16();
+		}
+		
 		/// <summary>
 		/// Converts structure to byte array.
 		/// </summary>
@@ -68,5 +79,38 @@ namespace AlbLib.SaveGame
 		{
 			return Value+"/"+MaximumValue;
 		}
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			return (obj is CharacterAttribute) && Equals((CharacterAttribute)obj);
+		}
+		
+		public bool Equals(CharacterAttribute other)
+		{
+			return this.Value == other.Value && this.MaximumValue == other.MaximumValue;
+		}
+		
+		public override int GetHashCode()
+		{
+			int hashCode = 0;
+			unchecked {
+				hashCode += 1000000007 * Value.GetHashCode();
+				hashCode += 1000000009 * MaximumValue.GetHashCode();
+			}
+			return hashCode;
+		}
+		
+		public static bool operator ==(CharacterAttribute lhs, CharacterAttribute rhs)
+		{
+			return lhs.Equals(rhs);
+		}
+		
+		public static bool operator !=(CharacterAttribute lhs, CharacterAttribute rhs)
+		{
+			return !(lhs == rhs);
+		}
+		#endregion
+
 	}
 }

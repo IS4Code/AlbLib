@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.IO;
 
 namespace AlbLib.SaveGame
 {
@@ -8,21 +9,58 @@ namespace AlbLib.SaveGame
 	/// Inventory holding items.
 	/// </summary>
 	[Serializable]
-	public abstract class Inventory : IList<ItemStack>
+	public class Inventory : IList<ItemStack>
 	{
+		private readonly ItemStack[] items;
+		
 		/// <summary>
 		/// Accesses item using item <paramref name="index"/>.
 		/// </summary>
 		/// <param name="index">
 		/// Item index from 0 to <see cref="Capacity"/>-1.
 		/// </param>
-		public abstract ItemStack this[int index]{
-			get;set;
+		public ItemStack this[int index]{
+			get{
+				return items[index];
+			}
+			set{
+				items[index] = value;
+			}
+		}
+		
+		public Inventory(int size)
+		{
+			items = new ItemStack[size];
+		}
+		
+		public Inventory(IList<ItemStack> items)
+		{
+			this.items = new ItemStack[items.Count];
+			items.CopyTo(this.items, 0);
+		}
+		
+		public Inventory(byte[] data, int offset, int size) : this(size)
+		{
+			for(int i = 0; i < size; i++)
+			{
+				this[i] = new ItemStack(data, offset+i*6);
+			}
+		}
+		
+		public Inventory(Stream stream, int size) : this(new BinaryReader(stream), size)
+		{}
+		
+		public Inventory(BinaryReader reader, int size) : this(size)
+		{
+			for(int i = 0; i < size; i++)
+			{
+				this[i] = new ItemStack(reader);
+			}
 		}
 		
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return this.GetEnumerator();
+			return items.GetEnumerator();
 		}
 		
 		/// <summary>
@@ -33,10 +71,9 @@ namespace AlbLib.SaveGame
 		/// </returns>
 		public virtual IEnumerator<ItemStack> GetEnumerator()
 		{
-			for(int i = 0; i < Capacity; i++)
+			foreach(ItemStack item in items)
 			{
-				ItemStack item = this[i];
-				if(item!=null&&!item.IsEmpty)yield return item;
+				yield return item;
 			}
 		}
 		
@@ -47,22 +84,29 @@ namespace AlbLib.SaveGame
 		/// <summary>
 		/// Count of item slots.
 		/// </summary>
-		public abstract int Capacity{
-			get;
+		public int Capacity{
+			get{
+				return items.Length;
+			}
 		}
 		
 		/// <summary>
 		/// Counts all used item slots.
 		/// </summary>
-		public virtual int Count{
+		int ICollection<ItemStack>.Count{
 			get{
-				int count = 0;
-				foreach(ItemStack item in this)
-				{
-					count += 1;
-				}
-				return count;
+				return items.Length;
 			}
+		}
+		
+		public virtual int Count()
+		{
+			int count = 0;
+			foreach(ItemStack item in this)
+			{
+				count += 1;
+			}
+			return count;
 		}
 		
 		/// <summary>
@@ -70,7 +114,7 @@ namespace AlbLib.SaveGame
 		/// </summary>
 		public bool IsFull{
 			get{
-				return Count == Capacity;
+				return Count() == Capacity;
 			}
 		}
 		
@@ -79,7 +123,7 @@ namespace AlbLib.SaveGame
 		/// </summary>
 		public bool IsEmpty{
 			get{
-				return Count == 0;
+				return Count() == 0;
 			}
 		}
 		
@@ -95,10 +139,7 @@ namespace AlbLib.SaveGame
 		/// <param name="arrayIndex"></param>
 		public void CopyTo(ItemStack[] array, int arrayIndex)
 		{
-			for(int i = 0; i < this.Count; i++)
-			{
-				array[arrayIndex+i] = this[i];
-			}
+			items.CopyTo(array, arrayIndex);
 		}
 		
 		/// <summary>
@@ -125,7 +166,7 @@ namespace AlbLib.SaveGame
 		/// </param>
 		public virtual void Add(ItemStack item)
 		{
-			for(int i = 0; i < Capacity; i++)
+			for(int i = 0; i < items.Length; i++)
 			{
 				if(this[i].IsEmpty)
 				{
@@ -144,7 +185,7 @@ namespace AlbLib.SaveGame
 		/// </param>
 		public virtual void RemoveAt(int index)
 		{
-			this[index] = null;
+			this[index] = default(ItemStack);
 		}
 		
 		/// <summary>
@@ -155,8 +196,13 @@ namespace AlbLib.SaveGame
 		/// </param>
 		public virtual void RemoveOne(int index)
 		{
-			if(this[index].Count > 1)this[index].Count -= 1;
-			else this[index] = null;
+			ItemStack item = this[index];
+			if(item.Count > 1)
+			{
+				item.Count -= 1;
+				this[index] = item;
+			}
+			else this[index] = default(ItemStack);
 		}
 		
 		void IList<ItemStack>.Insert(int index, ItemStack item)
@@ -166,7 +212,7 @@ namespace AlbLib.SaveGame
 		
 		int IList<ItemStack>.IndexOf(ItemStack item)
 		{
-			for(int i = 0; i < this.Count; i++)
+			for(int i = 0; i < items.Length; i++)
 			{
 				if(this[i] == item)return i;
 			}
@@ -176,7 +222,13 @@ namespace AlbLib.SaveGame
 		/// <summary>
 		/// Removes all items from inventory.
 		/// </summary>
-		public abstract void Clear();
+		public void Clear()
+		{
+			for(int i = 0; i < items.Length; i++)
+			{
+				items[i] = default(ItemStack);
+			}
+		}
 		
 		/// <summary>
 		/// Converts items to byte array.
@@ -184,6 +236,14 @@ namespace AlbLib.SaveGame
 		/// <returns>
 		/// Array containg items.
 		/// </returns>
-		public abstract byte[] ToRawData();
+		public byte[] ToRawData()
+		{
+			byte[] buffer = new byte[items.Length*6];
+			for(int i = 0; i < items.Length; i++)
+			{
+				items[i].ToRawData().CopyTo(buffer, i*6);
+			}
+			return buffer;
+		}
 	}
 }

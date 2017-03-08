@@ -26,5 +26,15 @@ namespace AlbLib.Caching
 		{
 			return value.Equals(other);
 		}
+		
+		public static implicit operator RefEq<T>(T value)
+		{
+			return new RefEq<T>(value);
+		}
+		
+		public static implicit operator T(RefEq<T> refeq)
+		{
+			return refeq.Value;
+		}
 	}
 }

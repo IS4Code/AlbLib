@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using AlbLib.XLD;
 
 namespace AlbLib.Imaging
@@ -178,7 +179,7 @@ namespace AlbLib.Imaging
 			return arr;
 		}
 		
-		private static readonly ImagePalette[] Palettes = new ImagePalette[Byte.MaxValue];
+		//private static readonly ImagePalette[] Palettes = new ImagePalette[Byte.MaxValue];
 		private static ImagePalette GlobalPalette = null;
 		
 		/// <summary>
@@ -191,10 +192,10 @@ namespace AlbLib.Imaging
 		/// </summary>
 		public static void LoadPalettes()
 		{
-			foreach(var pair in Paths.PaletteN.EnumerateAllSubfiles())
+			/*foreach(var pair in Paths.PaletteN.EnumerateAllSubfiles())
 			{
 				Palettes[pair.Key] = ReadPalette(pair.Value.Data);
-			}
+			}*/
 			LoadGlobalPalette();
 		}
 		
@@ -206,7 +207,7 @@ namespace AlbLib.Imaging
 			}
 		}
 		
-		private static void LoadPalette(int index)
+		/*private static void LoadPalette(int index)
 		{
 			int subindex, fileindex;
 			if(!Common.E(index, out fileindex, out subindex))return;
@@ -215,7 +216,7 @@ namespace AlbLib.Imaging
 				XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)subindex);
 				Palettes[index] = ReadPalette(nav, nav.SubfileLength);
 			}
-		}
+		}*/
 		
 		/// <summary>
 		/// Parses palette from stream.
@@ -291,11 +292,17 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public static ImagePalette GetPalette(int index)
 		{
+			/*if(index == 0)
+			{
+				return new ListPalette(new Color[192]);
+			}
 			if(Palettes[index] == null)
 			{
 				LoadPalette(index);
 			}
-			return Palettes[index];
+			return Palettes[index];*/
+			
+			return GameData.Palettes.Open(index);
 		}
 		
 		/// <summary>
@@ -309,7 +316,7 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public static ImagePalette GetFullPalette(int index)
 		{
-			return GetPalette(index)+GetGlobalPalette();
+			return GameData.FullPalettes.Open(index);
 		}
 		
 		/// <summary>
@@ -377,6 +384,56 @@ namespace AlbLib.Imaging
 			int colors = Int32.Parse(reader.ReadLine());
 			return Load(sourceStream, colors, PaletteFormat.Text);
 		}
+		
+		public int Save(Stream output)
+		{
+			BinaryWriter writer = new BinaryWriter(output);
+			
+			for(int i = 0; i < Length; i++)
+			{
+				Color c = this[i];
+				writer.Write(c.R);
+				writer.Write(c.G);
+				writer.Write(c.B);
+			}
+			
+			return Length*3;
+		}
+		
+		public bool Equals(IGameResource obj)
+		{
+			return this.Equals((object)obj);
+		}
+		
+		public override bool Equals(object obj)
+		{
+			if(obj is ImagePalette)
+			{
+				return ((ImagePalette)obj).SequenceEqual(this);
+			}else{
+				return false;
+			}
+		}
+		
+		public override int GetHashCode()
+		{
+			return ToArray().GetHashCode();
+		}
+		
+		public static bool operator ==(ImagePalette lhs, ImagePalette rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+		
+		public static bool operator !=(ImagePalette lhs, ImagePalette rhs)
+		{
+			return !(lhs == rhs);
+		}
+
 		
 		/// <summary>
 		/// Creates new palette using color list.

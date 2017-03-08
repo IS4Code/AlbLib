@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using AlbLib.Items;
 using AlbLib.Texts;
 
@@ -8,7 +9,7 @@ namespace AlbLib.SaveGame
 	/// Class representing instance of item or items of same type.
 	/// </summary>
 	[Serializable]
-	public class ItemStack
+	public struct ItemStack
 	{
 		/// <summary>
 		/// Count of items in stack.
@@ -45,8 +46,8 @@ namespace AlbLib.SaveGame
 		/// <summary>
 		/// Returns information about item type.
 		/// </summary>
-		public Items.ItemState State{
-			get{return ItemState.GetItemState(Type);}
+		public Items.ItemType State{
+			get{return ItemType.GetItemType(Type);}
 		}
 		
 		/// <summary>
@@ -67,13 +68,25 @@ namespace AlbLib.SaveGame
 		/// <param name="offset">
 		/// Offset where informations are located.
 		/// </param>
-		public ItemStack(byte[] data, int offset)
+		public ItemStack(byte[] data, int offset) : this()
 		{
 			Count = data[offset];
 			Charges = data[offset+1];
 			NumRecharged = data[offset+2];
 			Flags = (ItemFlags)data[offset+3];
 			Type = BitConverter.ToInt16(data, offset+4);
+		}
+		
+		public ItemStack(Stream stream) : this(new BinaryReader(stream))
+		{}
+		
+		public ItemStack(BinaryReader reader) : this()
+		{
+			Count = reader.ReadByte();
+			Charges = reader.ReadByte();
+			NumRecharged = reader.ReadByte();
+			Flags = (ItemFlags)reader.ReadByte();
+			Type = reader.ReadInt16();
 		}
 		
 		/// <summary>
@@ -85,7 +98,7 @@ namespace AlbLib.SaveGame
 		/// <param name="type">
 		/// Type of item or items.
 		/// </param>
-		public ItemStack(byte count, short type)
+		public ItemStack(byte count, short type) : this()
 		{
 			Count = count; Type = type;
 		}
@@ -116,7 +129,7 @@ namespace AlbLib.SaveGame
 			{
 				return "[ItemStack None]";
 			}else{
-				return string.Format("[ItemStack Count={0}, Type={1}, Flags={2}]", Count, TypeName+" ("+Type+")", Flags);
+				return String.Format("[ItemStack Count={0}, Type={1}, Flags={2}]", Count, TypeName+" ("+Type+")", Flags);
 			}
 		}
 		

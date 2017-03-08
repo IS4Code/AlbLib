@@ -5,7 +5,7 @@ namespace AlbLib.SaveGame
 	/// Actual playable characters in game.
 	/// </summary>
 	[Serializable]
-	public enum CharacterPerson : byte
+	public enum PlayableCharacter : byte
 	{
 		/// <summary>
 		/// Nobody.

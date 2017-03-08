@@ -25,7 +25,7 @@ namespace AlbLib.Caching
 			if(index >= ElemArray.Length)
 			{
 				int newsize = ElemArray.Length;
-				while(newsize < index)newsize*=newsize;
+				while(newsize <= index)newsize*=newsize;
 				Array.Resize(ref ElemArray, newsize);
 			}
 			if(!ElemArray[index].Set || !ElemArray[index].Args.Equals(args))

@@ -15,7 +15,8 @@ namespace AlbLib.Mapping
 		public short TextureWidth{get;private set;}
 		public short TextureHeight{get;private set;}
 		public Overlay[] Overlays{get;private set;}
-		public bool IsTransparent{get{return (Type&32)!=0;}}
+		public bool IsTransparent{get{return (Type&32)!=0 || IsTranslucent;}}
+		public bool IsTranslucent{get{return (Type&64)!=0;}}
 		
 		public bool VisibleOnMinimap{get{return MinimapType>1;}}
 		
@@ -42,5 +43,17 @@ namespace AlbLib.Mapping
 			}
 		}
 
+		public WallData(byte type, byte[] collision, short texture, byte anims, byte minimap, byte transp, short twidth, short theight, Overlay[] overlays) : this()
+		{
+			Type = type;
+			Collision = collision;
+			Texture = texture;
+			AnimationsCount = anims;
+			MinimapType = minimap;
+			TransparentColor = transp;
+			TextureWidth = twidth;
+			TextureHeight = theight;
+			Overlays = overlays;
+		}
 	}
 }

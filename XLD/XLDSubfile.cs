@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace AlbLib.XLD
 {
@@ -7,7 +8,7 @@ namespace AlbLib.XLD
 	/// This class represent single subfile in a XLD.
 	/// </summary>
 	[Serializable]
-	public class XLDSubfile
+	public class XLDSubfile : IGameResource
 	{
 		/// <summary>
 		/// Subfile contents.
@@ -74,5 +75,45 @@ namespace AlbLib.XLD
 		{
 			return new MemoryStream(Data, false);
 		}
+		
+		public int Save(Stream output)
+		{
+			output.Write(Data, 0, Data.Length);
+			return Data.Length;
+		}
+		
+		public bool Equals(IGameResource obj)
+		{
+			return Equals((object)obj);
+		}
+		
+		public override bool Equals(object obj)
+		{
+			if(obj is XLDSubfile)
+			{
+				return ((XLDSubfile)obj).Data.SequenceEqual(this.Data);
+			}
+			return false;
+		}
+		
+		public override int GetHashCode()
+		{
+			return Data.GetHashCode();
+		}
+		
+		public static bool operator ==(XLDSubfile lhs, XLDSubfile rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+		
+		public static bool operator !=(XLDSubfile lhs, XLDSubfile rhs)
+		{
+			return !(lhs == rhs);
+		}
+
 	}
 }

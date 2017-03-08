@@ -5,7 +5,7 @@ namespace AlbLib.SaveGame
 	/// Character language.
 	/// </summary>
 	[Flags, Serializable]
-	public enum CharacterLanguage : byte
+	public enum LanguageFlags : byte
 	{
 		/// <summary>
 		/// None learnt.
@@ -14,14 +14,14 @@ namespace AlbLib.SaveGame
 		/// <summary>
 		/// Terran only.
 		/// </summary>
-		Terran = 1,
+		Terran = 1 << Language.Terran,
 		/// <summary>
 		/// Iskai only.
 		/// </summary>
-		Iskai = 2,
+		Iskai = 1 << Language.Iskai,
 		/// <summary>
 		/// Celtic only.
 		/// </summary>
-		Celtic = 4
+		Celtic = 1 << Language.Celtic
 	}
 }

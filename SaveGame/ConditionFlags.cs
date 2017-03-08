@@ -5,7 +5,7 @@ namespace AlbLib.SaveGame
 	/// Character condition states.
 	/// </summary>
 	[Flags, Serializable]
-	public enum CharacterConditions : ushort
+	public enum ConditionFlags : ushort
 	{
 		/// <summary>
 		/// Unconscious.

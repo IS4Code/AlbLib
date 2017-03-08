@@ -18,6 +18,9 @@ namespace AlbLib.Mapping
 		public byte Movement{get;set;}
 		private short unk1;
 		
+		public byte X{get{return Positions[0].X;}}
+		public byte Y{get{return Positions[0].Y;}}
+		
 		public Position[] Positions{get;set;}
 		
 		public bool IsEmpty{

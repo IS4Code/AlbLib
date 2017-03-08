@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace AlbLib.Imaging
 {
@@ -42,6 +43,27 @@ namespace AlbLib.Imaging
 			return ImageData;
 		}
 		
+		/*public override byte[] ImageData{
+			get{
+				return Frames.Aggregate(Enumerable.Empty<byte>(), (a,e)=>a.Concat(e)).ToArray();
+			}
+			protected set{
+				Frames = new[][]{value};
+			}
+		}*/
+		
+		public byte[][] GetFrames()
+		{
+			byte[][] arr = new byte[ImageData.Length/(Width*Height)][];
+			for(int i = 0; i < arr.Length; i++)
+			{
+				byte[] elem = new byte[Width*Height];
+				Array.Copy(ImageData, i*Width*Height, elem, 0, elem.Length);
+				arr[i] = elem;
+			}
+			return arr;
+		}
+		
 		/// <summary>
 		/// Initializes new instance.
 		/// </summary>
@@ -63,10 +85,19 @@ namespace AlbLib.Imaging
 		/// <summary>
 		/// Initializes new instance.
 		/// </summary>
-		public RawImage(Stream stream, int width, int height)
+		public RawImage(Stream stream, int width, int height) : this(stream, width, height, width*height)
 		{
-			ImageData = new byte[width*height];
-			stream.Read(ImageData, 0, width*height);
+			
+		}
+		
+		/// <summary>
+		/// Initializes new instance.
+		/// </summary>
+		public RawImage(Stream stream, int width, int height, int length)
+		{
+			ImageData = new byte[length];
+			
+			stream.Read(ImageData, 0, length);
 			Width = width;
 			Height = height;
 		}
@@ -114,6 +145,14 @@ namespace AlbLib.Imaging
 		public static RawImage FromBitmap(Bitmap bmp, ImagePalette palette)
 		{
 			return new RawImage(Drawing.LoadBitmap(bmp, palette), bmp.Width, bmp.Height);
+		}
+		
+		/// <summary>
+		/// Creates new instance.
+		/// </summary>
+		public static RawImage FromBitmap(Bitmap bmp)
+		{
+			return new RawImage(Drawing.LoadBitmap(bmp), bmp.Width, bmp.Height);
 		}
 	}
 }

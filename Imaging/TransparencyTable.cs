@@ -8,10 +8,8 @@ namespace AlbLib.Imaging
 	/// Transparency tables define color blending.
 	/// </summary>
 	[Serializable]
-	public class TransparencyTable
+	public class TransparencyTable : IGameResource
 	{
-		static TransparencyTable[] tables = new TransparencyTable[Byte.MaxValue];
-		
 		byte[] dark;
 		byte[] main;
 		byte[] light;
@@ -73,6 +71,14 @@ namespace AlbLib.Imaging
 			input.Read(light, 0, 65536);
 		}
 		
+		public int Save(Stream output)
+		{
+			output.Write(dark, 0, dark.Length);
+			output.Write(main, 0, main.Length);
+			output.Write(light, 0, light.Length);
+			return dark.Length+main.Length+light.Length;
+		}
+		
 		/// <summary>
 		/// Gets resulting color when blending two others.
 		/// </summary>
@@ -114,18 +120,7 @@ namespace AlbLib.Imaging
 		/// </returns>
 		public static TransparencyTable GetTransparencyTable(int palette)
 		{
-			if(tables[palette] == null)
-			{
-				int fi, si;
-				if(!Common.E(palette, out fi, out si))return null;
-				using(FileStream stream = new FileStream(Paths.TransparencyTablesN.Format(fi), FileMode.Open))
-				{
-					XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)si);
-					if(nav.SubfileLength != 196608)return null;
-					tables[palette] = new TransparencyTable(palette, nav);
-				}
-			}
-			return tables[palette];
+			return GameData.TransparencyTables.Open(palette);
 		}
 	}
 }
