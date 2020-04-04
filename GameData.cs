@@ -18,9 +18,29 @@ using AlbLib.XLD;
 namespace AlbLib
 {
 	public static class GameData
-	{
-		#region Maps
-		public static readonly XLDRepository<Map> Maps = new XLDRepository<Map>(
+    {
+        public static readonly XLDRepository<SaveGame.NPC> NPCCharacters = new XLDRepository<SaveGame.NPC>(
+            () => Paths.NPCCharacters,
+            (i, s, l) => new SaveGame.NPC(s)
+        );
+
+        public static readonly XLDRepository<SaveGame.Character> PartyCharacters = new XLDRepository<SaveGame.Character>(
+            () => Paths.PartyCharacters,
+            (i, s, l) => new SaveGame.Character(s)
+        );
+
+        public static readonly XLDRepository<SaveGame.Monster> MonsterCharacters = new XLDRepository<SaveGame.Monster>(
+            () => Paths.MonsterChars,
+            (i, s, l) => new SaveGame.Monster(s)
+        );
+
+        public static readonly XLDRepository<Scripting.EventSet> EventSets = new XLDRepository<Scripting.EventSet>(
+            () => Paths.EventSets,
+            (i, s, l) => new Scripting.EventSet(s)
+        );
+
+        #region Maps
+        public static readonly XLDRepository<Map> Maps = new XLDRepository<Map>(
 			()=>Paths.MapData,
 			(i,s,l)=>new Map(i,s)
 		);
@@ -95,8 +115,11 @@ namespace AlbLib
 		#region Combat
 		public static readonly XLDRepository<RawImage>
 			CombatBackgrounds = GetRawImages(()=>Paths.CombatBackgrounds, 360);
-		
-		public static readonly XLDRepository<Monster> Monsters = new XLDRepository<Monster>(
+
+        public static readonly XLDRepository<HeaderedImage>
+            CombatGraphics = GetHeaderedImages(() => Paths.CombatGraphics, false);
+
+        public static readonly XLDRepository<Monster> Monsters = new XLDRepository<Monster>(
 			()=>Paths.MonsterChars,
 			(i,s,l)=>new Monster(s)
 		);

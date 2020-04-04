@@ -81,8 +81,14 @@ namespace AlbLib
 		
 		[Path("COMBACK{0}.XLD")]
 		public static XLDPathInfo CombatBackgrounds;
-		
-		[Path("{1}/EVNTTXT{0}.XLD")]
+
+        [Path("COMGFX{0}.XLD")]
+        public static XLDPathInfo CombatGraphics;
+
+        [Path("EVNTSET{0}.XLD")]
+        public static XLDPathInfo EventSets;
+
+        [Path("{1}/EVNTTXT{0}.XLD")]
 		public static XLDPathInfo EventTexts;
 		
 		[Path("FLICS{0}.XLD")]
@@ -97,8 +103,14 @@ namespace AlbLib
 		
 		[Path("{1}/WORDLIS{0}.XLD")]
 		public static XLDPathInfo WordLists;
-		
-		[Path("MONCHAR{0}.XLD")]
+
+        [Path("INITIAL/NPCCHAR{0}.XLD")]
+        public static XLDPathInfo NPCCharacters;
+
+        [Path("INITIAL/PRTCHAR{0}.XLD")]
+        public static XLDPathInfo PartyCharacters;
+
+        [Path("MONCHAR{0}.XLD")]
 		public static XLDPathInfo MonsterChars;
 		
 		[Path("WAVELIB{0}.XLD")]
