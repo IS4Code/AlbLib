@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using AlbLib.Caching;
 using AlbLib.Imaging;
 using AlbLib.Texts;
@@ -448,13 +449,13 @@ namespace AlbLib.Mapping
 					Point loc = new Point(t.X*16, t.Y*16);
 					if(args.ShowUnderlays)
 					{
-						RawImage ul = MapIcons.GetTileUnderlay(this.Tileset, t);
+						RawImage ul = MapIcons.GetTileUnderlay(this.Tileset, t).First();
 						plane.Objects.Add(new GraphicObject(ul, loc));
 					}
 					if(!args.ShowHelpers&&IsHelperTile(tilesid, t.Overlay))continue;
 					if(args.ShowOverlays)
 					{
-						RawImage ol = MapIcons.GetTileOverlay(this.Tileset, t);
+						RawImage ol = MapIcons.GetTileOverlay(this.Tileset, t).First();
 						plane.Objects.Add(new GraphicObject(ol, loc));
 					}
 				}
