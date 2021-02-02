@@ -99,10 +99,15 @@ namespace AlbLib.Imaging
 		{
 			return Render(new RenderOptions(palette));
 		}
-		
-		public virtual Image Render(RenderOptions options)
+
+        public virtual Image Render(RenderOptions options)
+        {
+            return Drawing.DrawBitmap(ImageData, GetWidth(), GetHeight(), options);
+        }
+
+		public virtual Image Render(RenderOptions options, Bitmap bitmap)
 		{
-			return Drawing.DrawBitmap(ImageData, GetWidth(), GetHeight(), options);
+			return Drawing.DrawBitmap(ImageData, GetWidth(), GetHeight(), options, bitmap);
 		}
 		
 		public static byte[,] Assemble(byte[] arr, int width, int height)
