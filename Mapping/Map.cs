@@ -417,8 +417,15 @@ namespace AlbLib.Mapping
 		public static Map Load(int id)
 		{
 			int fid, sid;
-			if(!Common.E(id, out fid, out sid))return null;
-			using(FileStream stream = new FileStream(Paths.MapData.Format(fid), FileMode.Open))
+			if(!Common.E(id, out fid, out sid))
+                return null;
+
+            string fileName = Paths.MapData.Format(fid);
+
+			if (!File.Exists(fileName))
+                return null;
+
+			using(FileStream stream = new FileStream(fileName, FileMode.Open))
 			{
 				XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)sid);
 				int size = nav.SubfileLength;
