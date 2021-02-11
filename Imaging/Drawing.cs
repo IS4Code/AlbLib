@@ -34,60 +34,96 @@ namespace AlbLib.Imaging
 		{
 			return DrawBitmap(data, width, height, ImagePalette.GetFullPalette(palette));
 		}
-		
-		/// <summary>
-		/// Draws bitmap.
-		/// </summary>
-		/// <param name="data">
-		/// Image pixel data.
-		/// </param>
-		/// <param name="width">
-		/// Output image width.
-		/// </param>
-		/// <param name="height">
-		/// Output image height.
-		/// </param>
-		/// <param name="options">
-		/// More rendering options.
-		/// </param>
-		/// <returns>
-		/// Drawn bitmap.
-		/// </returns>
-		public static Bitmap DrawBitmap(byte[] data, int width, int height, RenderOptions options)
-		{
-			ImagePalette palette = options.Palette;
-			Bitmap bmp = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
-			ColorPalette pal = bmp.Palette;
-			palette.CopyTo(pal.Entries, 0);
-			if(options.TransparentIndex >= 0)pal.Entries[options.TransparentIndex] = Color.Transparent;
-			bmp.Palette = pal;
-			BitmapData bmpdata = bmp.LockBits(new Rectangle(0,0,width,height), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-			if(data.Length == 0){}
-			else if(width%4 == 0)
-			{
-				Marshal.Copy(data, 0, bmpdata.Scan0, Math.Min(bmpdata.Stride*bmpdata.Height, data.Length));
-			}else{
-				for(int y = 0; y < height; y++)
-				{
-					if(width*y < data.Length)
-					{
-						Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, Math.Min(width, data.Length-width*y));
-					}else{
-						break;
-					}
-					/*if(y == height-1)
-					{
-						Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, Math.Min(width, data.Length-width*y));
-					}else{
-						Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, width);
-					}*/
-				}
-			}
-			bmp.UnlockBits(bmpdata);
-			return bmp;
-		}
-		
-		/// <summary>
+
+        /// <summary>
+        /// Draws bitmap.
+        /// </summary>
+        /// <param name="data">
+        /// Image pixel data.
+        /// </param>
+        /// <param name="width">
+        /// Output image width.
+        /// </param>
+        /// <param name="height">
+        /// Output image height.
+        /// </param>
+        /// <param name="options">
+        /// More rendering options.
+        /// </param>
+        /// <returns>
+        /// Drawn bitmap.
+        /// </returns>
+        public static Bitmap DrawBitmap(byte[] data, int width, int height, RenderOptions options)
+        {
+            return DrawBitmap(data, width, height, options, new Bitmap(width, height, PixelFormat.Format8bppIndexed));
+        }
+
+        /// <summary>
+        /// Draws bitmap.
+        /// </summary>
+        /// <param name="data">
+        /// Image pixel data.
+        /// </param>
+        /// <param name="width">
+        /// Output image width.
+        /// </param>
+        /// <param name="height">
+        /// Output image height.
+        /// </param>
+        /// <param name="options">
+        /// More rendering options.
+        /// </param>
+        /// <param name="bmp">
+        /// A pre-constructed bitmap object used to drastically improve performance
+        /// if you need to draw many bitmaps of the same size in succession.
+        /// </param>
+        /// <returns>
+        /// Drawn bitmap.
+        /// </returns>
+        public static Bitmap DrawBitmap(byte[] data, int width, int height, RenderOptions options, Bitmap bmp)
+        {
+            ImagePalette palette = options.Palette;
+            ColorPalette pal = bmp.Palette;
+            palette.CopyTo(pal.Entries, 0);
+            if (options.TransparentIndex >= 0) pal.Entries[options.TransparentIndex] = Color.Transparent;
+            bmp.Palette = pal;
+            BitmapData bmpdata = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly,
+                PixelFormat.Format8bppIndexed);
+            if (data.Length == 0)
+            {
+            }
+            else if (width % 4 == 0)
+            {
+                Marshal.Copy(data, 0, bmpdata.Scan0, Math.Min(bmpdata.Stride * bmpdata.Height, data.Length));
+            }
+            else
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if (width * y < data.Length)
+                    {
+                        Marshal.Copy(data, width * y, bmpdata.Scan0 + bmpdata.Stride * y,
+                            Math.Min(width, data.Length - width * y));
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                    /*if(y == height-1)
+                    {
+                        Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, Math.Min(width, data.Length-width*y));
+                    }else{
+                        Marshal.Copy(data, width*y, bmpdata.Scan0+bmpdata.Stride*y, width);
+                    }*/
+                }
+            }
+
+            bmp.UnlockBits(bmpdata);
+            return bmp;
+        }
+
+        /// <summary>
 		/// Computes height and draws bitmap.
 		/// </summary>
 		/// <param name="data">

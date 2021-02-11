@@ -12,25 +12,18 @@ namespace AlbLib.Imaging
 	/// Color palette used when drawing images.
 	/// </summary>
 	[Serializable]
-	public abstract partial class ImagePalette : IList<Color>
+	public abstract partial class ImagePalette : IEnumerable<Color>
 	{
+        protected Color[] ColorArray;
+
 		/// <summary>
 		/// Returns Color at index in palette.
 		/// </summary>
-		public abstract Color this[int index]
+        public Color this[int index]
 		{
-			get;
-		}
-		
-		Color IList<Color>.this[int index]
-		{
-			get{
-				return this[index];
-			}
-			set{
-				throw new NotSupportedException();
-			}
-		}
+			get => ColorArray[index];
+            set => throw new NotSupportedException();
+        }
 		
 		IEnumerator IEnumerable.GetEnumerator()
 		{
@@ -40,7 +33,7 @@ namespace AlbLib.Imaging
 		/// Enumerates through all colors in a palette.
 		/// </summary>
 		/// <returns>Enumerator object.</returns>
-		public virtual IEnumerator<Color> GetEnumerator()
+		public IEnumerator<Color> GetEnumerator()
 		{
 			for(int i = 0; i < this.Length; i++)
 			{
@@ -51,41 +44,23 @@ namespace AlbLib.Imaging
 		/// <summary>
 		/// Palettes are always read-only.
 		/// </summary>
-		public bool IsReadOnly{
-			get{
-				return true;
-			}
-		}
-		
-		int ICollection<Color>.Count{
-			get{
-				return this.Length;
-			}
-		}
-		
-		/// <summary>
+		public bool IsReadOnly => true;
+
+        /// <summary>
 		/// Gets count of all colors.
 		/// </summary>
-		public abstract int Length{
-			get;
-		}
-		
-		bool ICollection<Color>.Remove(Color c)
-		{
-			throw new NotSupportedException();
-		}
+		public int Length => ColorArray.Length;
+
+        public int Count => Length;
 		
 		/// <summary>
 		/// Copies colors to another array.
 		/// </summary>
 		/// <param name="array">Output array.</param>
 		/// <param name="index">Start index.</param>
-		public virtual void CopyTo(Color[] array, int index)
+		public void CopyTo(Color[] array, int index)
 		{
-			for(int i = 0; i < this.Length; i++)
-			{
-				array[index+i] = this[i];
-			}
+			ColorArray.CopyTo(array, index);
 		}
 		
 		/// <summary>
@@ -93,7 +68,7 @@ namespace AlbLib.Imaging
 		/// </summary>
 		/// <param name="item">Color to check.</param>
 		/// <returns>True if <paramref name="item"/> is in palette, otherwise false.</returns>
-		public virtual bool Contains(Color item)
+		public bool Contains(Color item)
 		{
 			for(int i = 0; i < this.Length; i++)
 			{
@@ -102,32 +77,12 @@ namespace AlbLib.Imaging
 			return false;
 		}
 		
-		void ICollection<Color>.Clear()
-		{
-			throw new NotSupportedException();
-		}
-		
-		void ICollection<Color>.Add(Color item)
-		{
-			throw new NotSupportedException();
-		}
-		
-		void IList<Color>.RemoveAt(int index)
-		{
-			throw new NotSupportedException();
-		}
-		
-		void IList<Color>.Insert(int index, Color item)
-		{
-			throw new NotSupportedException();
-		}
-		
 		/// <summary>
 		/// Returns index of color in a palette.
 		/// </summary>
 		/// <param name="item">Color to find.</param>
 		/// <returns>Zero-based index of <paramref name="item"/>.</returns>
-		public virtual int IndexOf(Color item)
+		public int IndexOf(Color item)
 		{
 			for(int i = 0; i < this.Length; i++)
 			{
@@ -141,7 +96,7 @@ namespace AlbLib.Imaging
 		/// </summary>
 		/// <param name="original">Original color.</param>
 		/// <returns>Nearest color index.</returns>
-		public virtual int GetNearestColorIndex(Color original)
+		public int GetNearestColorIndex(Color original)
 		{
 			double input_red = original.R;
 			double input_green = original.G;
@@ -484,10 +439,6 @@ namespace AlbLib.Imaging
 		/// <summary>
 		/// Grayscale palette from black to white.
 		/// </summary>
-		public static ImagePalette Grayscale{
-			get{
-				return new GrayscalePalette();
-			}
-		}
-	}
+		public static ImagePalette Grayscale => new GrayscalePalette();
+    }
 }

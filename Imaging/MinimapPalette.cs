@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using AlbLib.Mapping;
 
 namespace AlbLib.Imaging
@@ -7,23 +9,6 @@ namespace AlbLib.Imaging
 	[Serializable]
 	public class MinimapPalette : ImagePalette
 	{
-		private ImagePalette source;
-		private ImagePalette minimap;
-		
-		public override Color this[int index]{
-			get{
-				if(152 <= index && index <= 191)
-				{
-					return minimap[index];
-				}else if(source.Length <= index && index <= 191)
-				{
-					return Color.Empty;
-				}else{
-					return source[index];
-				}
-			}
-		}
-		
 		public MinimapPalette(ImagePalette source) : this(source, MinimapType.Classic)
 		{}
 		
@@ -31,16 +16,18 @@ namespace AlbLib.Imaging
 		{}
 		
 		public MinimapPalette(ImagePalette source, ImagePalette minimap)
-		{
-			this.source = source;
-			this.minimap = minimap;
+        {
+            ColorArray = TakeWithPadding(source, 152, Color.Empty)
+                .Concat(TakeWithPadding(minimap, 192-152, Color.Empty))
+                .Concat(source.TakeWhile((color, i) => i>=192))
+                .ToArray();
 		}
-		
-		public override int Length{
-			get{
-				if(source.Length > 192)return source.Length;
-				return 192;
-			}
-		}
+
+        private IEnumerable<Color> TakeWithPadding(ImagePalette list, int count, Color padding)
+        {
+            return list.TakeWhile((color, i) => i < count)
+                .Concat(Enumerable.Repeat(Color.Empty, Math.Max(0, count - list.Count)));
+
+        }
 	}
 }

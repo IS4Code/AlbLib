@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using AlbLib.Caching;
 using AlbLib.Imaging;
 using AlbLib.XLD;
@@ -72,24 +73,29 @@ namespace AlbLib.Mapping
 		{
 			return GetIcons(tileset)[grindex];
 		}
-		
-		/// <summary>
-		/// Gets tile graphics using tile index.
-		/// </summary>
-		/// <param name="tileset">
-		/// Zero-based tileset index.
-		/// </param>
-		/// <param name="index">
-		/// Overlay or underlay.
-		/// </param>
-		public static RawImage GetTileGraphics(int tileset, int index)
-		{
-			if(index <= 1)return null;
-			TileData[] tiledata = MapIcons.GetIconData(tileset);
-			return GetIconGraphics(tileset, tiledata[index-2].GrID);
-		}
-		
-		/// <summary>
+
+        /// <summary>
+        /// Gets tile graphics using tile index.
+        /// </summary>
+        /// <param name="tileset">
+        /// Zero-based tileset index.
+        /// </param>
+        /// <param name="index">
+        /// Overlay or underlay.
+        /// </param>
+        public static IEnumerable<RawImage> GetTileGraphics(int tileset, int index)
+        {
+            if (index <= 1) yield break;
+            TileData[] tiledata = MapIcons.GetIconData(tileset);
+            TileData current = tiledata[index - 2];
+            for (int i = 0; i < current.FramesCount; i++)
+            {
+                yield return GetIconGraphics(tileset, current.GrID + i);
+            }
+
+        }
+
+        /// <summary>
 		/// Returns image representing underlay portion of tile.
 		/// </summary>
 		/// <param name="tileset">
@@ -101,7 +107,7 @@ namespace AlbLib.Mapping
 		/// <returns>
 		/// Underlay image.
 		/// </returns>
-		public static RawImage GetTileUnderlay(int tileset, Tile tile)
+		public static IEnumerable<RawImage> GetTileUnderlay(int tileset, Tile tile)
 		{
 			return GetTileGraphics(tileset, tile.Underlay);
 		}
@@ -118,7 +124,7 @@ namespace AlbLib.Mapping
 		/// <returns>
 		/// Overlay image.
 		/// </returns>
-		public static RawImage GetTileOverlay(int tileset, Tile tile)
+		public static IEnumerable<RawImage> GetTileOverlay(int tileset, Tile tile)
 		{
 			return GetTileGraphics(tileset, tile.Overlay);
 		}

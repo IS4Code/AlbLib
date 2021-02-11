@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace AlbLib.Imaging
 {
-	public abstract partial class ImagePalette : IList<Color>
+	public abstract partial class ImagePalette
 	{
 		private sealed class GrayscalePalette : ImagePalette
 		{
-			public override int Length{
-				get{
-					return 256;
-				}
+            public GrayscalePalette()
+            {
+				ColorArray = (from i in Enumerable.Range(0, 256) 
+					select Color.FromArgb(i, i, i)).ToArray();
 			}
-			
-			public override Color this[int index]{
-				get{
-					return Color.FromArgb(index,index,index);
-				}
-			}
-		}
+        }
 	}
 }
