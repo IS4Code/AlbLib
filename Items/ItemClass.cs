@@ -31,8 +31,10 @@ namespace AlbLib.Items
 		Drink = 10,
 		/// <summary>Amulet.</summary>
 		Amulet = 11,
-		/// <summary>Ring.</summary>
-		Ring = 13,
+        /// <summary>Breast pin.</summary>
+        BreastPin = 12,
+        /// <summary>Ring.</summary>
+        Ring = 13,
 		/// <summary>Jewel.</summary>
 		Valuable = 14,
 		/// <summary>Tool.</summary>
@@ -45,8 +47,10 @@ namespace AlbLib.Items
 		MagicalItem = 18,
 		/// <summary>Special.</summary>
 		SpecialItem = 19,
-		/// <summary>Lockpick.</summary>
-		Lockpick = 21,
+        /// <summary>Transportation.</summary>
+        Transportation = 20,
+        /// <summary>Lockpick.</summary>
+        Lockpick = 21,
 		/// <summary>Staff/torch.</summary>
 		Torch = 22
 	}

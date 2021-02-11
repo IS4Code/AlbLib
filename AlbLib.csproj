@@ -231,6 +231,7 @@
     <EmbeddedResource Include="CharTable.xml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <LogicalName>CharTable.xml</LogicalName>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Data.xml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

@@ -10,14 +10,14 @@ namespace AlbLib.SaveGame
 		/// <summary>
 		/// Male.
 		/// </summary>
-		Male = 0,
+		Man = 0,
 		/// <summary>
 		/// Female.
 		/// </summary>
-		Female = 1,
+		Woman = 1,
 		/// <summary>
 		/// Asexual.
 		/// </summary>
-		Asexual = 2
+		Creature = 2
 	}
 }

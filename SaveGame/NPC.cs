@@ -99,7 +99,7 @@ namespace AlbLib.SaveGame
 		/// <summary>
 		/// Gold in inventory.
 		/// </summary>
-		public float Gold{get; set;}
+		public decimal Gold{get; set;}
 		
 		/// <summary>
 		/// Rations in inventory.
@@ -147,9 +147,9 @@ namespace AlbLib.SaveGame
 		public CharacterAttribute MagicResistance{get; set;}
 		
 		/// <summary>
-		/// Character magic tallent stat.
+		/// Character magic talent stat.
 		/// </summary>
-		public CharacterAttribute MagicTallent{get; set;}
+		public CharacterAttribute MagicTalent{get; set;}
 		
 		/// <summary>
 		/// Character close-range combat points.
@@ -272,7 +272,7 @@ namespace AlbLib.SaveGame
 			DialogueOptions = reader.ReadInt16();
 			ResponseOptions = reader.ReadInt16();
 			TrainingPoints = reader.ReadInt16();
-			Gold = reader.ReadInt16()/10f;
+			Gold = reader.ReadInt16()/10M;
 			Rations = reader.ReadInt16();
 			
 			reader.Read(unknown[3], 0, 2);
@@ -293,7 +293,7 @@ namespace AlbLib.SaveGame
 			reader.Read(unknown[10], 0, 4);
 			MagicResistance = new CharacterAttribute(reader);
 			reader.Read(unknown[11], 0, 4);
-			MagicTallent = new CharacterAttribute(reader);
+			MagicTalent = new CharacterAttribute(reader);
 			reader.Read(unknown[12], 0, 4);
 			Age = reader.ReadInt16();
 			reader.Read(unknown[13], 0, 14);
@@ -404,7 +404,7 @@ namespace AlbLib.SaveGame
 			NPC other = obj as NPC;
 			if (other == null)
 				return false;
-			return object.Equals(this.unknown, other.unknown) && this.Type == other.Type && this.Gender == other.Gender && this.Race == other.Race && this.Class == other.Class && this.Magic == other.Magic && this.Level == other.Level && this.Language == other.Language && this.Appearance == other.Appearance && this.Face == other.Face && this.InventoryPicture == other.InventoryPicture && this.ActionPoints == other.ActionPoints && this.DialogueOptions == other.DialogueOptions && this.ResponseOptions == other.ResponseOptions && this.TrainingPoints == other.TrainingPoints && object.Equals(this.Gold, other.Gold) && this.Rations == other.Rations && this.Conditions == other.Conditions && this.Strength == other.Strength && this.Intelligence == other.Intelligence && this.Dexterity == other.Dexterity && this.Speed == other.Speed && this.Stamina == other.Stamina && this.Luck == other.Luck && this.MagicResistance == other.MagicResistance && this.MagicTallent == other.MagicTallent && this.CloseRangeCombat == other.CloseRangeCombat && this.LongRangeCombat == other.LongRangeCombat && this.CriticalHit == other.CriticalHit && this.Lockpicking == other.Lockpicking && this.LifePoints == other.LifePoints && this.SpellPoints == other.SpellPoints && this.Age == other.Age && this.BaseProtection == other.BaseProtection && this.Protection == other.Protection && this.BaseDamage == other.BaseDamage && this.Damage == other.Damage && this.Experience == other.Experience && object.Equals(this.Spells, other.Spells) && object.Equals(this.Name, other.Name) && object.Equals(this.SpellStrengths, other.SpellStrengths);
+			return object.Equals(this.unknown, other.unknown) && this.Type == other.Type && this.Gender == other.Gender && this.Race == other.Race && this.Class == other.Class && this.Magic == other.Magic && this.Level == other.Level && this.Language == other.Language && this.Appearance == other.Appearance && this.Face == other.Face && this.InventoryPicture == other.InventoryPicture && this.ActionPoints == other.ActionPoints && this.DialogueOptions == other.DialogueOptions && this.ResponseOptions == other.ResponseOptions && this.TrainingPoints == other.TrainingPoints && object.Equals(this.Gold, other.Gold) && this.Rations == other.Rations && this.Conditions == other.Conditions && this.Strength == other.Strength && this.Intelligence == other.Intelligence && this.Dexterity == other.Dexterity && this.Speed == other.Speed && this.Stamina == other.Stamina && this.Luck == other.Luck && this.MagicResistance == other.MagicResistance && this.MagicTalent == other.MagicTalent && this.CloseRangeCombat == other.CloseRangeCombat && this.LongRangeCombat == other.LongRangeCombat && this.CriticalHit == other.CriticalHit && this.Lockpicking == other.Lockpicking && this.LifePoints == other.LifePoints && this.SpellPoints == other.SpellPoints && this.Age == other.Age && this.BaseProtection == other.BaseProtection && this.Protection == other.Protection && this.BaseDamage == other.BaseDamage && this.Damage == other.Damage && this.Experience == other.Experience && object.Equals(this.Spells, other.Spells) && object.Equals(this.Name, other.Name) && object.Equals(this.SpellStrengths, other.SpellStrengths);
 		}
 		
 		public override int GetHashCode()
@@ -437,7 +437,7 @@ namespace AlbLib.SaveGame
 				hashCode += 1000000427 * Stamina.GetHashCode();
 				hashCode += 1000000433 * Luck.GetHashCode();
 				hashCode += 1000000439 * MagicResistance.GetHashCode();
-				hashCode += 1000000447 * MagicTallent.GetHashCode();
+				hashCode += 1000000447 * MagicTalent.GetHashCode();
 				hashCode += 1000000453 * CloseRangeCombat.GetHashCode();
 				hashCode += 1000000459 * LongRangeCombat.GetHashCode();
 				hashCode += 1000000483 * CriticalHit.GetHashCode();

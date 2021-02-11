@@ -6,11 +6,14 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.Schema;
+using System.Text;
 
 namespace AlbLib.Texts
 {
 	public class TextLibrary : List<string>, IGameResource, IXmlSerializable
 	{
+        public static Encoding Encoding = new VisualEncoding();
+
 		public TextLibrary()
 		{
 			
@@ -18,7 +21,7 @@ namespace AlbLib.Texts
 		
 		public TextLibrary(Stream stream)
 		{
-			BinaryReader reader = new BinaryReader(stream);
+			BinaryReader reader = new BinaryReader(stream, Encoding);
 			ushort count = reader.ReadUInt16();
 			ushort[] lengths = new ushort[count];
 			for(int i = 0; i < count; i++)
@@ -33,7 +36,7 @@ namespace AlbLib.Texts
 		
 		public int Save(Stream output)
 		{
-			BinaryWriter writer = new BinaryWriter(output);
+			BinaryWriter writer = new BinaryWriter(output, Encoding);
 			writer.Write((ushort)this.Count);
 			foreach(string str in this)
 			{

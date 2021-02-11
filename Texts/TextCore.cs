@@ -157,5 +157,10 @@ namespace AlbLib.Texts
 			}
 			return builder.ToString();
 		}
+
+        public static void ClearCache()
+        {
+            NameCache.Clear();
+        }
 	}
 }

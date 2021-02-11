@@ -463,6 +463,8 @@ namespace AlbLib.Imaging
 		/// <returns>Joined palette.</returns>
 		public static ImagePalette Join(ImagePalette a, ImagePalette b)
 		{
+            if(b == null) return a;
+            if(a == null) return null;
 			return new JoinPalette(a,b);
 		}
 		
@@ -473,8 +475,10 @@ namespace AlbLib.Imaging
 		/// <param name="b">Right palette.</param>
 		/// <returns>Joined palette.</returns>
 		public static ImagePalette operator +(ImagePalette a, ImagePalette b)
-		{
-			return new JoinPalette(a,b);
+        {
+            if(b == null) return a;
+            if(a == null) return null;
+            return new JoinPalette(a,b);
 		}
 		
 		/// <summary>

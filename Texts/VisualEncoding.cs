@@ -48,13 +48,7 @@ namespace AlbLib.Texts
 		
 		public override int GetByteCount(char[] chars, int index, int count)
 		{
-			int c = 0;
-			for(int i = 0; i < count; i++)
-			{
-				char ch = chars[i+index];
-				if(c2b.ContainsKey(ch))c += 1;
-			}
-			return c;
+            return count;
 		}
 		
 		public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
@@ -63,25 +57,20 @@ namespace AlbLib.Texts
 			{
 				char ch = chars[i+charIndex];
 				byte code;
-				if(!c2b.TryGetValue(ch, out code))
-				{
-					ib -= 1;
-					continue;
-				}
-				bytes[ib+byteIndex] = code;
+                if(c2b.TryGetValue(ch, out code))
+                {
+                    bytes[ib + byteIndex] = code;
+                } else
+                {
+                    bytes[ib + byteIndex] = (byte)ch;
+                }
 			}
 			return charCount;
 		}
 		
 		public override int GetCharCount(byte[] bytes, int index, int count)
 		{
-			int c = 0;
-			for(int i = 0; i < count; i++)
-			{
-				byte b = bytes[i+index];
-				if(b2c.ContainsKey(b))c += 1;
-			}
-			return c;
+            return count;
 		}
 		
 		public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
@@ -90,12 +79,13 @@ namespace AlbLib.Texts
 			{
 				byte b = bytes[i+byteIndex];
 				char ch;
-				if(!b2c.TryGetValue(b, out ch))
-				{
-					ich -= 1;
-					continue;
-				}
-				chars[ich+charIndex] = ch;
+				if(b2c.TryGetValue(b, out ch))
+                {
+                    chars[ich + charIndex] = ch;
+                } else
+                {
+                    chars[ich + charIndex] = (char)b;
+                }
 			}
 			return byteCount;
 		}
