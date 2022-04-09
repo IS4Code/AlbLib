@@ -6,8 +6,9 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <RootNamespace>AlbLib</RootNamespace>
     <AssemblyName>AlbLib</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>
@@ -41,6 +42,13 @@
     <DebugType>None</DebugType>
     <Optimize>True</Optimize>
     <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -102,6 +110,7 @@
     <Compile Include="Imaging\MainExecutableImages.cs" />
     <Compile Include="Imaging\MinimapPalette.cs" />
     <Compile Include="Imaging\ModifierPalette.cs" />
+    <Compile Include="Imaging\MonochromePalette.cs" />
     <Compile Include="Imaging\PaletteFormat.cs" />
     <Compile Include="Imaging\RawImage.cs" />
     <Compile Include="Imaging\RenderOptions.cs" />
@@ -139,7 +148,9 @@
     <Compile Include="Mapping\AutoGFX.cs" />
     <Compile Include="Mapping\Block.cs" />
     <Compile Include="Mapping\Block2D.cs" />
+    <Compile Include="Mapping\BlockList.cs" />
     <Compile Include="Mapping\CombineArgs.cs" />
+    <Compile Include="Mapping\ITiled.cs" />
     <Compile Include="Mapping\MapEvent.cs" />
     <Compile Include="Mapping\EventHeader.cs" />
     <Compile Include="Mapping\EventTrigger.cs" />
