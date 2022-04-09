@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="Common.cs" />
     <Compile Include="GameResource.cs" />
+    <Compile Include="Extensions\MapExtensions.cs" />
     <Compile Include="IFF\IFFChunk.cs" />
     <Compile Include="IFF\IFFContentNode.cs" />
     <Compile Include="IFF\IFFFile.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using AlbLib.Caching;
 using AlbLib.Imaging;
 using AlbLib.Texts;
@@ -416,8 +417,15 @@ namespace AlbLib.Mapping
 		public static Map Load(int id)
 		{
 			int fid, sid;
-			if(!Common.E(id, out fid, out sid))return null;
-			using(FileStream stream = new FileStream(Paths.MapData.Format(fid), FileMode.Open))
+			if(!Common.E(id, out fid, out sid))
+                return null;
+
+            string fileName = Paths.MapData.Format(fid);
+
+			if (!File.Exists(fileName))
+                return null;
+
+			using(FileStream stream = new FileStream(fileName, FileMode.Open))
 			{
 				XLDNavigator nav = XLDNavigator.ReadToIndex(stream, (short)sid);
 				int size = nav.SubfileLength;
@@ -448,13 +456,13 @@ namespace AlbLib.Mapping
 					Point loc = new Point(t.X*16, t.Y*16);
 					if(args.ShowUnderlays)
 					{
-						RawImage ul = MapIcons.GetTileUnderlay(this.Tileset, t);
+						RawImage ul = MapIcons.GetTileUnderlay(this.Tileset, t).First();
 						plane.Objects.Add(new GraphicObject(ul, loc));
 					}
 					if(!args.ShowHelpers&&IsHelperTile(tilesid, t.Overlay))continue;
 					if(args.ShowOverlays)
 					{
-						RawImage ol = MapIcons.GetTileOverlay(this.Tileset, t);
+						RawImage ol = MapIcons.GetTileOverlay(this.Tileset, t).First();
 						plane.Objects.Add(new GraphicObject(ol, loc));
 					}
 				}
