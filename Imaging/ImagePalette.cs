@@ -489,5 +489,14 @@ namespace AlbLib.Imaging
 				return new GrayscalePalette();
 			}
 		}
+		
+		/// <summary>
+		/// Monochrome palette with black at index 0 and white everywhere else.
+		/// </summary>
+		public static ImagePalette Monochrome{
+			get{
+				return new MonochromePalette();
+			}
+		}
 	}
 }
