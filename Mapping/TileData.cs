@@ -52,6 +52,22 @@ namespace AlbLib.Mapping
 				return IsEmpty || (Info & 0x20) != 0;
 			}
 		}
+
+        public bool IsUnderlay{
+            get{
+                switch(Type)
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 8:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        }
 	
 		/// <param name="id">
 		/// Id to assign.
