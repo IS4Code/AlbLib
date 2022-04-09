@@ -36,8 +36,11 @@ namespace AlbLib
 		
 		[Path("MAPDATA{0}.XLD")]
 		public static XLDPathInfo MapData;
-		
-		[Path("TRANSTB{0}.XLD")]
+
+        [Path("BLKLIST{0}.XLD")]
+        public static XLDPathInfo BlockList;
+
+        [Path("TRANSTB{0}.XLD")]
 		public static XLDPathInfo TransparencyTables;
 		
 		[Path("LABDATA{0}.XLD")]

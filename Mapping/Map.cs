@@ -13,8 +13,8 @@ namespace AlbLib.Mapping
 	/// Class representing game map.
 	/// </summary>
 	[Serializable]
-	public class Map : IGameResource
-	{
+	public class Map : IGameResource, ITiled
+    {
 		/// <summary>
 		/// Id of map.
 		/// </summary>

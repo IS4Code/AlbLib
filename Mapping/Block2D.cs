@@ -7,14 +7,14 @@ namespace AlbLib.Mapping
 	/// BLKLIST.
 	/// </summary>
 	[Serializable]
-	public class Block2D
-	{
-		/// <summary>
-		/// Width in tiles.
-		/// </summary>
-		public byte Width{
+	public class Block2D : ITiled
+    {
+        /// <summary>
+        /// Width in tiles.
+        /// </summary>
+        public byte Width{
 			get{
-				return (byte)Data.GetLength(0);
+				return (byte)TileData.GetLength(0);
 			}
 		}
 		
@@ -23,7 +23,7 @@ namespace AlbLib.Mapping
 		/// </summary>
 		public byte Height{
 			get{
-				return (byte)Data.GetLength(1);
+				return (byte)TileData.GetLength(1);
 			}
 		}
 		
@@ -47,7 +47,7 @@ namespace AlbLib.Mapping
 		/// <summary>
 		/// Block of tiles.
 		/// </summary>
-		public Tile[,] Data{
+		public Tile[,] TileData{
 			get{
 				return data;
 			}
@@ -55,5 +55,5 @@ namespace AlbLib.Mapping
 				data = value;
 			}
 		}
-	}
+    }
 }

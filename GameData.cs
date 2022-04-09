@@ -44,9 +44,14 @@ namespace AlbLib
 			()=>Paths.MapData,
 			(i,s,l)=>new Map(i,s)
 		);
-		
-		#region 3D
-		public static readonly XLDRepository<LabData> LabData = new XLDRepository<LabData>(
+
+        public static readonly XLDRepository<BlockList> Blocks = new XLDRepository<BlockList>(
+            () => Paths.BlockList,
+            (i, s, l) => new BlockList(i, s)
+        );
+
+        #region 3D
+        public static readonly XLDRepository<LabData> LabData = new XLDRepository<LabData>(
 			()=>Paths.LabData,
 			(i,s,l)=>new LabData(s)
 		);
