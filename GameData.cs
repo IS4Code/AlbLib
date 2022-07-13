@@ -180,7 +180,7 @@ namespace AlbLib
 		}
 		private static XLDRepository<RawImage> GetRawImages(Func<XLDPathInfo> path, int width, int height)
 		{
-			return new XLDRepository<RawImage>(path, (i,s,l)=>new RawImage(s,width,height));
+			return new XLDRepository<RawImage>(path, (i,s,l)=>new RawImage(s,width,Math.Max(height, (l+width-1)/width)));
 		}
 		private static XLDRepository<TextLibrary> GetTexts(Func<XLDPathInfo> path)
 		{
